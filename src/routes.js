@@ -24,6 +24,7 @@ var dashRoutes = [
     icon: <HomeIcon color="inherit" />,
     component: Dashboard,
     layout: "/admin",
+    isProtected: true,
   },
   {
     path: "/tables",
@@ -31,6 +32,7 @@ var dashRoutes = [
     icon: <StatsIcon color="inherit" />,
     component: Tables,
     layout: "/admin",
+    isProtected: true,
   },
   {
     path: "/billing",
@@ -38,13 +40,7 @@ var dashRoutes = [
     icon: <CreditIcon color="inherit" />,
     component: Billing,
     layout: "/admin",
-  },
-  {
-    path: "/rtl-support-page",
-    name: "RTL",
-    icon: <SupportIcon color="inherit" />,
-    component: RTLPage,
-    layout: "/rtl",
+    isProtected: true,
   },
   {
     name: "ACCOUNT PAGES",
@@ -58,6 +54,7 @@ var dashRoutes = [
         secondaryNavbar: true,
         component: Profile,
         layout: "/admin",
+        isProtected: true,
       },
       {
         path: "/signin",
@@ -65,6 +62,7 @@ var dashRoutes = [
         icon: <DocumentIcon color="inherit" />,
         component: SignIn,
         layout: "/auth",
+        isProtected: false,
       },
       {
         path: "/signup",
@@ -73,8 +71,10 @@ var dashRoutes = [
         secondaryNavbar: true,
         component: SignUp,
         layout: "/auth",
+        isProtected: false,
       },
     ],
   },
 ];
+
 export default dashRoutes;

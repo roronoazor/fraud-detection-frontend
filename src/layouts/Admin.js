@@ -15,6 +15,7 @@ import FixedPlugin from "../components/FixedPlugin/FixedPlugin";
 import MainPanel from "../components/Layout/MainPanel";
 import PanelContainer from "../components/Layout/PanelContainer";
 import PanelContent from "../components/Layout/PanelContent";
+import PrivateRoute from "components/RouteComponents/PrivateRoute";
 
 
 export default function Dashboard(props) {
@@ -78,6 +79,8 @@ export default function Dashboard(props) {
     return activeNavbar;
   };
 
+  const isAuthenticated = true;
+
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.collapse) {
@@ -87,13 +90,18 @@ export default function Dashboard(props) {
         return getRoutes(prop.views);
       }
       if (prop.layout === "/admin") {
-        return (
-          <Route
-            path={prop.layout + prop.path}
+        // if not authenticated return to auth pages
+        return isAuthenticated ? ( 
+          <Route 
+            path= {prop.layout + prop.path}
             component={prop.component}
             key={key}
-          />
-        );
+          /> 
+          ) : (
+            <Redirect 
+              to={'/auth'}
+            />
+          );
       } else {
         return null;
       }

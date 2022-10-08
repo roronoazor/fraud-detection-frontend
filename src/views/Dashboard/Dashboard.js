@@ -34,6 +34,7 @@ import BarChart from "components/Charts/BarChart";
 import LineChart from "components/Charts/LineChart";
 import IconBox from "components/Icons/IconBox";
 import { PersonIcon } from "components/Icons/Icons";
+import Filter from "components/Filter";
 // Custom icons
 import {
   CartIcon,
@@ -73,8 +74,94 @@ export default function Dashboard() {
   ]);
   const overlayRef = React.useRef();
 
+  const fields = [
+      {
+         id: 1,
+         fieldName: 'name',
+         fieldType: 'text',
+         isSelected: false,
+         fieldQueryName: 'name',
+         fieldValue: '',
+      },
+      {
+        id: 2,
+        fieldName: 'address',
+        fieldType: 'text',
+        isSelected: false,
+        fieldQueryName: 'address',
+        fieldValue: '',
+      }, 
+      {
+        id: 3,
+        fieldName: 'date of birth',
+        fieldType: 'date',
+        isSelected: false,
+        fieldQueryName: 'date_of_birth',
+        fieldValue: '',
+      },
+      {
+        id: 4,
+        fieldName: 'transaction date',
+        fieldType: 'date',
+        isSelected: false,
+        fieldQueryName: 'transaction date',
+        fieldValue: '',
+      },
+      {
+        id: 5,
+        fieldName: 'transaction date',
+        fieldType: 'date',
+        isSelected: false,
+        fieldQueryName: 'transaction date',
+        fieldValue: '',
+      },
+      {
+        id: 6,
+        fieldName: 'transaction date',
+        fieldType: 'date',
+        isSelected: false,
+        fieldQueryName: 'transaction date',
+        fieldValue: '',
+      },
+      {
+        id: 7,
+        fieldName: 'transaction date',
+        fieldType: 'date',
+        isSelected: false,
+        fieldQueryName: 'transaction date',
+        fieldValue: '',
+      },
+      {
+        id: 8,
+        fieldName: 'transaction date',
+        fieldType: 'date',
+        isSelected: false,
+        fieldQueryName: 'transaction date',
+        fieldValue: '',
+      },
+      {
+        id: 9,
+        fieldName: 'transaction date',
+        fieldType: 'date',
+        isSelected: false,
+        fieldQueryName: 'transaction date',
+        fieldValue: '',
+      },
+      {
+        id: 10,
+        fieldName: 'transaction date',
+        fieldType: 'date',
+        isSelected: false,
+        fieldQueryName: 'transaction date',
+        fieldValue: '',
+      }
+  ]
+
   return (
     <Flex flexDirection="column" pt={{ base: "120px", md: "75px" }}>
+      <Filter 
+        fields={fields}
+      />
       <SimpleGrid columns={{ sm: 1, md: 2, xl: 4 }} spacing="24px">
         <Card minH="83px">
           <CardBody>

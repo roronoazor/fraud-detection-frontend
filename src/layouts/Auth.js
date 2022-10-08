@@ -7,6 +7,7 @@ import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import routes from "routes.js";
 import theme from "theme/theme.js";
+import PublicRoute from "components/RouteComponents/PublicRoute";
 
 export default function Pages(props) {
   const { ...rest } = props;
@@ -60,8 +61,12 @@ export default function Pages(props) {
     }
     return activeNavbar;
   };
+
+  const isAuthenticated = false;
+
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
+      console.log('apples ', prop, key);
       if (prop.collapse) {
         return getRoutes(prop.views);
       }
@@ -69,14 +74,29 @@ export default function Pages(props) {
         return getRoutes(prop.views);
       }
       if (prop.layout === "/auth") {
-        return (
-          <Route
-            path={prop.layout + prop.path}
+        
+        return isAuthenticated ? (
+          <Route 
+            path= {prop.layout + prop.path}
             component={prop.component}
             key={key}
+          /> 
+        ) : 
+        ( 
+          <Redirect 
+              to={'/admin'}
+            />
+        );
+
+        return (
+          <PublicRoute
+            path={prop.layout + prop.path}
+            key={key}
+            component={prop.component}
           />
         );
       } else {
+        // anything that does not have an auth layout prop will not be rendered
         return null;
       }
     });
@@ -86,17 +106,17 @@ export default function Pages(props) {
   return (
     <ChakraProvider theme={theme} resetCss={false} w="100%">
       <Box ref={navRef} w="100%">
-        <Portal containerRef={navRef}>
+        {/* <Portal containerRef={navRef}>
           <AuthNavbar
             secondary={getActiveNavbar(routes)}
-            logoText="PURITY UI DASHBOARD"
+            logoText="PURITY UI DASHBOARDS"
           />
-        </Portal>
+        </Portal> */}
         <Box w="100%">
           <Box ref={wrapper} w="100%">
             <Switch>
               {getRoutes(routes)}
-              <Redirect from="/auth" to="/auth/login-page" />
+              <Redirect from="/auth" to="/auth/signin" />
             </Switch>
           </Box>
         </Box>

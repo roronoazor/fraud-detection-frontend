@@ -1,0 +1,7 @@
+http://localhost:3000/#/auth/signup,
+http://localhost:3000/#/auth/signin,
+http://localhost:3000/#/admin/profile,
+http://localhost:3000/#/admin/dashboard,
+http://localhost:3000/#/admin/tables,
+http://localhost:3000/#/admin/billing,
+
