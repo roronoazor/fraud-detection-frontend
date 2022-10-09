@@ -16,6 +16,8 @@ import MainPanel from "../components/Layout/MainPanel";
 import PanelContainer from "../components/Layout/PanelContainer";
 import PanelContent from "../components/Layout/PanelContent";
 import PrivateRoute from "components/RouteComponents/PrivateRoute";
+import { isAuthenticated } from 'modules/auth/redux/authSelector';
+import { useSelector } from 'react-redux'
 
 
 export default function Dashboard(props) {
@@ -79,7 +81,7 @@ export default function Dashboard(props) {
     return activeNavbar;
   };
 
-  const isAuthenticated = true;
+  const isLoggedIn = useSelector(isAuthenticated);
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
@@ -91,7 +93,7 @@ export default function Dashboard(props) {
       }
       if (prop.layout === "/admin") {
         // if not authenticated return to auth pages
-        return isAuthenticated ? ( 
+        return isLoggedIn ? ( 
           <Route 
             path= {prop.layout + prop.path}
             component={prop.component}
@@ -107,6 +109,7 @@ export default function Dashboard(props) {
       }
     });
   };
+
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   document.documentElement.dir = "ltr";

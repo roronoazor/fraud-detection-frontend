@@ -8,6 +8,8 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import routes from "routes.js";
 import theme from "theme/theme.js";
 import PublicRoute from "components/RouteComponents/PublicRoute";
+import { isAuthenticated } from 'modules/auth/redux/authSelector';
+import { useSelector } from 'react-redux'
 
 export default function Pages(props) {
   const { ...rest } = props;
@@ -62,11 +64,10 @@ export default function Pages(props) {
     return activeNavbar;
   };
 
-  const isAuthenticated = false;
+  const isLoggedIn  = useSelector(isAuthenticated);
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      console.log('apples ', prop, key);
       if (prop.collapse) {
         return getRoutes(prop.views);
       }
@@ -75,17 +76,18 @@ export default function Pages(props) {
       }
       if (prop.layout === "/auth") {
         
-        return isAuthenticated ? (
+        return isLoggedIn ? 
+        ( 
+          <Redirect 
+              to={'/admin'}
+            />
+        ) :
+        (
           <Route 
             path= {prop.layout + prop.path}
             component={prop.component}
             key={key}
           /> 
-        ) : 
-        ( 
-          <Redirect 
-              to={'/admin'}
-            />
         );
 
         return (
