@@ -89,14 +89,6 @@ export default function Pages(props) {
             key={key}
           /> 
         );
-
-        return (
-          <PublicRoute
-            path={prop.layout + prop.path}
-            key={key}
-            component={prop.component}
-          />
-        );
       } else {
         // anything that does not have an auth layout prop will not be rendered
         return null;

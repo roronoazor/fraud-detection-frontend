@@ -21,6 +21,7 @@ export default function AdminNavbar(props) {
     secondary,
     brandText,
     onOpen,
+    authUser,
     ...rest
   } = props;
 
@@ -152,6 +153,7 @@ export default function AdminNavbar(props) {
             logoText={props.logoText}
             secondary={props.secondary}
             fixed={props.fixed}
+            authUser={authUser}
           />
         </Box>
       </Flex>

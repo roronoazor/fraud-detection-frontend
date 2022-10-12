@@ -18,7 +18,7 @@
  * @return UserObject
  */
 export function getAuthUser(state) {
-    return state?.auth?.authUser?.user;
+    return state?.auth?.authUser;
 }
 
 /**

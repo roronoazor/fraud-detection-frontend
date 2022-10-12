@@ -15,11 +15,82 @@ import {
 } from "@chakra-ui/react";
 // Assets
 import signInImage from "assets/img/signInImage.png";
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from "react-router-dom";
+import { useMutation } from 'react-query';
+import { postData } from 'modules/utilities/util_query';
+import { checkObject, isError } from 'modules/utilities';
+import { FIELD_REQUIRED } from 'constants/formErrorMessages';
+import { LOGIN_URL } from 'config/serverUrls';
+import toast from 'react-hot-toast';
+import { handleApiError, handleApiSuccess } from 'modules/utilities/responseHandlers';
+import { login } from 'modules/auth/redux/authSlice';
 
 function SignIn() {
   // Chakra color mode
   const titleColor = useColorModeValue("teal.300", "teal.200");
   const textColor = useColorModeValue("gray.400", "white");
+
+  const state = useSelector((state) => state)
+  const dispatch = useDispatch();
+  const history = useHistory();
+  
+  const [values, setValues] = React.useState({});
+  const [errors, setErrors] = React.useState({});
+
+  function validate() {
+    let uerrors = {}
+    uerrors.email = values?.email ? "" : FIELD_REQUIRED;
+    uerrors.password = values?.password ? "" : FIELD_REQUIRED;
+
+    return uerrors;
+}
+
+  const handleChange = (evt) => {
+    setValues({...values, [evt.target.name]: evt.target.value});
+  }
+
+  const mutation = useMutation(postData, {
+    onSuccess: (response) => {
+        const userObj = response?.data;
+        toast.success("You Signed in Successfully");
+        dispatch(login(userObj));
+        
+        // // navigate to the dashboard
+        // history.push(APP_HOME_PAGE);
+    },
+    onError: (error) => {
+        handleApiError(error);
+    }
+});
+
+  function handleSubmit() {
+    
+    let checkErrors = validate();
+    let areAllFieldsFalse = checkObject(checkErrors);
+
+    if (!areAllFieldsFalse) {
+        // if there are errors
+        // set to state and terminate
+        setErrors(checkErrors);
+        return;
+    }
+
+
+    const data = {
+        email : values?.email,
+        password: values?.password
+    };
+
+    mutation.mutate({
+        url: LOGIN_URL,
+        payload_data: data
+    })
+
+    return
+}
+
+
   return (
     <Flex position="relative" mb="40px">
       <Flex
@@ -67,6 +138,10 @@ function SignIn() {
                 type="text"
                 placeholder="Your email adress"
                 size="lg"
+                name="email"
+                onChange={handleChange}
+                isInvalid={isError(errors?.email)}
+                errorBorderColor='red.300'
               />
               <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
                 Password
@@ -76,8 +151,12 @@ function SignIn() {
                 mb="36px"
                 fontSize="sm"
                 type="password"
+                name="password"
                 placeholder="Your password"
                 size="lg"
+                onChange={handleChange}
+                isInvalid={isError(errors?.email)}
+                errorBorderColor='red.300'
               />
               <FormControl display="flex" alignItems="center">
                 <Switch id="remember-login" colorScheme="teal" me="10px" />
@@ -91,6 +170,8 @@ function SignIn() {
                 </FormLabel>
               </FormControl>
               <Button
+                isLoading={mutation?.isLoading}
+                onClick={handleSubmit}
                 fontSize="10px"
                 type="submit"
                 bg="teal.300"

@@ -17,7 +17,9 @@ import PanelContainer from "../components/Layout/PanelContainer";
 import PanelContent from "../components/Layout/PanelContent";
 import PrivateRoute from "components/RouteComponents/PrivateRoute";
 import { isAuthenticated } from 'modules/auth/redux/authSelector';
-import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux';
+import { getAuthUser } from "modules/auth/redux/authSelector";
+import { convertDateStringtoLocalDateString } from "modules/utilities";
 
 
 export default function Dashboard(props) {
@@ -35,7 +37,6 @@ export default function Dashboard(props) {
 
   const getActiveRoute = (routes) => {
     let activeRoute = "Default Brand Text";
-    console.log(routes);
 
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].collapse) {
@@ -82,7 +83,10 @@ export default function Dashboard(props) {
   };
 
   const isLoggedIn = useSelector(isAuthenticated);
+  const authUser = useSelector(getAuthUser);
 
+
+  
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.collapse) {
@@ -138,6 +142,7 @@ export default function Dashboard(props) {
             brandText={getActiveRoute(routes)}
             secondary={getActiveNavbar(routes)}
             fixed={fixed}
+            authUser={authUser}
             {...rest}
           />
         </Portal>
