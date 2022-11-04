@@ -15,6 +15,7 @@ import {
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
+import Pagination from "components/Pagination";
 import Filter from "components/Filter";
 import { useQuery } from "react-query";
 import { GET_BANKS } from '../../config/serverUrls';
@@ -24,6 +25,9 @@ import { getAuthToken } from "modules/auth/redux/authSelector";
 import { handleApiError } from "modules/utilities/responseHandlers";
 import { Spinner, Center } from '@chakra-ui/react'
 import { initializeUrlWithFilters } from "modules/utilities";
+import ReactPaginate from 'react-paginate';
+
+
 
 const fields = [
     {
@@ -110,6 +114,7 @@ function Tables() {
     const [banks, setBanks] = useState([]);
     const [filters, setFilters] = useState(fields);
     const [page, setPage] = useState(1);
+    const [pageCount, setPageCount] = useState(1);
     const [urlWithFilters, setUrlWithFilters] = useState("");
 
     // call the api that loads this data only once
@@ -117,7 +122,7 @@ function Tables() {
     };
     const result = useQuery(['banks',
                             { 
-                              url: urlWithFilters ? urlWithFilters : GET_BANKS + `?page=${page}`,
+                              url: urlWithFilters ? urlWithFilters : GET_BANKS + `?page=${page}&page_size=5`,
                               payload_data,
                               authenticate:true,
                               token
@@ -129,6 +134,8 @@ function Tables() {
                                 const data = response?.data;
                                 setBankCount(data?.count || 0);
                                 setBanks(data?.results || []);
+                                setPageCount(data?.last_page || 1);
+                                setPage(data?.page || 1);
                               },
                               onError: (error) => {
                                 handleApiError(error);
@@ -141,6 +148,14 @@ function Tables() {
     let urlAndFilter = initializeUrlWithFilters(GET_BANKS + `?page=${page}`, filters);
       // once the url string changes, the useQuery hook will fire again
     setUrlWithFilters(urlAndFilter);
+  }
+
+  const closeFilterBox = () => {
+    setUrlWithFilters('');
+    const closedFilters = filters.map(filter => {
+      return {...filter, isSelected: false, fieldValue: ''}
+    })
+    setFilters(closedFilters);
   }
 
   const onItemSelected = (selectedField) => {
@@ -164,7 +179,7 @@ function Tables() {
     const newFilter = filters.map(field => {
       // 👇️ if id equals 2, update country property
       if (field.id === selectedField.id) {
-        return { ...field, value };
+        return { ...field, fieldValue: value };
       }
 
       // 👇️ otherwise return object as is
@@ -172,6 +187,13 @@ function Tables() {
     });
 
     setFilters(newFilter);
+  }
+
+  const handlePageChange = (evt) => {
+    
+    const { selected } = evt;
+    setPage(selected + 1);
+    window.scrollTo(0, 0); // moves the compoent to the top of the page
   }
   
   if (isLoading) {
@@ -191,6 +213,7 @@ function Tables() {
         onItemSelected={onItemSelected}
         fireOnSearch={fireOnSearch}
         handleChange={handleChange}
+        closeFilterBox={closeFilterBox}
       />
       <Card overflowX={{ sm: "scroll", xl: "hidden" }}>
         <CardHeader p="6px 0px 22px 0px">
@@ -225,7 +248,17 @@ function Tables() {
             </Tbody>
           </Table>
         </CardBody>
+        <Center m={5}>
+          <Pagination
+              pageCount={pageCount}
+              onPageChange={(e)=>{handlePageChange(e)}}
+              forcePage={pageCount > 1 ? page - 1 : 1}
+              renderOnZeroPageCount={null}
+              activeClassName={'active'}
+            />
+          </Center>
       </Card>
+      
     </Flex>
   );
 }

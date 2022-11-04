@@ -30,14 +30,21 @@ const Filter = ({
     fields=defaultFields,
     onItemSelected=()=>{},
     fireOnSearch=()=>{},
-    handleChange=()=>{}
+    handleChange=()=>{},
+    closeFilterBox=()=>{},
 }) => {
 
         const showFilterCard = (fields) => {
             return fields.filter(filter => filter.isSelected == true).length > 0 ? true : false;
         }
 
-
+        const isItemChecked = (field) => {
+            const queriedItem = fields.filter(filter => filter.id == field.id);
+            if (queriedItem.length > 0) {
+                return queriedItem[0].isSelected;
+            }
+            return false;
+        }
 
         return (
             <div>
@@ -48,11 +55,13 @@ const Filter = ({
                         </MenuButton>
                         <MenuList minWidth='240px'>
                         <MenuOptionGroup title='Choose Filters' type='checkbox'>
-                            {  fields.map(field => {
+                            {  fields.map((field, index) => {
                                     return (
                                         <MenuItemOption 
                                             onClick={() => {onItemSelected(field)}}
                                             value={field.id}
+                                            isChecked={isItemChecked(field)}
+                                            key={index}
                                         >
                                             {field.fieldName}
                                         </MenuItemOption>
@@ -77,6 +86,7 @@ const Filter = ({
                                                     placeholder={field.fieldName}
                                                     width='auto' 
                                                     name={field.fieldName}
+                                                    value={field.fieldValue}
                                                     onChange={(event) => handleChange(event, field)}
                                                 />
                                             </WrapItem>
@@ -91,6 +101,7 @@ const Filter = ({
                                                     width='auto' 
                                                     type='date' 
                                                     name={field.fieldName}
+                                                    value={field.fieldValue}
                                                     onChange={(event) => handleChange(event, field)}
                                                 />
                                                 </WrapItem>
@@ -104,6 +115,12 @@ const Filter = ({
                             onClick={fireOnSearch}
                             >
                                 Apply
+                            </Button>
+                            <Button
+                            colorScheme='teal'
+                            onClick={closeFilterBox}
+                            >
+                                Close
                             </Button>
                             </Wrap>
                 )
