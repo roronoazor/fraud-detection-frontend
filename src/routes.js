@@ -6,6 +6,7 @@ import RTLPage from "views/RTL/RTLPage.js";
 import Profile from "views/Dashboard/Profile.js";
 import SignIn from "views/Pages/SignIn.js";
 import SignUp from "views/Pages/SignUp.js";
+import BankTable from "views/Dashboard/BankTable.js";
 
 import {
   HomeIcon,
@@ -35,7 +36,7 @@ var dashRoutes = [
     path: "/banks",
     name: "Banks",
     icon: <GiBank color="inherit" />,
-    component: Tables,
+    component: BankTable,
     layout: "/admin",
     isProtected: true,
   },
@@ -76,7 +77,23 @@ var dashRoutes = [
         component: Profile,
         layout: "/admin",
         isProtected: true,
-      }
+      },
+      {
+        path: "/signin",
+        name: "Sign In",
+        icon: <DocumentIcon color="inherit" />,
+        component: SignIn,
+        secondaryNavbar: false,
+        layout: "/auth",
+      },
+      {
+        path: "/signup",
+        name: "Sign Up",
+        icon: <RocketIcon color="inherit" />,
+        secondaryNavbar: false,
+        component: SignUp,
+        layout: "/auth",
+      },
     ],
   },
 ];

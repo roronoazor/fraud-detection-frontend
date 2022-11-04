@@ -29,8 +29,16 @@ const defaultFields = []
 const Filter = ({
     fields=defaultFields,
     onItemSelected=()=>{},
-    fireOnSearch=()=>{}
+    fireOnSearch=()=>{},
+    handleChange=()=>{}
 }) => {
+
+        const showFilterCard = (fields) => {
+            return fields.filter(filter => filter.isSelected == true).length > 0 ? true : false;
+        }
+
+
+
         return (
             <div>
                 <div>
@@ -43,7 +51,7 @@ const Filter = ({
                             {  fields.map(field => {
                                     return (
                                         <MenuItemOption 
-                                            onClick={(field) => {onItemSelected(field)}}
+                                            onClick={() => {onItemSelected(field)}}
                                             value={field.id}
                                         >
                                             {field.fieldName}
@@ -56,42 +64,52 @@ const Filter = ({
                     </Menu>
                 </div>
                 {/** build out the field to filter with */}
-                <Wrap spacing='24px' p={4} bg="#fff" m={2} borderRadius={4}> 
-                { fields.map((field)=>{
-                    switch (field.fieldType) {
-                        case 'text':
-                            return (
-                                <>
-                                  <WrapItem>
-                                    <Input
-                                        placeholder={field.fieldName}
-                                        width='auto' 
-                                    />
-                                  </WrapItem>
-                                </>
-                            )
-                        case 'date':
-                            return (
-                                <>
-                                    <WrapItem>
-                                    <Input 
-                                        placeholder={field.fieldName}
-                                        width='auto' 
-                                        type='date' 
-                                    />
-                                    </WrapItem>
-                                </>
-                            )
-                    }
-                }) 
+                {
+                    showFilterCard(fields) && (
+                        <Wrap spacing='24px' p={4} bg="#fff" m={2} borderRadius={4}> 
+                            { fields.filter(field=>field.isSelected==true).map((field)=>{
+                                switch (field.fieldType) {
+                                    case 'text':
+                                        return (
+                                            <>
+                                            <WrapItem>
+                                                <Input
+                                                    placeholder={field.fieldName}
+                                                    width='auto' 
+                                                    name={field.fieldName}
+                                                    onChange={(event) => handleChange(event, field)}
+                                                />
+                                            </WrapItem>
+                                            </>
+                                        )
+                                    case 'date':
+                                        return (
+                                            <>
+                                                <WrapItem>
+                                                <Input 
+                                                    placeholder={field.fieldName}
+                                                    width='auto' 
+                                                    type='date' 
+                                                    name={field.fieldName}
+                                                    onChange={(event) => handleChange(event, field)}
+                                                />
+                                                </WrapItem>
+                                            </>
+                                        )
+                                }
+                            }) 
+                            }
+                            <Button
+                            colorScheme='teal'
+                            onClick={fireOnSearch}
+                            >
+                                Apply
+                            </Button>
+                            </Wrap>
+                )
+
                 }
-                 <Button
-                   colorScheme='teal'
-                   onClick={fireOnSearch}
-                >
-                    Apply
-                </Button>
-                </Wrap>
+                
             </div>
         )
 }

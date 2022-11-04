@@ -64,6 +64,7 @@ export default function Pages(props) {
     return activeNavbar;
   };
 
+
   const isLoggedIn  = useSelector(isAuthenticated);
 
   const getRoutes = (routes) => {

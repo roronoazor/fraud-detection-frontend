@@ -30,7 +30,7 @@ export const fetchData = async ({queryKey}) => {
         config.headers = authorization;
       }
     // console.log("config: ", config);
-    let response_data = await axios.post(url, payload_data, config);
+    let response_data = await axios.get(url, config);
   
     return response_data;
   }

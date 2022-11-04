@@ -73,10 +73,11 @@ export const injectArguments = (url, dict_of_args) => {
 
 export const initializeUrlWithFilters = (url, filters) => {
 
-
-    Object.entries(filters).map(([key, value]) => {
-        
-        url += `&${key}=${value}`;
+    console.log('initialize', filters);
+    filters.map(({fieldQueryName, value, isSelected}) => {
+        if (isSelected){
+            url += `&${fieldQueryName}=${value}`;
+        }
     })
 
     return url;
