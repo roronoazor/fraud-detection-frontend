@@ -18,7 +18,7 @@ import CardBody from "components/Card/CardBody.js";
 import Pagination from "components/Pagination";
 import Filter from "components/Filter";
 import { useQuery } from "react-query";
-import { GET_BANKS } from '../../config/serverUrls';
+import {  GET_MERCHANTS } from '../../config/serverUrls';
 import { fetchData } from '../../modules/utilities/util_query';
 import { useSelector } from 'react-redux';
 import { getAuthToken } from "modules/auth/redux/authSelector";
@@ -40,41 +40,65 @@ const fields = [
      },
      {
        id: 2,
-       fieldName: 'code',
+       fieldName: 'mid',
        fieldType: 'text',
        isSelected: false,
-       fieldQueryName: 'code',
+       fieldQueryName: 'mid',
        fieldValue: '',
-     }, 
+     },
+     {
+        id: 3,
+        fieldName: 'band',
+        fieldType: 'text',
+        isSelected: false,
+        fieldQueryName: 'band',
+        fieldValue: '',
+      }, 
+      {
+        id: 4,
+        fieldName: 'terminal count',
+        fieldType: 'text',
+        isSelected: false,
+        fieldQueryName: 'terminal_count',
+        fieldValue: '',
+      }, 
+      {
+        id: 5,
+        fieldName: 'top customer',
+        fieldType: 'text',
+        isSelected: false,
+        fieldQueryName: 'top_customer',
+        fieldValue: '',
+      }, 
 ]
 
 
 const tableHeaders = [
     {
         id : 1,
-        value: 'name'
+        value: 'Name'
     },
     {
         id: 2,
-        value: 'code'
+        value: 'Mid'
+    },
+    {
+        id: 3,
+        value: 'Band'
+    },
+    {
+        id: 4,
+        value: 'Terminal Count'
+    },
+    {
+        id: 5,
+        value: 'Top Customer'
     }
 ];
 
-const tablesTableData = [
-    {
-        id: 1,
-        name: 'United Bank of Africa',
-        code : 'UBA'
-    },
-    {
-        id: 2,
-        name: 'Access Bank',
-        code : 'Access'
-    }
-]
 
-function BankRow(props) {
-    const { bank } = props;
+function MerchantRow(props) {
+    const { merchant } = props;
     const textColor = useColorModeValue("gray.700", "white");
     
     return (
@@ -87,8 +111,9 @@ function BankRow(props) {
                 color={textColor}
                 fontWeight="bold"
                 minWidth="100%"
+                // noOfLines={3}
               >
-                {bank.name}
+                {merchant.name}
               </Text>
             </Flex>
           </Flex>
@@ -97,7 +122,34 @@ function BankRow(props) {
           <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
             <Flex direction="column">
               <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                {bank.code}
+                {merchant.mid}
+              </Text>
+            </Flex>
+          </Flex>
+        </Td>
+        <Td minWidth={{ sm: "250px" }} pl="0px">
+          <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
+            <Flex direction="column">
+              <Text fontSize="sm" color="gray.400" fontWeight="normal">
+                {merchant.band}
+              </Text>
+            </Flex>
+          </Flex>
+        </Td>
+        <Td minWidth={{ sm: "250px" }} pl="0px">
+          <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
+            <Flex direction="column">
+              <Text fontSize="sm" color="gray.400" fontWeight="normal">
+                {merchant.terminal_count}
+              </Text>
+            </Flex>
+          </Flex>
+        </Td>
+        <Td minWidth={{ sm: "250px" }} pl="0px">
+          <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
+            <Flex direction="column">
+              <Text fontSize="sm" color="gray.400" fontWeight="normal">
+                {merchant.top_customer}
               </Text>
             </Flex>
           </Flex>
@@ -110,8 +162,8 @@ function BankRow(props) {
 function Tables() {
     const textColor = useColorModeValue("gray.700", "white");
     const token = useSelector(getAuthToken);
-    const [bankCount, setBankCount] = useState(0);
-    const [banks, setBanks] = useState([]);
+    const [merchantCount, setMerchantCount] = useState(0);
+    const [merchants, setMerchants] = useState([]);
     const [filters, setFilters] = useState(fields);
     const [page, setPage] = useState(1);
     const [pageCount, setPageCount] = useState(1);
@@ -120,9 +172,9 @@ function Tables() {
     // call the api that loads this data only once
     let payload_data = {
     };
-    const result = useQuery(['banks',
+    const result = useQuery(['merchants',
                             { 
-                              url: urlWithFilters ? urlWithFilters : GET_BANKS + `?page=${page}`,
+                              url: urlWithFilters ? urlWithFilters : GET_MERCHANTS + `?page=${page}`,
                               payload_data,
                               authenticate:true,
                               token
@@ -132,8 +184,8 @@ function Tables() {
                               retry:false,
                               onSuccess: (response) => {
                                 const data = response?.data;
-                                setBankCount(data?.count || 0);
-                                setBanks(data?.results || []);
+                                setMerchantCount(data?.count || 0);
+                                setMerchants(data?.results || []);
                                 setPageCount(data?.last_page || 1);
                                 setPage(data?.page || 1);
                               },
@@ -145,7 +197,7 @@ function Tables() {
   const {  isLoading, isError, data, error, isFetching } = result;
 
   const fireOnSearch = () => {
-    let urlAndFilter = initializeUrlWithFilters(GET_BANKS + `?page=${page}`, filters);
+    let urlAndFilter = initializeUrlWithFilters(GET_MERCHANTS + `?page=${page}`, filters);
       // once the url string changes, the useQuery hook will fire again
     setUrlWithFilters(urlAndFilter);
   }
@@ -218,7 +270,7 @@ function Tables() {
       <Card overflowX={{ sm: "scroll", xl: "hidden" }}>
         <CardHeader p="6px 0px 22px 0px">
           <Text fontSize="xl" color={textColor} fontWeight="bold">
-             {`Banks (${bankCount})`}
+             {`Merchants (${merchantCount})`}
           </Text>
         </CardHeader>
         <CardBody>
@@ -237,11 +289,11 @@ function Tables() {
               </Tr>
             </Thead>
             <Tbody>
-                {banks.map((bank, index) => {
+                {merchants.map((merchant, index) => {
                     return (
-                      <BankRow
+                      <MerchantRow
                         key={index}
-                        bank={bank}
+                        merchant={merchant}
                         />
                     );
                 })}

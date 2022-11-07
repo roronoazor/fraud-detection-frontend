@@ -6,11 +6,13 @@ import {
     MenuList,
     MenuItemOption,
     MenuOptionGroup,
+    Select
   } from '@chakra-ui/react';
 import { Wrap, WrapItem } from '@chakra-ui/react';
 import {
     Button
   } from "@chakra-ui/react";
+import { BsFileLockFill } from 'react-icons/bs';
 
 /**
  * 
@@ -76,13 +78,14 @@ const Filter = ({
                 {
                     showFilterCard(fields) && (
                         <Wrap spacing='24px' p={4} bg="#fff" m={2} borderRadius={4}> 
-                            { fields.filter(field=>field.isSelected==true).map((field)=>{
+                            { fields.filter(field=>field.isSelected==true).map((field, index={key})=>{
                                 switch (field.fieldType) {
                                     case 'text':
                                         return (
                                             <>
                                             <WrapItem>
                                                 <Input
+                                                    key={index}
                                                     placeholder={field.fieldName}
                                                     width='auto' 
                                                     name={field.fieldName}
@@ -97,6 +100,7 @@ const Filter = ({
                                             <>
                                                 <WrapItem>
                                                 <Input 
+                                                    key={index}
                                                     placeholder={field.fieldName}
                                                     width='auto' 
                                                     type='date' 
@@ -104,6 +108,31 @@ const Filter = ({
                                                     value={field.fieldValue}
                                                     onChange={(event) => handleChange(event, field)}
                                                 />
+                                                </WrapItem>
+                                            </>
+                                        )
+                                    case 'select':
+                                        return (
+                                            <>
+                                                <WrapItem>
+                                                    <Select 
+                                                        key={index}
+                                                        placeholder={`Select ${field.fieldName}`}
+                                                        onChange={(event) => { handleChange(event, field) }}
+                                                        >
+                                                        <>
+                                                            {field.children.map((childOption, index)=>{
+                                                                return (
+                                                                    <option
+                                                                    key={childOption?.id}
+                                                                    value={`${childOption?.value}`}>
+                                                                        {childOption?.name}
+                                                                    </option>       
+                                                                );
+                                                            }
+                                                            )}
+                                                        </>    
+                                                    </Select>
                                                 </WrapItem>
                                             </>
                                         )

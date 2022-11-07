@@ -7,6 +7,9 @@ import Profile from "views/Dashboard/Profile.js";
 import SignIn from "views/Pages/SignIn.js";
 import SignUp from "views/Pages/SignUp.js";
 import BankTable from "views/Dashboard/BankTable.js";
+import MerchantTable from "views/Dashboard/MerchantTable.js";
+import BankSummaryTable from "views/Dashboard/BankSummaryTable";
+import MerchantSummaryTable from "views/Dashboard/MerchantSummaryTable";
 
 import {
   HomeIcon,
@@ -44,7 +47,7 @@ var dashRoutes = [
     path: "/merchants",
     name: "Merchants",
     icon: <BsPersonLinesFill color="inherit" />,
-    component: Tables,
+    component: MerchantTable,
     layout: "/admin",
     isProtected: true,
   },
@@ -52,7 +55,7 @@ var dashRoutes = [
     path: "/bankSummary",
     name: "Bank Summary",
     icon: <TbSum color="inherit" />,
-    component: Tables,
+    component: BankSummaryTable,
     layout: "/admin",
     isProtected: true,
   },
@@ -60,7 +63,7 @@ var dashRoutes = [
     path: "/merchantSummary",
     name: "Merchant Summary",
     icon: <MdOutlineSummarize color="inherit" />,
-    component: Billing,
+    component: MerchantSummaryTable,
     layout: "/admin",
     isProtected: true,
   },
