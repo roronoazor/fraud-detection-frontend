@@ -27,25 +27,25 @@ import { useSelector } from 'react-redux';
 import { getAuthToken } from "modules/auth/redux/authSelector";
 import { handleApiError } from "modules/utilities/responseHandlers";
 import { Spinner, Center } from '@chakra-ui/react'
-import { initializeUrlWithFilters } from "modules/utilities";
+import { initializeUrlWithFilters, formatCurrencyNumber } from "modules/utilities";
 
 
 
 const fields = [
     {
         id: 1,
-        fieldName: 'merchant',
+        fieldName: 'merchant name',
         fieldType: 'text',
         isSelected: false,
-        fieldQueryName: 'merchant',
+        fieldQueryName: 'merchant_name',
         fieldValue: '',
      },
      {
         id: 2,
-        fieldName: 'mid',
+        fieldName: 'merchant id',
         fieldType: 'text',
         isSelected: false,
-        fieldQueryName: 'mid',
+        fieldQueryName: 'merchant_id',
         fieldValue: '',
      },
      {
@@ -80,7 +80,7 @@ const fields = [
    },
    {
     id: 4,
-    fieldName: 'created_at', 
+    fieldName: 'created at', 
     fieldType: 'date',
     isSelected: false,
     fieldQueryName: 'created',
@@ -92,8 +92,13 @@ const fields = [
 const tableHeaders = [
     {
         id : 1,
-        value: 'Bank',
+        value: 'Merchant',
         range: 'all',
+    },
+    {
+      id : 19,
+      value: 'Merchant Id',
+      range: 'all',
     },
     {
         id: 2,
@@ -202,7 +207,22 @@ function MerchantSummaryRow(props) {
                 minWidth="100%"
                 // noOfLines={3}
               >
-                {merchantSummary.merchant}
+                {merchantSummary.merchant.name}
+              </Text>
+            </Flex>
+          </Flex>
+        </Td>
+        <Td minWidth={{ sm: "250px" }} pl="0px">
+          <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
+            <Flex direction="column">
+              <Text
+                fontSize="md"
+                color={textColor}
+                fontWeight="bold"
+                minWidth="100%"
+                // noOfLines={3}
+              >
+                {merchantSummary.merchant.mid}
               </Text>
             </Flex>
           </Flex>
@@ -215,7 +235,7 @@ function MerchantSummaryRow(props) {
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                         <Flex direction="column">
                         <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                            {merchantSummary.today_vol}
+                            {formatCurrencyNumber(merchantSummary?.today_vol)}
                         </Text>
                         </Flex>
                     </Flex>
@@ -224,7 +244,7 @@ function MerchantSummaryRow(props) {
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                         <Flex direction="column">
                         <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                        {merchantSummary.today_val}
+                        {formatCurrencyNumber(merchantSummary?.today_val)}
                         </Text>
                         </Flex>
                     </Flex>
@@ -233,7 +253,7 @@ function MerchantSummaryRow(props) {
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                         <Flex direction="column">
                         <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                            {merchantSummary.today_vol_success}
+                            {formatCurrencyNumber(merchantSummary?.today_vol_success)}
                         </Text>
                         </Flex>
                     </Flex>
@@ -242,7 +262,7 @@ function MerchantSummaryRow(props) {
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                         <Flex direction="column">
                         <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                        {merchantSummary.today_val_success}
+                        {formatCurrencyNumber(merchantSummary?.today_val_success)}
                         </Text>
                         </Flex>
                     </Flex>
@@ -251,7 +271,7 @@ function MerchantSummaryRow(props) {
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                         <Flex direction="column">
                         <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                        {merchantSummary.today_val_failed}
+                        {formatCurrencyNumber(merchantSummary?.today_val_failed)}
                         </Text>
                         </Flex>
                     </Flex>
@@ -260,7 +280,7 @@ function MerchantSummaryRow(props) {
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                         <Flex direction="column">
                         <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                        {merchantSummary.today_val_failed}
+                        {formatCurrencyNumber(merchantSummary?.today_val_failed)}
                         </Text>
                         </Flex>
                     </Flex>
@@ -278,7 +298,7 @@ function MerchantSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                                {merchantSummary.txn_vol_l30}
+                                {formatCurrencyNumber(merchantSummary?.txn_vol_l30)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -287,7 +307,7 @@ function MerchantSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                            {merchantSummary.txn_val_l30}
+                            {formatCurrencyNumber(merchantSummary?.txn_val_l30)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -296,7 +316,7 @@ function MerchantSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                                {merchantSummary.txn_vol_success_l30}
+                                {formatCurrencyNumber(merchantSummary?.txn_vol_success_l30)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -305,7 +325,7 @@ function MerchantSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                            {merchantSummary.txn_val_success_l30}
+                            {formatCurrencyNumber(merchantSummary?.txn_val_success_l30)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -314,7 +334,7 @@ function MerchantSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                            {merchantSummary.txn_vol_failed_l30}
+                            {formatCurrencyNumber(merchantSummary?.txn_vol_failed_l30)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -323,7 +343,7 @@ function MerchantSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                            {merchantSummary.txn_vol_failed_l30}
+                            {formatCurrencyNumber(merchantSummary?.txn_vol_failed_l30)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -340,7 +360,7 @@ function MerchantSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                                {merchantSummary.txn_vol_alltime}
+                                {formatCurrencyNumber(merchantSummary?.txn_vol_alltime)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -349,7 +369,7 @@ function MerchantSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                            {merchantSummary.txn_val_alltime}
+                            {formatCurrencyNumber(merchantSummary?.txn_val_alltime)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -358,7 +378,7 @@ function MerchantSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                                {merchantSummary.txn_vol_success_alltime}
+                                {formatCurrencyNumber(merchantSummary?.txn_vol_success_alltime)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -367,7 +387,7 @@ function MerchantSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                            {merchantSummary.txn_val_success_alltime}
+                            {formatCurrencyNumber(merchantSummary?.txn_val_success_alltime)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -376,7 +396,7 @@ function MerchantSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                            {merchantSummary.txn_vol_failed_alltime}
+                            {formatCurrencyNumber(merchantSummary?.txn_vol_failed_alltime)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -385,7 +405,7 @@ function MerchantSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                            {merchantSummary.txn_val_failed_alltime}
+                            {formatCurrencyNumber(merchantSummary?.txn_val_failed_alltime)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -512,7 +532,7 @@ function Tables() {
         <CardHeader p="6px 0px 22px 0px">
         <Stack>
             <Text fontSize="xl" color={textColor} fontWeight="bold">
-                {`Merchant Summary (${merchantSummaryCount})`}
+                {`Merchant Summary (${formatCurrencyNumber(merchantSummaryCount)})`}
             </Text>
             <Text fontSize="md" color={textColor} fontWeight="bold">
                 {`Range`}

@@ -27,7 +27,7 @@ import { useSelector } from 'react-redux';
 import { getAuthToken } from "modules/auth/redux/authSelector";
 import { handleApiError } from "modules/utilities/responseHandlers";
 import { Spinner, Center } from '@chakra-ui/react'
-import { initializeUrlWithFilters } from "modules/utilities";
+import { initializeUrlWithFilters, formatCurrencyNumber } from "modules/utilities";
 
 
 
@@ -207,7 +207,7 @@ function BankSummaryRow(props) {
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                         <Flex direction="column">
                         <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                            {bankSummary.today_vol}
+                            {formatCurrencyNumber(bankSummary?.today_vol)}
                         </Text>
                         </Flex>
                     </Flex>
@@ -216,7 +216,7 @@ function BankSummaryRow(props) {
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                         <Flex direction="column">
                         <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                        {bankSummary.today_val}
+                        {formatCurrencyNumber(bankSummary?.today_val)}
                         </Text>
                         </Flex>
                     </Flex>
@@ -225,7 +225,7 @@ function BankSummaryRow(props) {
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                         <Flex direction="column">
                         <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                            {bankSummary.today_vol_success}
+                            {formatCurrencyNumber(bankSummary?.today_vol_success)}
                         </Text>
                         </Flex>
                     </Flex>
@@ -234,7 +234,7 @@ function BankSummaryRow(props) {
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                         <Flex direction="column">
                         <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                        {bankSummary.today_val_success}
+                        {formatCurrencyNumber(bankSummary?.today_val_success)}
                         </Text>
                         </Flex>
                     </Flex>
@@ -243,7 +243,7 @@ function BankSummaryRow(props) {
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                         <Flex direction="column">
                         <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                        {bankSummary.today_val_failed}
+                        {formatCurrencyNumber(bankSummary?.today_val_failed)}
                         </Text>
                         </Flex>
                     </Flex>
@@ -252,7 +252,7 @@ function BankSummaryRow(props) {
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                         <Flex direction="column">
                         <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                        {bankSummary.today_val_failed}
+                        {formatCurrencyNumber(bankSummary?.today_val_failed)}
                         </Text>
                         </Flex>
                     </Flex>
@@ -270,7 +270,7 @@ function BankSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                                {bankSummary.txn_vol_l30}
+                                {formatCurrencyNumber(bankSummary?.txn_vol_l30)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -279,7 +279,7 @@ function BankSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                            {bankSummary.txn_val_l30}
+                            {formatCurrencyNumber(bankSummary?.txn_val_l30)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -288,7 +288,7 @@ function BankSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                                {bankSummary.txn_vol_success_l30}
+                                {formatCurrencyNumber(bankSummary?.txn_vol_success_l30)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -297,7 +297,7 @@ function BankSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                            {bankSummary.txn_val_success_l30}
+                            {formatCurrencyNumber(bankSummary?.txn_val_success_l30)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -306,7 +306,7 @@ function BankSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                            {bankSummary.txn_vol_failed_l30}
+                            {formatCurrencyNumber(bankSummary?.txn_vol_failed_l30)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -315,7 +315,7 @@ function BankSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                            {bankSummary.txn_vol_failed_l30}
+                            {formatCurrencyNumber(bankSummary?.txn_vol_failed_l30)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -332,7 +332,7 @@ function BankSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                                {bankSummary.txn_vol_alltime}
+                                {formatCurrencyNumber(bankSummary?.txn_vol_alltime)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -341,7 +341,7 @@ function BankSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                            {bankSummary.txn_val_alltime}
+                            {formatCurrencyNumber(bankSummary?.txn_val_alltime)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -350,7 +350,7 @@ function BankSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                                {bankSummary.txn_vol_success_alltime}
+                                {formatCurrencyNumber(bankSummary?.txn_vol_success_alltime)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -359,7 +359,7 @@ function BankSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                            {bankSummary.txn_val_success_alltime}
+                            {formatCurrencyNumber(bankSummary?.txn_val_success_alltime)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -368,7 +368,7 @@ function BankSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                            {bankSummary.txn_vol_failed_alltime}
+                            {formatCurrencyNumber(bankSummary?.txn_vol_failed_alltime)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -377,7 +377,7 @@ function BankSummaryRow(props) {
                         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
                             <Flex direction="column">
                             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                            {bankSummary.txn_val_failed_alltime}
+                            {formatCurrencyNumber(bankSummary?.txn_val_failed_alltime)}
                             </Text>
                             </Flex>
                         </Flex>
@@ -504,7 +504,7 @@ function Tables() {
         <CardHeader p="6px 0px 22px 0px">
         <Stack>
             <Text fontSize="xl" color={textColor} fontWeight="bold">
-                {`Bank Summary (${bankSummaryCount})`}
+                {`Bank Summary (${formatCurrencyNumber(bankSummaryCount)})`}
             </Text>
             <Text fontSize="md" color={textColor} fontWeight="bold">
                 {`Range`}

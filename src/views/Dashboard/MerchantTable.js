@@ -24,7 +24,7 @@ import { useSelector } from 'react-redux';
 import { getAuthToken } from "modules/auth/redux/authSelector";
 import { handleApiError } from "modules/utilities/responseHandlers";
 import { Spinner, Center } from '@chakra-ui/react'
-import { initializeUrlWithFilters } from "modules/utilities";
+import { initializeUrlWithFilters, formatCurrencyNumber } from "modules/utilities";
 import ReactPaginate from 'react-paginate';
 
 
@@ -270,7 +270,7 @@ function Tables() {
       <Card overflowX={{ sm: "scroll", xl: "hidden" }}>
         <CardHeader p="6px 0px 22px 0px">
           <Text fontSize="xl" color={textColor} fontWeight="bold">
-             {`Merchants (${merchantCount})`}
+             {`Merchants (${formatCurrencyNumber(merchantCount)})`}
           </Text>
         </CardHeader>
         <CardBody>

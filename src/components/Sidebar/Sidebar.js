@@ -59,6 +59,9 @@ function Sidebar(props) {
       if (prop.redirect) {
         return null;
       }
+      if (!prop.isVisible){
+        return null;
+      }
       if (prop.category) {
         var st = {};
         st[prop["state"]] = !state[prop.state];

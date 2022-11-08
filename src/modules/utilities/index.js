@@ -83,3 +83,49 @@ export const initializeUrlWithFilters = (url, filters) => {
     return url;
 
 }
+
+export const formatCurrencyNumber = (number, decimals = 2, floatSeparator = '.', separator = ',', prefix="") => {
+
+    if (!number){
+        return '';
+    }
+
+    let stringified = number.toString();
+    let [ decimal, float ] = stringified.split('.');
+    let result = "";
+    if(decimal.length > 3) {
+        decimal = decimal.split("").reverse();
+        for(let i = 0; i < decimal.length; i++) {
+            result += decimal[i];
+            if((i + 1)%3 === 0 && i !== decimal.length - 1) {
+                result += separator;
+            }
+        }
+        result = result.split("").reverse().join("");
+    }else{
+        result = decimal
+    }
+    
+    if(float) {
+        result += floatSeparator;
+        if(float.length >= decimals) {
+            for(let i = 0; i < decimals; i++) {
+                result += float[i];
+            }
+        }
+        else {
+            for(let i = 0; i < decimals; i++) {
+                if(i < float.length) {
+                    result += float[i];
+                }
+                else {
+                    result += '0';
+                }
+            }
+        }
+    }
+    if (result == ''){
+        return ""
+    }
+    return prefix + ' ' + result;
+}
