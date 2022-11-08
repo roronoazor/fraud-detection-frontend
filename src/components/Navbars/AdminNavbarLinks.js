@@ -23,9 +23,11 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { logout } from "modules/auth/redux/authSlice";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 export default function HeaderLinks(props) {
   const { variant, children, fixed, secondary, onOpen, authUser, ...rest } = props;
+  const history = useHistory();
 
 
   // Chakra Color Mode
@@ -35,6 +37,14 @@ export default function HeaderLinks(props) {
   let navbarIcon = useColorModeValue("gray.500", "gray.200");
   let searchIcon = useColorModeValue("gray.700", "gray.200");
   const dispatch = useDispatch();
+
+  const moveToSettings = () => {
+    history.push('/admin/settings');
+  }
+
+  const moveToUserMgt = () => {
+    history.push('/admin/userMgt');
+  }
 
   if (secondary) {
     navbarIcon = "white";
@@ -117,8 +127,11 @@ export default function HeaderLinks(props) {
         </MenuButton>
         <MenuList p="16px 8px">
           <Flex flexDirection="column">
-            <MenuItem borderRadius="8px" mb="10px">
+            <MenuItem borderRadius="8px" mb="10px" onClick={moveToSettings}>
               Settings
+            </MenuItem>
+            <MenuItem borderRadius="8px" mb="10px" onClick={moveToUserMgt}>
+              User Management
             </MenuItem>
             <MenuItem borderRadius="8px" mb="10px" onClick={()=>{dispatch(logout())}}>
               Logout
