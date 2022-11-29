@@ -78,7 +78,7 @@ function Billing() {
                 >
                   <Flex justify="space-between" align="center">
                     <Text fontSize="md" fontWeight="bold">
-                      E-Top Txn Monitoring
+                      SpoutPay Txn Monitoring
                     </Text>
                     <Icon
                       as={RiMastercardFill}

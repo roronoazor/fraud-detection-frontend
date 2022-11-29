@@ -12,8 +12,8 @@ export const GET_BANK_SUMMARIES = BASE_URL + 'api/bank_summaries/';
 
 export const GET_MERCHANT_SUMMARIES = BASE_URL + 'api/merchant_summaries/';
 
-export const GET_USERS = BASE_URL + 'account/users/';
+export const GET_USERS = BASE_URL + 'authentication/users/';
 
-export const CHANGE_PASSWORD = BASE_URL + 'account/change_password/';
+export const CHANGE_PASSWORD = BASE_URL + 'authentication/change_password/';
 
 

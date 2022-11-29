@@ -22,9 +22,9 @@ import {
   import CardBody from "components/Card/CardBody.js";
   import Pagination from "components/Pagination";
   import Filter from "components/Filter";
-  import { useQuery } from "react-query";
+  import { useQuery, useMutation } from "react-query";
   import {  GET_USERS } from '../../config/serverUrls';
-  import { fetchData } from '../../modules/utilities/util_query';
+  import { fetchData, postData } from '../../modules/utilities/util_query';
   import { useSelector } from 'react-redux';
   import { getAuthToken } from "modules/auth/redux/authSelector";
   import { handleApiError } from "modules/utilities/responseHandlers";
@@ -190,7 +190,7 @@ const UserMgt = (props) => {
     const textColor = useColorModeValue("gray.700", "white");
     const token = useSelector(getAuthToken);
     const [userCount, setUserCount] = useState(0);
-    // const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState([]);
     const [filters, setFilters] = useState(fields);
     const [page, setPage] = useState(1);
     const [pageCount, setPageCount] = useState(1);
@@ -199,7 +199,7 @@ const UserMgt = (props) => {
     // call the api that loads this data only once
     let payload_data = {
     };
-    const result = useQuery(['banks',
+    const result = useQuery(['users',
                             { 
                               url: urlWithFilters ? urlWithFilters : GET_USERS + `?page=${page}`,
                               payload_data,
@@ -221,6 +221,14 @@ const UserMgt = (props) => {
                               }
                             }
                             );
+    const mutation = useMutation(postData, {
+      onSuccess: (response) => {
+          toast.success("Success");
+      },
+      onError: (error) => {
+          handleApiError(error);
+      }
+  });                  
   const {  isLoading } = result;
 
   const fireOnSearch = () => {
@@ -274,6 +282,12 @@ const UserMgt = (props) => {
     setPage(selected + 1);
     window.scrollTo(0, 0); // moves the compoent to the top of the page
   }
+
+  const handleSubmit = (actionType) => {
+
+
+
+  }
   
   if (isLoading) {
     return (
@@ -295,13 +309,25 @@ const UserMgt = (props) => {
         closeFilterBox={closeFilterBox}
       />
       <HStack direction={['column', 'row']} spacing='24px' m={2}>
-        <Button colorScheme="teal">
+        <Button 
+        colorScheme="teal"
+        isLoading={mutation?.isLoading}
+        onClick={() => handleSubmit('activate')}
+        >
             Activate
         </Button>
-        <Button colorScheme="yellow">
+        <Button 
+        colorScheme="yellow"
+        isLoading={mutation?.isLoading}
+        onClick={() => handleSubmit('deactivate')}
+        >
             Deactivate
         </Button>
-        <Button colorScheme={"red"}>
+        <Button
+         colorScheme={"red"}
+         isLoading={mutation?.isLoading}
+         onClick={() => handleSubmit('delete')}
+         >
             Delete
         </Button>
       </HStack>

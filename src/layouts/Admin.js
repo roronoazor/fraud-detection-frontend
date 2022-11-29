@@ -123,7 +123,7 @@ export default function Dashboard(props) {
     <ChakraProvider theme={theme} resetCss={false}>
       <Sidebar
         routes={routes}
-        logoText={"E-TOP TXN MONITORING"}
+        logoText={"SpoutPay"}
         display="none"
         sidebarVariant={sidebarVariant}
         {...rest}
@@ -138,7 +138,7 @@ export default function Dashboard(props) {
         <Portal>
           <AdminNavbar
             onOpen={onOpen}
-            logoText={"E-TOP TXN MONITORING"}
+            logoText={"SpoutPay"}
             brandText={getActiveRoute(routes)}
             secondary={getActiveNavbar(routes)}
             fixed={fixed}

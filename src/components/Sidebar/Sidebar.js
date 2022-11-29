@@ -10,6 +10,7 @@ import {
   DrawerContent,
   DrawerOverlay,
   Flex,
+  Avatar,
   Link,
   Stack,
   Text,
@@ -23,6 +24,7 @@ import { SidebarHelp } from "components/Sidebar/SidebarHelp";
 import PropTypes from "prop-types";
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import avatar4 from "../../assets/img/apple-icon.bmp";
 
 // FUNCTIONS
 
@@ -226,7 +228,13 @@ function Sidebar(props) {
         alignItems="center"
         fontSize="11px"
       >
-        <CreativeTimLogo w="32px" h="32px" me="10px" />
+        <Avatar
+          me={{ md: "22px" }}
+          src={avatar4}
+          w="125px"
+          h="38px"
+          // borderRadius="15px"
+        />
         <Text fontSize="sm" mt="3px">
           {logoText}
         </Text>

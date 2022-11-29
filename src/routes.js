@@ -75,6 +75,15 @@ var dashRoutes = [
     isVisible: true
   },
   {
+    path: "/fraud",
+    name: "Fraud Detection",
+    icon: <MdOutlineSummarize color="inherit" />,
+    component: MerchantSummaryTable,
+    layout: "/admin",
+    isProtected: true,
+    isVisible: true
+  },
+  {
     path: "/settings",
     name: "Settings",
     icon: <MdOutlineSummarize color="inherit" />,
@@ -92,38 +101,38 @@ var dashRoutes = [
     isProtected: true,
     isVisible: false
   },
-  // {
-  //   name: "ACCOUNT PAGES",
-  //   category: "account",
-  //   state: "pageCollapse",
-  //   views: [
-  //     {
-  //       path: "/profile",
-  //       name: "Profile",
-  //       icon: <PersonIcon color="inherit" />,
-  //       secondaryNavbar: true,
-  //       component: Profile,
-  //       layout: "/admin",
-  //       isProtected: true,
-  //     },
-  //     {
-  //       path: "/signin",
-  //       name: "Sign In",
-  //       icon: <DocumentIcon color="inherit" />,
-  //       component: SignIn,
-  //       secondaryNavbar: false,
-  //       layout: "/auth",
-  //     },
-  //     {
-  //       path: "/signup",
-  //       name: "Sign Up",
-  //       icon: <RocketIcon color="inherit" />,
-  //       secondaryNavbar: false,
-  //       component: SignUp,
-  //       layout: "/auth",
-  //     },
-  //   ],
-  // },
+  {
+    name: "ACCOUNT PAGES",
+    category: "account",
+    state: "pageCollapse",
+    views: [
+      {
+        path: "/profile",
+        name: "Profile",
+        icon: <PersonIcon color="inherit" />,
+        secondaryNavbar: true,
+        component: Profile,
+        layout: "/admin",
+        isProtected: true,
+      },
+      {
+        path: "/signin",
+        name: "Sign In",
+        icon: <DocumentIcon color="inherit" />,
+        component: SignIn,
+        secondaryNavbar: false,
+        layout: "/auth",
+      },
+      {
+        path: "/signup",
+        name: "Sign Up",
+        icon: <RocketIcon color="inherit" />,
+        secondaryNavbar: false,
+        component: SignUp,
+        layout: "/auth",
+      },
+    ],
+  },
 ];
 
 export default dashRoutes;

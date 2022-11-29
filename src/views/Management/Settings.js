@@ -28,12 +28,12 @@ import {  CHANGE_PASSWORD, GET_USERS } from '../../config/serverUrls';
 import { useSelector } from 'react-redux';
 import { getAuthToken, getAuthUser } from "modules/auth/redux/authSelector";
 import { handleApiError } from "modules/utilities/responseHandlers";
-import { Spinner, Center } from '@chakra-ui/react'
 import avatar4 from "assets/img/avatars/avatar4.png";
 import { postData } from 'modules/utilities/util_query';
 import { checkObject, isError } from 'modules/utilities';
 import { FIELD_REQUIRED } from 'constants/formErrorMessages';
 import { useMutation } from  'react-query';
+import toast from 'react-hot-toast';
 
 const Settings = (props) => {
     
@@ -65,12 +65,10 @@ const Settings = (props) => {
 
     const mutation = useMutation(postData, {
         onSuccess: (response) => {
-            const userObj = response?.data;
-            toast.success("You Signed in Successfully");
-            dispatch(login(userObj));
-            
-            // // navigate to the dashboard
-            // history.push(APP_HOME_PAGE);
+           toast.success("Successful");
+           // comment: you can choose to logout 
+           // the user at this point, and force
+           // them to log back in
         },
         onError: (error) => {
             handleApiError(error);
@@ -97,7 +95,9 @@ const Settings = (props) => {
     
         mutation.mutate({
             url: CHANGE_PASSWORD,
-            payload_data: data
+            payload_data: data,
+            authenticate: true,
+            token,
         })
     
         return
