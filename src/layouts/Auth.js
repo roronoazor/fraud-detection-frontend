@@ -100,14 +100,14 @@ export default function Pages(props) {
   document.documentElement.dir = "ltr";
   return (
     <ChakraProvider theme={theme} resetCss={false} w="100%">
-      <Box ref={navRef} w="100%">
+      <Box ref={navRef} w="100%" bgColor={"#fff"}>
         {/* <Portal containerRef={navRef}>
           <AuthNavbar
             secondary={getActiveNavbar(routes)}
             logoText="PURITY UI DASHBOARDS"
           />
         </Portal> */}
-        <Box w="100%">
+        <Box w="100%" >
           <Box ref={wrapper} w="100%">
             <Switch>
               {getRoutes(routes)}
@@ -115,9 +115,9 @@ export default function Pages(props) {
             </Switch>
           </Box>
         </Box>
-        <Box px="24px" mx="auto" width="1044px" maxW="100%">
+        {/* <Box px="24px" mx="auto" width="1044px" maxW="100%">
           <Footer />
-        </Box>
+        </Box> */}
       </Box>
     </ChakraProvider>
   );

@@ -8,13 +8,16 @@ import {
   FormLabel,
   Heading,
   Input,
+  Avatar,
   Link,
   Switch,
+  HStack,
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
+import avatar4 from "assets/img/apple-icon.bmp";
 // Assets
-import signInImage from "assets/img/signInImage.png";
+import signInImage from "assets/img/monitoring.png";
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from "react-router-dom";
 import { useMutation } from 'react-query';
@@ -92,7 +95,7 @@ function SignIn() {
 
 
   return (
-    <Flex position="relative" mb="40px">
+    <Flex position="relative" mb="40px" bgColor={'#fff'}>
       <Flex
         h={{ sm: "initial", md: "75vh", lg: "85vh" }}
         w="100%"
@@ -115,6 +118,15 @@ function SignIn() {
             p="48px"
             mt={{ md: "150px", lg: "80px" }}
           >
+            <HStack>
+              <Avatar
+                me={{ md: "22px" }}
+                src={avatar4}
+                w="100%"
+                h="auto"
+                borderRadius="15px"
+              />
+            </HStack>
             <Heading color={titleColor} fontSize="32px" mb="10px">
               Welcome Back
             </Heading>
