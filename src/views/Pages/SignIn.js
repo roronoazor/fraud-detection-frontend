@@ -128,7 +128,7 @@ function SignIn() {
               />
             </HStack>
             <Heading color={titleColor} fontSize="32px" mb="10px">
-              Welcome Back
+              Fraud Monitoring System
             </Heading>
             <Text
               mb="36px"

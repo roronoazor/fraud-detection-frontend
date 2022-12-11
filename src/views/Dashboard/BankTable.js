@@ -9,6 +9,7 @@ import {
   Thead,
   Tr,
   Td,
+  Button,
   useColorModeValue,
 } from "@chakra-ui/react";
 // Custom components
@@ -26,6 +27,7 @@ import { handleApiError } from "modules/utilities/responseHandlers";
 import { Spinner, Center } from '@chakra-ui/react'
 import { initializeUrlWithFilters, formatCurrencyNumber } from "modules/utilities";
 import ReactPaginate from 'react-paginate';
+import { useHistory } from "react-router-dom";
 
 
 
@@ -52,30 +54,31 @@ const fields = [
 const tableHeaders = [
     {
         id : 1,
-        value: 'name'
+        value: 'Name'
     },
     {
         id: 2,
-        value: 'code'
-    }
+        value: 'Code'
+    },
+    {
+      id: 3,
+      value: 'Action'
+  }
 ];
 
-const tablesTableData = [
-    {
-        id: 1,
-        name: 'United Bank of Africa',
-        code : 'UBA'
-    },
-    {
-        id: 2,
-        name: 'Access Bank',
-        code : 'Access'
-    }
-]
 
 function BankRow(props) {
     const { bank } = props;
     const textColor = useColorModeValue("gray.700", "white");
+    const history = useHistory();
+
+    const moveToBankSummaryChartPage = () => {
+      history.push({
+        pathname: "/admin/bankSummary2",
+        state: {bank}
+      });
+    }
+
     
     return (
       <Tr>
@@ -99,6 +102,15 @@ function BankRow(props) {
               <Text fontSize="sm" color="gray.400" fontWeight="normal">
                 {bank.code}
               </Text>
+            </Flex>
+          </Flex>
+        </Td>
+        <Td minWidth={{ sm: "250px" }} pl="0px">
+          <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
+            <Flex direction="column">
+              <Button colorScheme='teal' variant='outline' onClick={moveToBankSummaryChartPage}>
+                View Summary
+              </Button>
             </Flex>
           </Flex>
         </Td>
@@ -215,6 +227,7 @@ function Tables() {
         handleChange={handleChange}
         closeFilterBox={closeFilterBox}
       />
+      <br />
       <Card overflowX={{ sm: "scroll", xl: "hidden" }}>
         <CardHeader p="6px 0px 22px 0px">
           <Text fontSize="xl" color={textColor} fontWeight="bold">

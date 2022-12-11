@@ -10,7 +10,8 @@ import BankTable from "views/Dashboard/BankTable.js";
 import MerchantTable from "views/Dashboard/MerchantTable.js";
 import BankSummaryTable from "views/Dashboard/BankSummaryTable";
 import MerchantSummaryTable from "views/Dashboard/MerchantSummaryTable";
-import FraudDashboard from "views/Dashboard/FraudDashbaord.js"  
+import FraudDashboard from "views/Dashboard/FraudDashbaord.js";
+import BankSummaryChartPage from "views/Dashboard/BankSummaryChartPage";  
 
 import {
   HomeIcon,
@@ -83,6 +84,15 @@ var dashRoutes = [
     layout: "/admin",
     isProtected: true,
     isVisible: true
+  },
+  {
+    path: "/bankSummary2",
+    name: "BankSummaryChart",
+    icon: <MdOutlineSummarize color="inherit" />,
+    component: BankSummaryChartPage,
+    layout: "/admin",
+    isProtected: true,
+    isVisible: false
   },
   {
     path: "/settings",

@@ -88,13 +88,14 @@ import {
                     fontWeight="bold"
                     pb=".1rem"
                   >
-                    Total Agents
+                    Txn Limit Exceeded (this month)
                   </StatLabel>
                   <Flex>
                     <StatNumber fontSize="lg" color={textColor}>
-                      53,000
+                      2,400
                     </StatNumber>
-                    {/* <StatHelpText
+                  </Flex>
+                  <StatHelpText
                       alignSelf="flex-end"
                       justifySelf="flex-end"
                       m="0px"
@@ -103,9 +104,8 @@ import {
                       ps="3px"
                       fontSize="md"
                     >
-                      +55%
-                    </StatHelpText> */}
-                  </Flex>
+                      -12%
+                    </StatHelpText>
                 </Stat>
                 <IconBox as="box" h={"45px"} w={"45px"} bg={iconTeal}>
                   <PersonIcon h={"24px"} w={"24px"} color={iconBoxInside} />
@@ -123,13 +123,14 @@ import {
                     fontWeight="bold"
                     pb=".1rem"
                   >
-                    Active Agents
+                    Airtime Txn Limit Exceeded
                   </StatLabel>
                   <Flex>
                     <StatNumber fontSize="lg" color={textColor}>
-                      2,300
+                      782
                     </StatNumber>
-                    {/* <StatHelpText
+                  </Flex>
+                  <StatHelpText
                       alignSelf="flex-end"
                       justifySelf="flex-end"
                       m="0px"
@@ -138,9 +139,8 @@ import {
                       ps="3px"
                       fontSize="md"
                     >
-                      +5%
-                    </StatHelpText> */}
-                  </Flex>
+                      -5% 
+                    </StatHelpText>
                 </Stat>
                 <IconBox as="box" h={"45px"} w={"45px"} bg={iconTeal}>
                   <PersonIcon h={"24px"} w={"24px"} color={iconBoxInside} />
@@ -158,13 +158,14 @@ import {
                     fontWeight="bold"
                     pb=".1rem"
                   >
-                    Inactive Agents
+                    Failed Txn 
                   </StatLabel>
                   <Flex>
                     <StatNumber fontSize="lg" color={textColor}>
-                      3,020
+                      13,020
                     </StatNumber>
-                    {/* <StatHelpText
+                  </Flex>
+                  <StatHelpText
                       alignSelf="flex-end"
                       justifySelf="flex-end"
                       m="0px"
@@ -173,9 +174,8 @@ import {
                       ps="3px"
                       fontSize="md"
                     >
-                      -14%
-                    </StatHelpText> */}
-                  </Flex>
+                      -3%
+                    </StatHelpText>
                 </Stat>
                 <IconBox as="box" h={"45px"} w={"45px"} bg={iconTeal}>
                   <PersonIcon h={"24px"} w={"24px"} color={iconBoxInside} />
@@ -199,7 +199,8 @@ import {
                     <StatNumber fontSize="lg" color={textColor} fontWeight="bold">
                       173,000
                     </StatNumber>
-                    {/* <StatHelpText
+                  </Flex>
+                  <StatHelpText
                       alignSelf="flex-end"
                       justifySelf="flex-end"
                       m="0px"
@@ -209,8 +210,7 @@ import {
                       fontSize="md"
                     >
                       +8%
-                    </StatHelpText> */}
-                  </Flex>
+                    </StatHelpText>
                 </Stat>
                 <IconBox as="box" h={"45px"} w={"45px"} bg={iconTeal}>
                   <CartIcon h={"24px"} w={"24px"} color={iconBoxInside} />
@@ -242,7 +242,7 @@ import {
                     fontWeight="bold"
                     mb="6px"
                   >
-                    Active Users
+                    Bank Transfers
                   </Text>
                   <Text fontSize="md" fontWeight="medium" color="gray.400">
                     <Text as="span" color="green.400" fontWeight="bold">
@@ -264,7 +264,7 @@ import {
                         <WalletIcon h={"15px"} w={"15px"} color={iconBoxInside} />
                       </IconBox>
                       <Text fontSize="sm" color="gray.400" fontWeight="semibold">
-                        Users
+                        Transfers
                       </Text>
                     </Flex>
                     <Text
@@ -295,17 +295,17 @@ import {
                         <RocketIcon h={"15px"} w={"15px"} color={iconBoxInside} />
                       </IconBox>
                       <Text fontSize="sm" color="gray.400" fontWeight="semibold">
-                        Clicks
+                        Suspected
                       </Text>
                     </Flex>
                     <Text
                       fontSize="lg"
-                      color={textColor}
+                      color={'red.400'}
                       fontWeight="bold"
                       mb="6px"
                       my="6px"
                     >
-                      2.42m
+                      2,420
                     </Text>
                     <Progress
                       colorScheme="teal"
@@ -326,17 +326,17 @@ import {
                         <CartIcon h={"15px"} w={"15px"} color={iconBoxInside} />
                       </IconBox>
                       <Text fontSize="sm" color="gray.400" fontWeight="semibold">
-                        Sales
+                        Failed
                       </Text>
                     </Flex>
                     <Text
                       fontSize="lg"
-                      color={textColor}
+                      color={'red.400'}
                       fontWeight="bold"
                       mb="6px"
                       my="6px"
                     >
-                      2,400$
+                      2,400
                     </Text>
                     <Progress
                       colorScheme="teal"
@@ -357,12 +357,12 @@ import {
                         <StatsIcon h={"15px"} w={"15px"} color={iconBoxInside} />
                       </IconBox>
                       <Text fontSize="sm" color="gray.400" fontWeight="semibold">
-                        Items
+                        Success
                       </Text>
                     </Flex>
                     <Text
                       fontSize="lg"
-                      color={textColor}
+                      color={'green.400'}
                       fontWeight="bold"
                       mb="6px"
                       my="6px"
@@ -413,7 +413,7 @@ import {
                   fontWeight="bold"
                   pb=".5rem"
                 >
-                  Projects
+                  Withdrawals
                 </Text>
                 <Flex align="center">
                   <Icon
@@ -467,7 +467,7 @@ import {
                   fontWeight="bold"
                   pb=".5rem"
                 >
-                  Orders overview
+                  System overview
                 </Text>
                 <Text fontSize="sm" color="gray.400" fontWeight="normal">
                   <Text fontWeight="bold" as="span" color="teal.300">
