@@ -14,7 +14,9 @@ import {
   Grid,
   Progress,
   SimpleGrid,
+  Button,
   Stack,
+  Image,
   Heading
 } from "@chakra-ui/react";
 // Custom components
@@ -29,7 +31,7 @@ import { getAuthToken } from "modules/auth/redux/authSelector";
 import { handleApiError } from "modules/utilities/responseHandlers";
 import { Spinner, Center } from '@chakra-ui/react'
 import { initializeUrlWithFilters, formatCurrencyNumber } from "modules/utilities";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import BarChart from "components/Charts/BarChart";
 import LineChart from "components/Charts/LineChart";
 import IconBox from "components/Icons/IconBox";
@@ -408,11 +410,9 @@ function BankSummaryChartPage() {
     const token = useSelector(getAuthToken);
     const iconTeal = useColorModeValue("teal.300", "teal.300");
     const iconBoxInside = useColorModeValue("white", "white");
-
-    const { state: { bank: selectedBank } } = useLocation();
-    const [bank, setBank] = useState(selectedBank);
-
-    console.log('bank: ', bank);
+    
+    const { bankId } = useParams();
+  
     /**
      * bank;
      * {
@@ -540,18 +540,8 @@ function BankSummaryChartPage() {
         <Stack>
             <CardBody>
             <Heading size='md'>The perfect latte</Heading>
-
-            <Text py='2'>
-                Caffè latte is a coffee beverage of Italian origin made with espresso
-                and steamed milk.
-            </Text>
+            <br />
             </CardBody>
-
-            <CardFooter>
-            <Button variant='solid' colorScheme='blue'>
-                Buy Latte
-            </Button>
-            </CardFooter>
         </Stack>
         </Card>
       {/* <Card overflowX={{ sm: "scroll", xl: "hidden" }}>

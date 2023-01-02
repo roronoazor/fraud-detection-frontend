@@ -73,8 +73,9 @@ function BankRow(props) {
     const history = useHistory();
 
     const moveToBankSummaryChartPage = () => {
+
       history.push({
-        pathname: "/admin/bankSummary2",
+        pathname: `/admin/bankSummary2/${bank?.id}`,
         state: {bank}
       });
     }
@@ -108,7 +109,7 @@ function BankRow(props) {
         <Td minWidth={{ sm: "250px" }} pl="0px">
           <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
             <Flex direction="column">
-              <Button colorScheme='teal' variant='outline' onClick={moveToBankSummaryChartPage}>
+              <Button colorScheme='teal' variant='outline' onClick={(bank) => {moveToBankSummaryChartPage(bank)}}>
                 View Summary
               </Button>
             </Flex>

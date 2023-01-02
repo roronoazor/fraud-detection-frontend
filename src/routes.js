@@ -86,7 +86,7 @@ var dashRoutes = [
     isVisible: true
   },
   {
-    path: "/bankSummary2",
+    path: "/bankSummary2/:id",
     name: "BankSummaryChart",
     icon: <MdOutlineSummarize color="inherit" />,
     component: BankSummaryChartPage,
