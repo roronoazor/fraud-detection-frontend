@@ -34,7 +34,6 @@ import BarChart from "components/Charts/BarChart";
 import LineChart from "components/Charts/LineChart";
 import IconBox from "components/Icons/IconBox";
 import { PersonIcon } from "components/Icons/Icons";
-import Filter from "components/Filter";
 // Custom icons
 import {
   CartIcon,
@@ -48,7 +47,6 @@ import DashboardTableRow from "components/Tables/DashboardTableRow";
 import TimelineRow from "components/Tables/TimelineRow";
 import React, { useState } from "react";
 // react icons
-import { BsArrowRight } from "react-icons/bs";
 import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
 import { dashboardTableData, timelineData } from "variables/general";
 

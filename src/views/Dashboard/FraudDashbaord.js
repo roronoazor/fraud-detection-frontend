@@ -34,7 +34,7 @@ import {
   import LineChart from "components/Charts/LineChart";
   import IconBox from "components/Icons/IconBox";
   import { PersonIcon } from "components/Icons/Icons";
-  import Filter from "components/Filter";
+  
   // Custom icons
   import {
     CartIcon,
@@ -48,7 +48,8 @@ import {
   import TimelineRow from "components/Tables/TimelineRow";
   import React, { useState } from "react";
   import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
-  import { dashboardTableData, timelineData } from "variables/general";
+  import { timelineData } from "variables/general";
+import { suspectedData } from "variables/general";
   
   
   export default function FraudDashboard() {
@@ -377,20 +378,245 @@ import {
             </Box>
           </Card>
         </Grid>
+        <Box>
+          {/** EXPERIMENTAL UI COMPONENT FOR SUSPECTED WITHDRAWAL TRANSACTION */}
+          <Card w='100%' p="28px 10px 16px 0px" mb={{ sm: "26px", lg: "0px" }}>
+            <CardHeader p='15'>
+              <Flex spacing='4'>
+                <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
+                  <Box>
+                    <Heading size='sm'>Withdrawal Txn Overview</Heading>
+                    <Text fontSize='xs' as='i'>{`178,200 suspected withdrawal transactions recorded this month`}</Text>
+                  </Box>
+                </Flex>
+              </Flex>
+            </CardHeader>
+              <CardBody p={2}>
+                <Box w="100%" h={{ sm: "300px" }} ps="8px">
+                  <LineChart />
+                </Box>
+              </CardBody>
+              <Box p="15" align='center'>
+                <Text>{`Last 30 days overview`}</Text>
+              </Box>
+              <Divider />
+              <Box p='15'>
+                  <Flex
+                    direction="column"
+                    mt="14px"
+                    mb="26px"
+                    alignSelf="flex-start"
+                  >
+                    <Text
+                      fontSize="md"
+                      color={textColor}
+                      mb="6px"
+                    >
+                      Withdrawal Stats this month
+                    </Text>
+                  </Flex>
+                <SimpleGrid gap={{ sm: "12px" }} columns={4}>
+                  <Flex direction="column">
+                    <Flex alignItems="center">
+                      <IconBox
+                        as="box"
+                        h={"30px"}
+                        w={"30px"}
+                        bg={iconTeal}
+                        me="6px"
+                      >
+                        <WalletIcon h={"15px"} w={"15px"} color={iconBoxInside} />
+                      </IconBox>
+                      <Text fontSize="sm" color="gray.400" fontWeight="semibold">
+                        Transfers
+                      </Text>
+                    </Flex>
+                    <Text
+                      fontSize="lg"
+                      color={textColor}
+                      fontWeight="bold"
+                      mb="6px"
+                      my="6px"
+                    >
+                      32,984
+                    </Text>
+                    <Progress
+                      colorScheme="teal"
+                      borderRadius="12px"
+                      h="5px"
+                      value={20}
+                    />
+                  </Flex>
+                  <Flex direction="column">
+                    <Flex alignItems="center">
+                      <IconBox
+                        as="box"
+                        h={"30px"}
+                        w={"30px"}
+                        bg={iconTeal}
+                        me="6px"
+                      >
+                        <RocketIcon h={"15px"} w={"15px"} color={iconBoxInside} />
+                      </IconBox>
+                      <Text fontSize="sm" color="gray.400" fontWeight="semibold">
+                        Suspected
+                      </Text>
+                    </Flex>
+                    <Text
+                      fontSize="lg"
+                      color={'red.400'}
+                      fontWeight="bold"
+                      mb="6px"
+                      my="6px"
+                    >
+                      2,420
+                    </Text>
+                    <Progress
+                      colorScheme="teal"
+                      borderRadius="12px"
+                      h="5px"
+                      value={90}
+                    />
+                  </Flex>
+                  <Flex direction="column">
+                    <Flex alignItems="center">
+                      <IconBox
+                        as="box"
+                        h={"30px"}
+                        w={"30px"}
+                        bg={iconTeal}
+                        me="6px"
+                      >
+                        <CartIcon h={"15px"} w={"15px"} color={iconBoxInside} />
+                      </IconBox>
+                      <Text fontSize="sm" color="gray.400" fontWeight="semibold">
+                        Failed
+                      </Text>
+                    </Flex>
+                    <Text
+                      fontSize="lg"
+                      color={'red.400'}
+                      fontWeight="bold"
+                      mb="6px"
+                      my="6px"
+                    >
+                      2,400
+                    </Text>
+                    <Progress
+                      colorScheme="teal"
+                      borderRadius="12px"
+                      h="5px"
+                      value={30}
+                    />
+                  </Flex>
+                  <Flex direction="column">
+                    <Flex alignItems="center">
+                      <IconBox
+                        as="box"
+                        h={"30px"}
+                        w={"30px"}
+                        bg={iconTeal}
+                        me="6px"
+                      >
+                        <StatsIcon h={"15px"} w={"15px"} color={iconBoxInside} />
+                      </IconBox>
+                      <Text fontSize="sm" color="gray.400" fontWeight="semibold">
+                        Success
+                      </Text>
+                    </Flex>
+                    <Text
+                      fontSize="lg"
+                      color={'green.400'}
+                      fontWeight="bold"
+                      mb="6px"
+                      my="6px"
+                    >
+                      320
+                    </Text>
+                    <Progress
+                      colorScheme="teal"
+                      borderRadius="12px"
+                      h="5px"
+                      value={50}
+                    />
+                  </Flex>
+                </SimpleGrid>
+              </Box>
+              <Divider />
+              <CardBody p={2}>
+              <Flex direction="column" p='30px 15px'>
+                  <Box>
+                    <Text
+                      fontSize="md"
+                      color={textColor}
+                      pb=".5rem"
+                    >
+                      Suspected Withdrawal Txn Breakdown (Today)
+                    </Text>
+                  </Box>
+                  {suspectedData.map((row, index, arr) => {
+                    return (
+                      <TimelineRow
+                        logo={row.logo}
+                        title={row.title}
+                        date={row.date}
+                        color={row.color}
+                        index={index}
+                        arrLength={arr.length}
+                      />
+                    );
+                  })}
+              
+              </Flex>
+              </CardBody>
+              <CardFooter justify='flex-end'>
+                <Spacer />
+                <ButtonGroup spacing='2' padding='2'>
+                  <Button variant='solid' colorScheme='teal'>
+                    View More
+                  </Button>
+                </ButtonGroup>
+              </CardFooter>
+          </Card>
+        </Box>
         <Grid
-          templateColumns={{ sm: "1fr", lg: "1.3fr 1.7fr" }}
+          templateColumns={{ sm: "1fr", lg: "1.5fr 1.5fr" }}
           templateRows={{ sm: "repeat(2, 1fr)", lg: "1fr" }}
           gap="24px"
           my="26px"
           mb={{ lg: "26px" }}
         >
-          <Card maxW='lg'>
-            <CardHeader>
+          <Card p="28px 10px 16px 0px" mb={{ sm: "26px", lg: "0px" }}>
+              <CardHeader mb="20px" pl="22px">
+                <Flex spacing='4'>
+                  <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
+                    <Box>
+                      <Heading size='sm'>Transfer Txn Overview</Heading>
+                      <Text fontSize='xs' as='i'>{`4,200 suspected transfer transactions recorded today`}</Text>
+                    </Box>
+                  </Flex>
+                </Flex>
+              </CardHeader>
+                  <Image
+                    padding={2}
+                    objectFit='cover'
+                    src={transferImage}
+                    height={'360px'}
+                    alt='Chakra UI'
+                  />
+                <CardBody p={2}>
+                  <Text>
+                    Suspected Airtime Transactions
+                  </Text>
+                </CardBody>
+          </Card>
+          <Card  p="28px 10px 16px 0px" mb={{ sm: "26px", lg: "0px" }}>
+            <CardHeader  mb="20px" pl="22px">
               <Flex spacing='4'>
                 <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
                   <Box>
-                    <Heading size='sm'>Suspect Transfer Txn Overview</Heading>
-                    <Text fontSize='xs' as='i'>{`${4,200} suspected transfer transactions recorded today`}</Text>
+                    <Heading size='sm'>Airtime Recharge Txn Overview</Heading>
+                    <Text fontSize='xs' as='i'>{`5,700 suspected Withdrawal transactions recorded today`}</Text>
                   </Box>
                 </Flex>
               </Flex>
@@ -398,7 +624,7 @@ import {
                 <Image
                   padding={2}
                   objectFit='cover'
-                  src={transferImage}
+                  src={withdrawalImage}
                   height={'360px'}
                   alt='Chakra UI'
                 />
@@ -407,63 +633,6 @@ import {
                   Suspected Airtime Transactions
                 </Text>
               </CardBody>
-          </Card>
-          <Card maxW='lg'>
-          <CardHeader>
-            <Flex spacing='4'>
-              <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
-                <Box>
-                  <Heading size='sm'>Suspect Withdrawal Txn Overview</Heading>
-                  <Text fontSize='xs' as='i'>{`${5,700} suspected Withdrawal transactions recorded today`}</Text>
-                </Box>
-              </Flex>
-            </Flex>
-          </CardHeader>
-              <Image
-                padding={2}
-                objectFit='cover'
-                src={withdrawalImage}
-                height={'360px'}
-                alt='Chakra UI'
-              />
-            <CardBody p={2}>
-              <Text>
-                Suspected Airtime Transactions
-              </Text>
-            </CardBody>
-          </Card>
-          <Card maxW='lg'>
-          <CardHeader>
-            <Flex spacing='4'>
-              <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
-                <Box>
-                  <Heading size='sm'>Suspect Airtime Txn Overview</Heading>
-                  <Text fontSize='xs' as='i'>{`${178200} suspected airtime transactions recorded today`}</Text>
-                </Box>
-              </Flex>
-            </Flex>
-          </CardHeader>
-              <Image
-                padding={2}
-                objectFit='cover'
-                src={airtimeImage}
-                height={'360px'}
-                alt='Chakra UI'
-              />
-            <CardBody p={2}>
-              <Text>
-                Suspected Airtime Transactions
-              </Text>
-            </CardBody>
-            <Divider />
-            <CardFooter justify='flex-end'>
-              <Spacer />
-              <ButtonGroup spacing='2' padding='2'>
-                <Button variant='solid' colorScheme='teal'>
-                  View More
-                </Button>
-              </ButtonGroup>
-            </CardFooter>
           </Card>
         </Grid>
       </Flex>

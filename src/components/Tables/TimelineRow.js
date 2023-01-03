@@ -2,12 +2,12 @@ import { Box, Flex, Icon, Text, useColorModeValue } from "@chakra-ui/react";
 import React from "react";
 
 function TimelineRow(props) {
-  const { logo, title, date, color, index, arrLength } = props;
+  const { logo, title, color, index, arrLength } = props;
   const textColor = useColorModeValue("gray.700", "white.300");
   const bgIconColor = useColorModeValue("white.300", "gray.700");
 
   return (
-    <Flex alignItems="center" minH="78px" justifyContent="start" mb="5px">
+    <Flex alignItems="center" minH="40px" justifyContent="start" mb="5px">
       <Flex direction="column" h="100%">
         <Icon
           as={logo}
@@ -24,16 +24,20 @@ function TimelineRow(props) {
         <Box
           w="2px"
           bg="gray.200"
-          h={index === arrLength - 1 ? "15px" : "100%"}
+          h={index === arrLength - 1 ? "5px" : "40%"}
         ></Box>
       </Flex>
-      <Flex direction="column" justifyContent="flex-start" h="100%">
+      <Flex direction="column" justifyContent="flex-start" h="100%" mt={3}>
         <Text fontSize="sm" color={textColor} fontWeight="bold">
           {title}
         </Text>
-        <Text fontSize="sm" color="gray.400" fontWeight="normal">
-          {date}
-        </Text>
+        {
+          // (date != '') && (
+          //   <Text fontSize="sm" color="gray.400" fontWeight="normal">
+          //     {date}
+          //   </Text>
+          // )
+        }
       </Flex>
     </Flex>
   );

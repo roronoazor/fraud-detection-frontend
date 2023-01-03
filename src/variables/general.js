@@ -17,6 +17,7 @@ import {
   SlackLogo,
   SpotifyLogo,
 } from "components/Icons/Icons.js";
+import { BsClock } from 'react-icons/bs';
 import { AiOutlineExclamation } from "react-icons/ai";
 import {
   FaArrowDown,
@@ -73,6 +74,29 @@ export const dashboardTableData = [
     progression: 40,
   },
 ];
+
+export const suspectedData = [
+  {
+    logo: BsClock,
+    title: '35 Suspected transaction from 9 AM - 12 AM',
+    date: ''
+  },
+  {
+    logo: BsClock,
+    title: '92 Suspected transaction from 12 PM - 3 PM',
+    date: ''
+  },
+  {
+    logo: BsClock,
+    title: '435 Suspected transaction from 3 PM - 8 PM',
+    date: ''
+  },
+  {
+    logo: BsClock,
+    title: '45 Suspected transaction from 8 PM - 12 PM',
+    date: ''
+  }
+]
 
 export const timelineData = [
   {
