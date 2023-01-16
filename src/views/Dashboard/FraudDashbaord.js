@@ -225,7 +225,7 @@ import { suspectedData } from "variables/general";
                   </Text>
                   <Text fontSize="md" fontWeight="medium" color="gray.400">
                     <Text as="span" color="green.400" fontWeight="bold">
-                      (+23%)
+                      (+32%)
                     </Text>{" "}
                     than last week
                   </Text>

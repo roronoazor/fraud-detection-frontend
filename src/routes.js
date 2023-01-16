@@ -10,6 +10,7 @@ import BankTable from "views/Dashboard/BankTable.js";
 import MerchantTable from "views/Dashboard/MerchantTable.js";
 import BankSummaryTable from "views/Dashboard/BankSummaryTable";
 import MerchantSummaryTable from "views/Dashboard/MerchantSummaryTable";
+import TransferSummary from "views/Dashboard/TransferSummary.js";
 import FraudDashboard from "views/Dashboard/FraudDashbaord.js";
 import BankSummaryChartPage from "views/Dashboard/BankSummaryChartPage";  
 
@@ -111,6 +112,15 @@ var dashRoutes = [
     layout: "/admin",
     isProtected: true,
     isVisible: false
+  },
+  {
+    path: "/transfers",
+    name: "Transfers",
+    icon: <BsPersonLinesFill color="inherit" />,
+    component: TransferSummary,
+    layout: "/admin",
+    isProtected: true,
+    isVisible: true
   },
   {
     name: "ACCOUNT PAGES",
