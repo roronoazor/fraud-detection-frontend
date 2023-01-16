@@ -198,187 +198,7 @@ import { suspectedData } from "variables/general";
             </CardBody>
           </Card>
         </SimpleGrid>
-        <Grid
-          templateColumns={{ sm: "1fr", lg: "1.3fr 1.7fr" }}
-          templateRows={{ sm: "repeat(2, 1fr)", lg: "1fr" }}
-          gap="24px"
-          my="26px"
-          mb={{ lg: "26px" }}
-        >
-          <Card p="16px">
-            <CardBody>
-              <Flex direction="column" w="100%">
-                <BarChart />
-                <Flex
-                  direction="column"
-                  mt="24px"
-                  mb="36px"
-                  alignSelf="flex-start"
-                >
-                  <Text
-                    fontSize="lg"
-                    color={textColor}
-                    fontWeight="bold"
-                    mb="6px"
-                  >
-                    Bank Transfers
-                  </Text>
-                  <Text fontSize="md" fontWeight="medium" color="gray.400">
-                    <Text as="span" color="green.400" fontWeight="bold">
-                      (+23%)
-                    </Text>{" "}
-                    than last week
-                  </Text>
-                </Flex>
-                <SimpleGrid gap={{ sm: "12px" }} columns={4}>
-                  <Flex direction="column">
-                    <Flex alignItems="center">
-                      <IconBox
-                        as="box"
-                        h={"30px"}
-                        w={"30px"}
-                        bg={iconTeal}
-                        me="6px"
-                      >
-                        <WalletIcon h={"15px"} w={"15px"} color={iconBoxInside} />
-                      </IconBox>
-                      <Text fontSize="sm" color="gray.400" fontWeight="semibold">
-                        Transfers
-                      </Text>
-                    </Flex>
-                    <Text
-                      fontSize="lg"
-                      color={textColor}
-                      fontWeight="bold"
-                      mb="6px"
-                      my="6px"
-                    >
-                      32,984
-                    </Text>
-                    <Progress
-                      colorScheme="teal"
-                      borderRadius="12px"
-                      h="5px"
-                      value={20}
-                    />
-                  </Flex>
-                  <Flex direction="column">
-                    <Flex alignItems="center">
-                      <IconBox
-                        as="box"
-                        h={"30px"}
-                        w={"30px"}
-                        bg={iconTeal}
-                        me="6px"
-                      >
-                        <RocketIcon h={"15px"} w={"15px"} color={iconBoxInside} />
-                      </IconBox>
-                      <Text fontSize="sm" color="gray.400" fontWeight="semibold">
-                        Suspected
-                      </Text>
-                    </Flex>
-                    <Text
-                      fontSize="lg"
-                      color={'red.400'}
-                      fontWeight="bold"
-                      mb="6px"
-                      my="6px"
-                    >
-                      2,420
-                    </Text>
-                    <Progress
-                      colorScheme="teal"
-                      borderRadius="12px"
-                      h="5px"
-                      value={90}
-                    />
-                  </Flex>
-                  <Flex direction="column">
-                    <Flex alignItems="center">
-                      <IconBox
-                        as="box"
-                        h={"30px"}
-                        w={"30px"}
-                        bg={iconTeal}
-                        me="6px"
-                      >
-                        <CartIcon h={"15px"} w={"15px"} color={iconBoxInside} />
-                      </IconBox>
-                      <Text fontSize="sm" color="gray.400" fontWeight="semibold">
-                        Failed
-                      </Text>
-                    </Flex>
-                    <Text
-                      fontSize="lg"
-                      color={'red.400'}
-                      fontWeight="bold"
-                      mb="6px"
-                      my="6px"
-                    >
-                      2,400
-                    </Text>
-                    <Progress
-                      colorScheme="teal"
-                      borderRadius="12px"
-                      h="5px"
-                      value={30}
-                    />
-                  </Flex>
-                  <Flex direction="column">
-                    <Flex alignItems="center">
-                      <IconBox
-                        as="box"
-                        h={"30px"}
-                        w={"30px"}
-                        bg={iconTeal}
-                        me="6px"
-                      >
-                        <StatsIcon h={"15px"} w={"15px"} color={iconBoxInside} />
-                      </IconBox>
-                      <Text fontSize="sm" color="gray.400" fontWeight="semibold">
-                        Success
-                      </Text>
-                    </Flex>
-                    <Text
-                      fontSize="lg"
-                      color={'green.400'}
-                      fontWeight="bold"
-                      mb="6px"
-                      my="6px"
-                    >
-                      320
-                    </Text>
-                    <Progress
-                      colorScheme="teal"
-                      borderRadius="12px"
-                      h="5px"
-                      value={50}
-                    />
-                  </Flex>
-                </SimpleGrid>
-              </Flex>
-            </CardBody>
-          </Card>
-          <Card p="28px 10px 16px 0px" mb={{ sm: "26px", lg: "0px" }}>
-            <CardHeader mb="20px" pl="22px">
-              <Flex direction="column" alignSelf="flex-start">
-                <Text fontSize="lg" color={textColor} fontWeight="bold" mb="6px">
-                  Total Violation txn ( last 30 days )
-                </Text>
-                <Text fontSize="md" fontWeight="medium" color="gray.400">
-                  <Text as="span" color="green.400" fontWeight="bold">
-                    (+5%) less than last year
-                  </Text>{" "}
-                  
-                </Text>
-              </Flex>
-            </CardHeader>
-            <Box w="100%" h={{ sm: "300px" }} ps="8px">
-              <LineChart />
-            </Box>
-          </Card>
-        </Grid>
-        <Box>
+        <Box p='12px 0px'>
           {/** EXPERIMENTAL UI COMPONENT FOR SUSPECTED WITHDRAWAL TRANSACTION */}
           <Card w='100%' p="28px 10px 16px 0px" mb={{ sm: "26px", lg: "0px" }}>
             <CardHeader p='15'>
@@ -428,7 +248,7 @@ import { suspectedData } from "variables/general";
                         <WalletIcon h={"15px"} w={"15px"} color={iconBoxInside} />
                       </IconBox>
                       <Text fontSize="sm" color="gray.400" fontWeight="semibold">
-                        Transfers
+                        Withdrawals
                       </Text>
                     </Flex>
                     <Text
@@ -585,31 +405,259 @@ import { suspectedData } from "variables/general";
           gap="24px"
           my="26px"
           mb={{ lg: "26px" }}
-        >
+        > 
+          {/** UI COMPONENT FOR SUSPECTED BANK TRANSFER COMPONENT */}
           <Card p="28px 10px 16px 0px" mb={{ sm: "26px", lg: "0px" }}>
               <CardHeader mb="20px" pl="22px">
                 <Flex spacing='4'>
                   <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
                     <Box>
-                      <Heading size='sm'>Transfer Txn Overview</Heading>
+                      <Heading size='sm'>Bank Transfer Txn Overview </Heading>
                       <Text fontSize='xs' as='i'>{`4,200 suspected transfer transactions recorded today`}</Text>
                     </Box>
                   </Flex>
                 </Flex>
               </CardHeader>
-                  <Image
-                    padding={2}
-                    objectFit='cover'
-                    src={transferImage}
-                    height={'360px'}
-                    alt='Chakra UI'
-                  />
                 <CardBody p={2}>
-                  <Text>
-                    Suspected Airtime Transactions
-                  </Text>
+                  <BarChart />
                 </CardBody>
+                <Box p="5" align='center'>
+                  <Text>{`Last 7 days overview`}</Text>
+                </Box>
+                <Divider />
+                <Box p='15'>
+                  <Flex
+                    direction="column"
+                    mt="14px"
+                    mb="26px"
+                    alignSelf="flex-start"
+                  >
+                    <Text
+                      fontSize="md"
+                      color={textColor}
+                      mb="6px"
+                    >
+                      Bank Transfer Stats this month
+                    </Text>
+                  </Flex>
+                <SimpleGrid gap={{ sm: "12px" }} columns={4}>
+                  <Flex direction="column">
+                    <Flex alignItems="center">
+                      <IconBox
+                        as="box"
+                        h={"30px"}
+                        w={"30px"}
+                        bg={iconTeal}
+                        me="6px"
+                      >
+                        <WalletIcon h={"15px"} w={"15px"} color={iconBoxInside} />
+                      </IconBox>
+                      <Text fontSize="sm" color="gray.400" fontWeight="semibold">
+                       Transfers
+                      </Text>
+                    </Flex>
+                    <Text
+                      fontSize="lg"
+                      color={textColor}
+                      fontWeight="bold"
+                      mb="6px"
+                      my="6px"
+                    >
+                      32,984
+                    </Text>
+                    <Progress
+                      colorScheme="teal"
+                      borderRadius="12px"
+                      h="5px"
+                      value={20}
+                    />
+                  </Flex>
+                  <Flex direction="column">
+                    <Flex alignItems="center">
+                      <IconBox
+                        as="box"
+                        h={"30px"}
+                        w={"30px"}
+                        bg={iconTeal}
+                        me="6px"
+                      >
+                        <RocketIcon h={"15px"} w={"15px"} color={iconBoxInside} />
+                      </IconBox>
+                      <Text fontSize="sm" color="gray.400" fontWeight="semibold">
+                        Suspected
+                      </Text>
+                    </Flex>
+                    <Text
+                      fontSize="lg"
+                      color={'red.400'}
+                      fontWeight="bold"
+                      mb="6px"
+                      my="6px"
+                    >
+                      2,420
+                    </Text>
+                    <Progress
+                      colorScheme="teal"
+                      borderRadius="12px"
+                      h="5px"
+                      value={90}
+                    />
+                  </Flex>
+                  <Flex direction="column">
+                    <Flex alignItems="center">
+                      <IconBox
+                        as="box"
+                        h={"30px"}
+                        w={"30px"}
+                        bg={iconTeal}
+                        me="6px"
+                      >
+                        <CartIcon h={"15px"} w={"15px"} color={iconBoxInside} />
+                      </IconBox>
+                      <Text fontSize="sm" color="gray.400" fontWeight="semibold">
+                        Failed
+                      </Text>
+                    </Flex>
+                    <Text
+                      fontSize="lg"
+                      color={'red.400'}
+                      fontWeight="bold"
+                      mb="6px"
+                      my="6px"
+                    >
+                      2,400
+                    </Text>
+                    <Progress
+                      colorScheme="teal"
+                      borderRadius="12px"
+                      h="5px"
+                      value={30}
+                    />
+                  </Flex>
+                  <Flex direction="column">
+                    <Flex alignItems="center">
+                      <IconBox
+                        as="box"
+                        h={"30px"}
+                        w={"30px"}
+                        bg={iconTeal}
+                        me="6px"
+                      >
+                        <StatsIcon h={"15px"} w={"15px"} color={iconBoxInside} />
+                      </IconBox>
+                      <Text fontSize="sm" color="gray.400" fontWeight="semibold">
+                        Success
+                      </Text>
+                    </Flex>
+                    <Text
+                      fontSize="lg"
+                      color={'green.400'}
+                      fontWeight="bold"
+                      mb="6px"
+                      my="6px"
+                    >
+                      320
+                    </Text>
+                    <Progress
+                      colorScheme="teal"
+                      borderRadius="12px"
+                      h="5px"
+                      value={50}
+                    />
+                  </Flex>
+                </SimpleGrid>
+                </Box>
+                <Divider />
+                <CardBody p={2}>
+              <Flex direction="column" p='30px 15px'>
+                  <Box>
+                    <Text
+                      fontSize="md"
+                      color={textColor}
+                      pb=".5rem"
+                    >
+                      Suspected Bank Transfer Txn Breakdown (Today)
+                    </Text>
+                  </Box>
+                  {suspectedData.map((row, index, arr) => {
+                    return (
+                      <TimelineRow
+                        logo={row.logo}
+                        title={row.title}
+                        date={row.date}
+                        color={row.color}
+                        index={index}
+                        arrLength={arr.length}
+                      />
+                    );
+                  })}
+              
+              </Flex>
+              </CardBody>
+              <CardFooter justify='flex-end'>
+                <Spacer />
+                <ButtonGroup spacing='2' padding='2'>
+                  <Button variant='solid' colorScheme='teal'>
+                    View More
+                  </Button>
+                </ButtonGroup>
+              </CardFooter>
           </Card>
+
+          <Card p="28px 10px 16px 0px" mb={{ sm: "26px", lg: "0px" }}>
+              <CardHeader mb="20px" pl="22px">
+                <Flex spacing='4'>
+                  <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
+                    <Box>
+                      <Heading size='sm'>Airtime Recharge Txn Overview</Heading>
+                      <Text fontSize='xs' as='i'>{`5,700 suspected Withdrawal transactions recorded today`}</Text>
+                    </Box>
+                  </Flex>
+                </Flex>
+              </CardHeader>
+                <CardBody p={2}>
+                  <BarChart />
+                </CardBody>
+                <Box p="5" align='center'>
+                  <Text>{`Last 7 days overview`}</Text>
+                </Box>
+                <Divider />
+                <CardBody p={2}>
+              <Flex direction="column" p='30px 15px'>
+                  <Box>
+                    <Text
+                      fontSize="md"
+                      color={textColor}
+                      pb=".5rem"
+                    >
+                      Suspected Bank Transfer Txn Breakdown (Today)
+                    </Text>
+                  </Box>
+                  {suspectedData.map((row, index, arr) => {
+                    return (
+                      <TimelineRow
+                        logo={row.logo}
+                        title={row.title}
+                        date={row.date}
+                        color={row.color}
+                        index={index}
+                        arrLength={arr.length}
+                      />
+                    );
+                  })}
+              
+              </Flex>
+              </CardBody>
+              <CardFooter justify='flex-end'>
+                <Spacer />
+                <ButtonGroup spacing='2' padding='2'>
+                  <Button variant='solid' colorScheme='teal'>
+                    View More
+                  </Button>
+                </ButtonGroup>
+              </CardFooter>
+          </Card>
+
           <Card  p="28px 10px 16px 0px" mb={{ sm: "26px", lg: "0px" }}>
             <CardHeader  mb="20px" pl="22px">
               <Flex spacing='4'>
