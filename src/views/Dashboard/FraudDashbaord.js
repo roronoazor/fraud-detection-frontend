@@ -50,6 +50,7 @@ import {
   import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
   import { timelineData } from "variables/general";
 import { suspectedData } from "variables/general";
+import { useHistory } from "react-router-dom";
   
   
   export default function FraudDashboard() {
@@ -72,6 +73,7 @@ import { suspectedData } from "variables/general";
       },
     ]);
     const overlayRef = React.useRef();
+    const history = useHistory();
   
     
     return (
@@ -392,7 +394,7 @@ import { suspectedData } from "variables/general";
               <CardFooter justify='flex-end'>
                 <Spacer />
                 <ButtonGroup spacing='2' padding='2'>
-                  <Button variant='solid' colorScheme='teal'>
+                  <Button variant='solid' colorScheme='teal' onClick={() => history.push('/admin/withdrawalSummary')}>
                     View More
                   </Button>
                 </ButtonGroup>
@@ -597,7 +599,7 @@ import { suspectedData } from "variables/general";
               <CardFooter justify='flex-end'>
                 <Spacer />
                 <ButtonGroup spacing='2' padding='2'>
-                  <Button variant='solid' colorScheme='teal'>
+                  <Button variant='solid' colorScheme='teal' onClick={() => history.push('/admin/transferSummary')}>
                     View More
                   </Button>
                 </ButtonGroup>
@@ -651,7 +653,7 @@ import { suspectedData } from "variables/general";
               <CardFooter justify='flex-end'>
                 <Spacer />
                 <ButtonGroup spacing='2' padding='2'>
-                  <Button variant='solid' colorScheme='teal'>
+                  <Button variant='solid' colorScheme='teal' onClick={() => history.push('/admin/airtimeSummary')}>
                     View More
                   </Button>
                 </ButtonGroup>
