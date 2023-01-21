@@ -659,31 +659,6 @@ import { useHistory } from "react-router-dom";
                 </ButtonGroup>
               </CardFooter>
           </Card>
-
-          <Card  p="28px 10px 16px 0px" mb={{ sm: "26px", lg: "0px" }}>
-            <CardHeader  mb="20px" pl="22px">
-              <Flex spacing='4'>
-                <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
-                  <Box>
-                    <Heading size='sm'>Airtime Recharge Txn Overview</Heading>
-                    <Text fontSize='xs' as='i'>{`5,700 suspected Withdrawal transactions recorded today`}</Text>
-                  </Box>
-                </Flex>
-              </Flex>
-            </CardHeader>
-                <Image
-                  padding={2}
-                  objectFit='cover'
-                  src={withdrawalImage}
-                  height={'360px'}
-                  alt='Chakra UI'
-                />
-              <CardBody p={2}>
-                <Text>
-                  Suspected Airtime Transactions
-                </Text>
-              </CardBody>
-          </Card>
         </Grid>
       </Flex>
     );
