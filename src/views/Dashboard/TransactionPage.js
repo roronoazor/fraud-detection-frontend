@@ -34,6 +34,11 @@ import {
   WarningTwoIcon,
   QuestionIcon
  } from '@chakra-ui/icons'
+import { Icon } from '@chakra-ui/react'
+import { CgData, CgScreen } from 'react-icons/cg';
+import { GiElectric, GiTakeMyMoney } from 'react-icons/gi';
+import { FcMoneyTransfer, FcCallTransfer } from 'react-icons/fc';
+
 //dummy data
 
 const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -210,19 +215,55 @@ function TransactionRow(props) {
 
     return (
         <Tr>
-        <Td minWidth={{ sm: "250px" }} pl="0px">
-          <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" >
+        <Td minWidth={{ sm: "150px" }} pl="0px">
+          <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
             <Flex direction="column">
-                <Center>
-                    <Text
-                        fontSize="md"
-                        color={textColor}
-                        fontWeight="bold"
-                        minWidth="100%"
-                        // noOfLines={3}
-                    >
-                        {transaction.transaction_type}
-                    </Text>
+            <Center>
+                <Text
+                    fontSize="md"
+                    color={textColor}
+                    fontWeight="bold"
+                    minWidth="100%"
+                    align='center'
+                    // noOfLines={3}
+                >
+                  { 'ELECTRICITY_RECHARGE' == transaction.transaction_type && (
+                    <>
+                      <Icon as={GiElectric} w={6} h={6} color='orange.500' />
+                      <Text>Electricity</Text>
+                    </>
+                  )}
+                  { 'WITHDRAWAL' == transaction.transaction_type && (
+                    <>
+                      <Icon as={GiTakeMyMoney} w={6} h={6} color='green.500' />
+                      <Text>Withdrawal</Text> 
+                    </>
+                  )}
+                  { 'TRANSFER' == transaction.transaction_type && (
+                    <>
+                      <Icon as={FcMoneyTransfer} w={6} h={6} color='green.500' />
+                      <Text>Transfer</Text> 
+                    </>
+                  )}
+                  { 'AIRTIME_VTU' == transaction.transaction_type && (
+                    <>
+                      <Icon as={FcCallTransfer} w={6} h={6} color='green.500' />
+                      <Text>Airtime</Text> 
+                    </>
+                  )}
+                  { 'DATA_RECHARGE' == transaction.transaction_type && (
+                    <>
+                      <Icon as={CgData} w={6} h={6} color='green.500' />
+                      <Text>Data</Text> 
+                    </>
+                  )}
+                  { 'CABLE_RECHARGE' == transaction.transaction_type && (
+                    <>
+                      <Icon as={CgScreen} w={6} h={6} color='green.500' />
+                      <Text>Cable</Text> 
+                    </>
+                  )}
+                </Text>
               </Center>
             </Flex>
           </Flex>
