@@ -394,7 +394,7 @@ import { useHistory } from "react-router-dom";
               <CardFooter justify='flex-end'>
                 <Spacer />
                 <ButtonGroup spacing='2' padding='2'>
-                  <Button variant='solid' colorScheme='teal' onClick={() => history.push('/admin/withdrawalSummary')}>
+                  <Button variant='solid' colorScheme='teal' onClick={() => history.push('/admin/transaction?p=withdrawal')}>
                     View More
                   </Button>
                 </ButtonGroup>
@@ -599,7 +599,7 @@ import { useHistory } from "react-router-dom";
               <CardFooter justify='flex-end'>
                 <Spacer />
                 <ButtonGroup spacing='2' padding='2'>
-                  <Button variant='solid' colorScheme='teal' onClick={() => history.push('/admin/transferSummary')}>
+                  <Button variant='solid' colorScheme='teal' onClick={() => history.push('/admin/transaction?p=transfer')}>
                     View More
                   </Button>
                 </ButtonGroup>
@@ -653,7 +653,7 @@ import { useHistory } from "react-router-dom";
               <CardFooter justify='flex-end'>
                 <Spacer />
                 <ButtonGroup spacing='2' padding='2'>
-                  <Button variant='solid' colorScheme='teal' onClick={() => history.push('/admin/airtimeSummary')}>
+                  <Button variant='solid' colorScheme='teal' onClick={() => history.push('/admin/transaction?p=vas')}>
                     View More
                   </Button>
                 </ButtonGroup>

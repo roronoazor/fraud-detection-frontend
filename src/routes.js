@@ -12,9 +12,7 @@ import BankSummaryTable from "views/Dashboard/BankSummaryTable";
 import MerchantSummaryTable from "views/Dashboard/MerchantSummaryTable";
 import FraudDashboard from "views/Dashboard/FraudDashbaord.js";
 import BankSummaryChartPage from "views/Dashboard/BankSummaryChartPage";  
-import TransferSummary from "views/Dashboard/TransferSummaryChartPage";
-import AirtimeSummary from "views/Dashboard/AirtimeSummaryChartPage";
-import WithdrawalSummary from "views/Dashboard/WithdrawalSummaryChartPage";
+import TransactionPage from "views/Dashboard/TransactionPage";
 
 import {
   HomeIcon,
@@ -116,28 +114,10 @@ var dashRoutes = [
     isVisible: false
   },
   {
-    path: "/transferSummary",
-    name: " Transfer Summary",
+    path: "/transaction",
+    name: " Transaction Overview",
     icon: <MdOutlineSummarize color="inherit" />,
-    component: TransferSummary,
-    layout: "/admin",
-    isProtected: true,
-    isVisible: false
-  },
-  {
-    path: "/airtimeSummary",
-    name: " Airtime Summary",
-    icon: <MdOutlineSummarize color="inherit" />,
-    component: AirtimeSummary,
-    layout: "/admin",
-    isProtected: true,
-    isVisible: false
-  },
-  {
-    path: "/withdrawalSummary",
-    name: " Withdrawal Summary",
-    icon: <MdOutlineSummarize color="inherit" />,
-    component: WithdrawalSummary,
+    component: TransactionPage,
     layout: "/admin",
     isProtected: true,
     isVisible: false

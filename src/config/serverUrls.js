@@ -16,4 +16,6 @@ export const GET_USERS = BASE_URL + 'authentication/users/';
 
 export const CHANGE_PASSWORD = BASE_URL + 'authentication/change_password/';
 
+export const GET_TRANSACTIONS = BASE_URL + 'api/transactions/';
+
 
