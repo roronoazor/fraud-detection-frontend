@@ -51,7 +51,7 @@ import { TransactionDetailContent } from "./TransactionDetailContent";
 
 //dummy data
 
-const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+export const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
 const fields = [
     {
@@ -364,8 +364,6 @@ function TransactionRow(props) {
 
 }
 
-
-
 function Tables() {
     const textColor = useColorModeValue("gray.700", "white");
     const token = useSelector(getAuthToken);
@@ -487,9 +485,9 @@ function Tables() {
         handleChange={handleChange}
         closeFilterBox={closeFilterBox}
       />
-      <Modal isOpen={isOpen} onClose={onClose} size={'xl'}>
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent maxW="85%">
           <ModalHeader>Transaction Details!</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -498,10 +496,9 @@ function Tables() {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={onClose}>
+            <Button colorScheme='teal' onClick={onClose}>
               Close
             </Button>
-            <Button variant='ghost'>Secondary Action</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
