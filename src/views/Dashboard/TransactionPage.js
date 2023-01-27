@@ -38,6 +38,16 @@ import { Icon } from '@chakra-ui/react'
 import { CgData, CgScreen } from 'react-icons/cg';
 import { GiElectric, GiTakeMyMoney } from 'react-icons/gi';
 import { FcMoneyTransfer, FcCallTransfer } from 'react-icons/fc';
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+} from '@chakra-ui/react'
+import { TransactionDetailContent } from "./TransactionDetailContent";
 
 //dummy data
 
@@ -208,7 +218,7 @@ const tableHeaders = [
 
 function TransactionRow(props) {
 
-    const {  transaction, display } = props;
+    const {  transaction, display, showDetails } = props;
     const textColor = useColorModeValue("gray.700", "white");
 
     console.log('t: ', transaction);
@@ -343,7 +353,7 @@ function TransactionRow(props) {
           <Flex py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
             <Button
             colorScheme='teal'
-            onClick={()=>{alert('hello world')}}
+            onClick={()=>{showDetails(transaction)}}
             >
               View Details
             </Button>
@@ -365,6 +375,8 @@ function Tables() {
     const [page, setPage] = useState(1);
     const [pageCount, setPageCount] = useState(1);
     const [urlWithFilters, setUrlWithFilters] = useState("");
+    const [isOpen, setIsOpen] = useState(false);
+    const [transactionDetail, setTransactionDetail] = useState({})
 
     // call the api that loads this data only once
     let payload_data = {
@@ -445,6 +457,15 @@ function Tables() {
     window.scrollTo(0, 0); // moves the compoent to the top of the page
   }
 
+  const onClose = (evt) => {
+    setIsOpen(false);
+  };
+
+  const showDetails = (transaction) => {
+    setTransactionDetail(transaction);
+    setIsOpen(true);
+  }
+
   {/** 
   if (isLoading) {
     return (
@@ -466,6 +487,24 @@ function Tables() {
         handleChange={handleChange}
         closeFilterBox={closeFilterBox}
       />
+      <Modal isOpen={isOpen} onClose={onClose} size={'xl'}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Transaction Details!</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {/* <p>Miss Thier Way!!!</p> */}
+            <TransactionDetailContent transaction={transactionDetail} />
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme='blue' mr={3} onClick={onClose}>
+              Close
+            </Button>
+            <Button variant='ghost'>Secondary Action</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       <Card overflowX={{ sm: "scroll", xl: "hidden" }}>
         <CardHeader p="6px 0px 22px 0px">
         <Stack>
@@ -516,6 +555,7 @@ function Tables() {
                       <TransactionRow
                         key={index}
                         transaction={transaction}
+                        showDetails={showDetails}
                         display
                         />
                     );
