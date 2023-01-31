@@ -129,3 +129,16 @@ export const formatCurrencyNumber = (number, decimals = 2, floatSeparator = '.',
     }
     return prefix + ' ' + result;
 }
+
+
+export const camelCaseToWords = function(str){
+    return str.match(/^[a-z]+|[A-Z][a-z]*/g).map(function(x){
+        return x[0].toUpperCase() + x.substr(1).toLowerCase();
+    }).join(' ');
+};
+
+
+export const firstLetterUpper = function(theString) {
+	var newString = theString.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g,function(c){return c.toUpperCase()});
+  return newString;
+}

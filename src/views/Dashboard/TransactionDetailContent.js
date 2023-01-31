@@ -24,10 +24,10 @@ import { BsCashStack, BsCreditCard } from 'react-icons/bs';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import { GrCreditCard } from 'react-icons/gr';
 import { MdOutlineAccountBox } from 'react-icons/md';
-import { formatCurrencyNumber } from "modules/utilities";
+import { formatCurrencyNumber, checkObject } from "modules/utilities";
 import { dateOptions } from './TransactionPage';
 import JsonCard from 'components/JsonCard';
-
+import MonitoringComments from 'components/MonitoringComments';
 
 const BIG_ICON_SIZE = 28
 const SMALL_ICON_SIZE = 6
@@ -36,9 +36,7 @@ const SMALL_ICON_SIZE = 6
 export const TransactionDetailContent = (props) => {
   
     const { transaction } = props;
-    console.log('xx: ', transaction);
     const textColor = useColorModeValue("gray.700", "white");
-    console.log(Object.keys(transaction));
     let keys = Object.keys(transaction);
     let privateKeys = ['mongo_id', 'id', 'user_id', 'unique_id', 'created_at', 'updated_at']
 
@@ -46,29 +44,13 @@ export const TransactionDetailContent = (props) => {
     
     return (
         <>
-            {/* { publicKeys.map(key =>{
-                console.log(key);
-
-                if (typeof transaction[key] === "object" && transaction[key] !== null){
-                    return Object.keys(transaction[key]).map(childKey => transaction[key][childKey]);
-                }else{
-                    return (
-                    <p>
-                    <span key={key}>
-                        <strong><span>{`${key.toUpperCase().replace("_", " ")}: `}</span></strong>
-                        {`${transaction[key]}`}
-                    </span>
-                    </p>
-                    )
-                }
-            })} */}
             <Grid
                 // h='40vw'
                 templateRows='repeat(5, 1fr)'
                 templateColumns='repeat(5, 1fr)'
                 gap={4}
             >
-                <GridItem rowSpan={2} colSpan={1} bg=''>
+                <GridItem rowSpan={1} colSpan={1} bg=''>
                 <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
                     <Flex direction="column">
                         <Center>
@@ -122,7 +104,7 @@ export const TransactionDetailContent = (props) => {
                     </Flex>
                 </Flex>
                 </GridItem>
-                <GridItem colSpan={1} bg=''>
+                <GridItem  rowSpan={1} h='10' colSpan={1} bg=''>
                 <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
                         <Flex direction="column">
                             <Center>
@@ -142,7 +124,7 @@ export const TransactionDetailContent = (props) => {
                         </Flex>
                     </Flex>
                 </GridItem>
-                <GridItem colSpan={1} bg=''>
+                <GridItem  rowSpan={1} h='10' colSpan={1} bg=''>
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
                         <Flex direction="column">
                             <Center>
@@ -162,7 +144,7 @@ export const TransactionDetailContent = (props) => {
                         </Flex>
                     </Flex>
                 </GridItem>
-                <GridItem colSpan={1} bg=''>
+                <GridItem  rowSpan={1} h='10' colSpan={1} bg=''>
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
                         <Flex direction="column">
                             <Center>
@@ -214,7 +196,7 @@ export const TransactionDetailContent = (props) => {
                         </Flex>
                     </Flex>
                 </GridItem>
-                <GridItem colSpan={1} bg=''>
+                <GridItem rowSpan={1} h='10' colSpan={1} bg=''>
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
                         <Flex direction="column">
                             <Center>
@@ -250,7 +232,7 @@ export const TransactionDetailContent = (props) => {
                         </Flex>
                     </Flex>
                 </GridItem>
-                <GridItem colSpan={1} bg=''>
+                <GridItem  rowSpan={1} h='10' colSpan={1} bg=''>
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
                         <Flex direction="column">
                             <Center>
@@ -277,7 +259,7 @@ export const TransactionDetailContent = (props) => {
                         </Flex>
                     </Flex>
                 </GridItem>
-                <GridItem colSpan={1} bg=''>
+                <GridItem  rowSpan={1} h='10' colSpan={1} bg=''>
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
                         <Flex direction="column">
                             <Center>
@@ -297,7 +279,7 @@ export const TransactionDetailContent = (props) => {
                         </Flex>
                     </Flex>
                 </GridItem>
-                <GridItem colSpan={1} bg=''>
+                <GridItem  rowSpan={1} h='10' colSpan={1} bg=''>
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
                         <Flex direction="column">
                             <Center>
@@ -317,7 +299,7 @@ export const TransactionDetailContent = (props) => {
                         </Flex>
                     </Flex>
                 </GridItem>
-                <GridItem colSpan={1} bg=''>
+                <GridItem  rowSpan={1} h='10' colSpan={1} bg=''>
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
                         <Flex direction="column">
                             <Center>
@@ -337,7 +319,7 @@ export const TransactionDetailContent = (props) => {
                         </Flex>
                     </Flex>
                 </GridItem>
-                <GridItem colSpan={1} bg=''>
+                <GridItem rowSpan={1} h='10' colSpan={1} bg=''>
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
                         <Flex direction="column">
                             <Center>
@@ -357,7 +339,7 @@ export const TransactionDetailContent = (props) => {
                         </Flex>
                     </Flex>
                 </GridItem>
-                <GridItem colSpan={1} bg=''>
+                <GridItem rowSpan={1} h='10' colSpan={1} bg=''>
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
                         <Flex direction="column">
                             <Center>
@@ -377,7 +359,7 @@ export const TransactionDetailContent = (props) => {
                         </Flex>
                     </Flex>
                 </GridItem>
-                <GridItem colSpan={1} bg=''>
+                <GridItem rowSpan={1} h='10' colSpan={1} bg=''>
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
                         <Flex direction="column">
                             <Center>
@@ -397,7 +379,7 @@ export const TransactionDetailContent = (props) => {
                         </Flex>
                     </Flex>
                 </GridItem>
-                <GridItem colSpan={1} bg=''>
+                <GridItem rowSpan={1} h='10' colSpan={1} bg=''>
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
                         <Flex direction="column">
                             <Center>
@@ -417,7 +399,7 @@ export const TransactionDetailContent = (props) => {
                         </Flex>
                     </Flex>
                 </GridItem>
-                <GridItem colSpan={1} bg=''>
+                <GridItem rowSpan={1} h='10' colSpan={1} bg=''>
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
                         <Flex direction="column">
                             <Center>
@@ -437,7 +419,7 @@ export const TransactionDetailContent = (props) => {
                         </Flex>
                     </Flex>
                 </GridItem>
-                <GridItem colSpan={1} bg=''>
+                <GridItem rowSpan={1} h='10' colSpan={1} bg=''>
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
                         <Flex direction="column">
                             <Center>
@@ -477,7 +459,7 @@ export const TransactionDetailContent = (props) => {
                         </Flex>
                     </Flex>
                 </GridItem>
-                <GridItem colSpan={1} bg='tomato'>
+                <GridItem colSpan={1} bg=''>
                     <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
                         <Flex direction="column">
                             <Center>
@@ -497,14 +479,24 @@ export const TransactionDetailContent = (props) => {
                         </Flex>
                     </Flex>
                 </GridItem>
-                <GridItem colSpan={5} bg=''>
-                    <JsonCard title='API RESPONSE' />
+                <GridItem colSpan={3} bg=''>
+                    <MonitoringComments title={'Monitoring Comments'} />
                 </GridItem>
-                <GridItem colSpan={5} bg=''>
-                    <JsonCard title='DEBIT RESPONSE' />
-                </GridItem>
-                <GridItem colSpan={4} bg='' />
-                <GridItem colSpan={4} bg='' />
+                
+                {
+                    (!checkObject(transaction?.response || {})) && (
+                        <GridItem colSpan={5} bg=''>
+                            <JsonCard title='API RESPONSE' response={transaction?.response} />
+                        </GridItem>
+                    )
+                }
+                {
+                    (!checkObject(transaction?.debit_response || {})) && (
+                        <GridItem colSpan={5} bg=''>
+                            <JsonCard title='DEBIT RESPONSE' response={transaction?.debit_response} />
+                        </GridItem>
+                    )
+                }
             </Grid>
         </>
     );
