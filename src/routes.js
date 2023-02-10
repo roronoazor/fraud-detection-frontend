@@ -1,11 +1,5 @@
 // import
 import Dashboard from "views/Dashboard/Dashboard.js";
-import Tables from "views/Dashboard/Tables.js";
-import Billing from "views/Dashboard/Billing.js";
-import RTLPage from "views/RTL/RTLPage.js";
-import Profile from "views/Dashboard/Profile.js";
-import SignIn from "views/Pages/SignIn.js";
-import SignUp from "views/Pages/SignUp.js";
 import BankTable from "views/Dashboard/BankTable.js";
 import MerchantTable from "views/Dashboard/MerchantTable.js";
 import BankSummaryTable from "views/Dashboard/BankSummaryTable";
@@ -13,15 +7,13 @@ import MerchantSummaryTable from "views/Dashboard/MerchantSummaryTable";
 import FraudDashboard from "views/Dashboard/FraudDashbaord.js";
 import BankSummaryChartPage from "views/Dashboard/BankSummaryChartPage";  
 import TransactionPage from "views/Dashboard/TransactionPage";
+import RuleStats from "views/Dashboard/RuleStats";
 
 import {
   HomeIcon,
   StatsIcon,
   CreditIcon,
   PersonIcon,
-  DocumentIcon,
-  RocketIcon,
-  SupportIcon,
 } from "components/Icons/Icons";
 
 import { GiBank } from "react-icons/gi";
@@ -78,15 +70,6 @@ var dashRoutes = [
     isVisible: true
   },
   {
-    path: "/fraud",
-    name: "Fraud Monitoring",
-    icon: <MdOutlineSummarize color="inherit" />,
-    component: FraudDashboard,
-    layout: "/admin",
-    isProtected: true,
-    isVisible: true
-  },
-  {
     path: "/bankSummary2/:id",
     name: "BankSummaryChart",
     icon: <MdOutlineSummarize color="inherit" />,
@@ -123,35 +106,31 @@ var dashRoutes = [
     isVisible: false
   },
   {
-    name: "ACCOUNT PAGES",
+    name: "Fraud Monitoring",
     category: "account",
     state: "pageCollapse",
+    isVisible: true,
     views: [
       {
-        path: "/profile",
-        name: "Profile",
+        path: "/fraud",
+        name: "Fraud Dashboard",
         icon: <PersonIcon color="inherit" />,
-        secondaryNavbar: true,
-        component: Profile,
+        icon: <MdOutlineSummarize color="inherit" />,
+        component: FraudDashboard,
         layout: "/admin",
         isProtected: true,
+        isVisible: true
       },
       {
-        path: "/signin",
-        name: "Sign In",
-        icon: <DocumentIcon color="inherit" />,
-        component: SignIn,
-        secondaryNavbar: false,
-        layout: "/auth",
-      },
-      {
-        path: "/signup",
-        name: "Sign Up",
-        icon: <RocketIcon color="inherit" />,
-        secondaryNavbar: false,
-        component: SignUp,
-        layout: "/auth",
-      },
+        path: "/ruleStats",
+        name: "Rule Metrics",
+        icon: <StatsIcon color="inherit" />,
+        icon: <MdOutlineSummarize color="inherit" />,
+        component: RuleStats,
+        layout: "/admin",
+        isProtected: true,
+        isVisible: true
+      }
     ],
   },
 ];

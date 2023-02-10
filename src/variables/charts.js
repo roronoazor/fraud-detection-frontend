@@ -162,3 +162,46 @@ export const lineChartOptions = {
   },
   colors: ["#4FD1C5", "#ff0f0f"],
 };
+
+
+
+export const pieChartOptions = {
+  labels: ["Cleared Txn", "Suspected Txn"],
+  colors: ["#4FD1C5", "#F56565"],
+  chart: {
+    width: "50px",
+  },
+  states: {
+    hover: {
+      filter: {
+        type: "none",
+      },
+    },
+  },
+  legend: {
+    show: true,
+  },
+  dataLabels: {
+    enabled: true,
+  },
+  hover: { mode: null },
+  plotOptions: {
+    donut: {
+      expandOnClick: false,
+      donut: {
+        labels: {
+          show: false,
+        },
+      },
+    },
+  },
+  fill: {
+    colors: ["#4FD1C5", "#F56565"],
+  },
+  tooltip: {
+    enabled: true,
+    theme: "dark",
+  },
+};
+
+export const pieChartData = [63, 37];

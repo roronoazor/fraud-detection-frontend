@@ -22,7 +22,7 @@ import CardBody from "components/Card/CardBody.js";
 import Pagination from "components/Pagination";
 import Filter from "components/Filter";
 import { useQuery } from "react-query";
-import {  GET_TRANSACTIONS } from '../../config/serverUrls';
+import {  GET_TRANSACTIONS, GET_TRANSACTIONS_STATS } from '../../config/serverUrls';
 import { fetchData } from '../../modules/utilities/util_query';
 import { useSelector } from 'react-redux';
 import { getAuthToken } from "modules/auth/redux/authSelector";
@@ -48,6 +48,7 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react'
 import { TransactionDetailContent } from "./TransactionDetailContent";
+import { rules } from "eslint-config-prettier";
 
 //dummy data
 
@@ -107,7 +108,83 @@ const fields = [
     isSelected: false,
     fieldQueryName: 'created',
     fieldValue: '',
- }
+ },
+ {
+  id: 5,
+  fieldName: 'monitoring status', 
+  fieldType: 'select',
+  isSelected: false,
+  fieldQueryName: 'monitoring_status',
+  children: [
+    {
+      id: 1,
+      name: 'Suspected',
+      value: 'Suspected'
+    },
+    {
+      id: 2,
+      name: 'Cleared',
+      value: 'Cleared'
+    },
+  ],
+  fieldValue: '',
+},
+{
+  id: 6,
+  fieldName: 'PAN', 
+  fieldType: 'text',
+  isSelected: false,
+  fieldQueryName: 'pan',
+  fieldValue: '',
+},
+{
+  id: 7,
+  fieldName: 'Provider', 
+  fieldType: 'text',
+  isSelected: false,
+  fieldQueryName: 'provider',
+  fieldValue: '',
+},
+{
+  id: 8,
+  fieldName: 'Merchant Name', 
+  fieldType: 'text',
+  isSelected: false,
+  fieldQueryName: 'merchant_name',
+  fieldValue: '',
+},
+{
+  id: 9,
+  fieldName: 'Merchant ID', 
+  fieldType: 'text',
+  isSelected: false,
+  fieldQueryName: 'merchant_id',
+  fieldValue: '',
+},
+{
+  id: 10,
+  fieldName: 'Terminal ID', 
+  fieldType: 'text',
+  isSelected: false,
+  fieldQueryName: 'terminal_id',
+  fieldValue: '',
+},
+{
+  id: 11,
+  fieldName: 'RRN', 
+  fieldType: 'text',
+  isSelected: false,
+  fieldQueryName: 'rrn_transaction',
+  fieldValue: '',
+},
+{
+  id: 11,
+  fieldName: 'Transaction Reference', 
+  fieldType: 'text',
+  isSelected: false,
+  fieldQueryName: 'transaction_reference',
+  fieldValue: '',
+},
 ]
 
 
@@ -220,8 +297,6 @@ function TransactionRow(props) {
 
     const {  transaction, display, showDetails } = props;
     const textColor = useColorModeValue("gray.700", "white");
-
-    console.log('t: ', transaction);
 
     return (
         <Tr>
@@ -374,7 +449,7 @@ function Tables() {
     const [pageCount, setPageCount] = useState(1);
     const [urlWithFilters, setUrlWithFilters] = useState("");
     const [isOpen, setIsOpen] = useState(false);
-    const [transactionDetail, setTransactionDetail] = useState({})
+    const [transactionDetail, setTransactionDetail] = useState({});
 
     // call the api that loads this data only once
     let payload_data = {
@@ -401,10 +476,50 @@ function Tables() {
                               }
                             }
                             );
+    const transactionStat = useQuery(['transactions-stat',
+          { 
+            url: GET_TRANSACTIONS_STATS,
+            payload_data,
+            authenticate:true,
+            token
+            }],
+          fetchData, 
+          {
+            retry:false,
+            onSuccess: (response) => {
+              const data = response?.data;
+
+              // build out the filter for comments
+              const rulesChildren = (data?.rules_data || []).map((child, index) => {
+                return ({
+                  id: index, 
+                  name: child.description, 
+                  value: child.id
+                })
+              });
+              const rulesFilter = {
+                id: 99,
+                fieldName: 'Rules', 
+                fieldType: 'select',
+                isSelected: false,
+                fieldQueryName: 'monitoring_comments',
+                children: rulesChildren,
+                fieldValue: '',
+              }
+
+              setFilters([...filters, rulesFilter]);
+
+            },
+            onError: (error) => {
+              handleApiError(error);
+            }
+          }
+          );
+  
   const {  isLoading } = result;
 
   const fireOnSearch = () => {
-    let urlAndFilter = initializeUrlWithFilters(GET_MERCHANT_SUMMARIES + `?page=${page}`, filters);
+    let urlAndFilter = initializeUrlWithFilters(GET_TRANSACTIONS + `?page=${page}`, filters);
       // once the url string changes, the useQuery hook will fire again
     setUrlWithFilters(urlAndFilter);
   }
@@ -464,7 +579,6 @@ function Tables() {
     setIsOpen(true);
   }
 
-  {/** 
   if (isLoading) {
     return (
       <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -474,7 +588,6 @@ function Tables() {
       </Flex>
     )
   }
-  */}
 
   return (
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -508,17 +621,7 @@ function Tables() {
             <Text fontSize="xl" color={textColor} fontWeight="bold">
                 {`Transactions Overview (${formatCurrencyNumber(transactionCount)})`}
             </Text>
-            {/* <Box>
-                <Select 
-                    placeholder='Select Range' 
-                    onChange={(e) => { setRange(e.target.value || 'all') }}
-                    >
-                    <option value='today'>Today</option>
-                    <option value='l30'>Last 30 days</option>
-                    <option value='allTime'>All time</option>
-                    <option value='all'>All</option>
-                </Select>
-            </Box> */}
+
         </Stack>  
         </CardHeader>
         <CardBody>

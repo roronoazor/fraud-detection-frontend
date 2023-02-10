@@ -18,7 +18,7 @@ import {
   const MonitoringComments = (props) => {
 
     const  { title, transaction } = props;
-    const comments = (transaction?.monitoring_comments || '').split('&');
+    const comments = transaction?.monitoring_comments_detail || [];
       
     return (
         <Card sx={{ border: '1px', borderColor: 'gray.200' }}>
@@ -27,7 +27,7 @@ import {
         </CardHeader>
         <Divider orientation='horizontal' m={1} />
         <CardBody>
-            {(comments.length > 0 && comments[0] != '') && (
+            {(comments.length > 0) && (
                  <List spacing={3}>
                     {comments.map((comment, index) => {
                         return (
@@ -39,7 +39,7 @@ import {
                     })}
                  </List>
             )}
-           {((comments.length <= 1 && comments[0] == '')) && (
+           {((comments.length == 0)) && (
             <Center>
                 <Text as="samp">
                     No Comments.

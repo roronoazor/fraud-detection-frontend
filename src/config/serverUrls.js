@@ -18,4 +18,6 @@ export const CHANGE_PASSWORD = BASE_URL + 'authentication/change_password/';
 
 export const GET_TRANSACTIONS = BASE_URL + 'api/transactions/';
 
+export const GET_TRANSACTIONS_STATS = BASE_URL + 'api/transactions/stats/';
+
 

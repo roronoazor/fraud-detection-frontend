@@ -480,7 +480,7 @@ export const TransactionDetailContent = (props) => {
                     </Flex>
                 </GridItem>
                 <GridItem colSpan={3} bg=''>
-                    <MonitoringComments title={'Monitoring Comments'} />
+                    <MonitoringComments title={'MONITORING COMMENTS'} transaction={transaction} />
                 </GridItem>
                 
                 {
