@@ -6,10 +6,14 @@ import PieChart from "components/Charts/PieChart";
 import { pieChartData, pieChartOptions } from "variables/charts";
 import { VSeparator } from "components/VSeparator";
 import React from "react";
-import { Divider } from "@chakra-ui/react";
 
 export default function Conversion(props) {
-  const { title, ...rest } = props;
+  const { 
+    title,
+    suspectedPercentage,
+    clearedPercentage,
+    ...rest
+  } = props;
 
   // Chakra Color Mode
   const textColor = useColorModeValue("secondaryGray.900", "white");
@@ -34,7 +38,7 @@ export default function Conversion(props) {
       <PieChart
         h='100%'
         w='100%'
-        chartData={pieChartData}
+        chartData={[clearedPercentage, suspectedPercentage]}
         chartOptions={pieChartOptions}
       />
       <Card
@@ -58,7 +62,7 @@ export default function Conversion(props) {
             </Text>
           </Flex>
           <Text fontSize='lg' color={textColor} fontWeight='700'>
-            63%
+            {`${suspectedPercentage}%`}
           </Text>
         </Flex>
         <VSeparator mx={{ base: "60px", xl: "60px", "2xl": "60px" }} />
@@ -74,7 +78,7 @@ export default function Conversion(props) {
             </Text>
           </Flex>
           <Text fontSize='lg' color={textColor} fontWeight='700'>
-            25%
+            {`${clearedPercentage}%`}
           </Text>
         </Flex>
       </Card>

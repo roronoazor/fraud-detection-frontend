@@ -7,7 +7,7 @@ import MerchantSummaryTable from "views/Dashboard/MerchantSummaryTable";
 import FraudDashboard from "views/Dashboard/FraudDashbaord.js";
 import BankSummaryChartPage from "views/Dashboard/BankSummaryChartPage";  
 import TransactionPage from "views/Dashboard/TransactionPage";
-import RuleStats from "views/Dashboard/RuleStats";
+import TxnRulesBreakdownPage from "views/Dashboard/TxnRulesBreakdownPage";
 
 import {
   HomeIcon,
@@ -22,6 +22,7 @@ import { MdOutlineSummarize } from "react-icons/md";
 import { TbSum } from "react-icons/tb";
 import UserMgt from "views/Management/UserMgt";
 import Settings from "views/Management/Settings";
+import TxnPieCharts from "views/Dashboard/TxnPieCharts";
 
 var dashRoutes = [
   {
@@ -122,11 +123,21 @@ var dashRoutes = [
         isVisible: true
       },
       {
-        path: "/ruleStats",
+        path: "/pTransactionsChart",
         name: "Rule Metrics",
         icon: <StatsIcon color="inherit" />,
         icon: <MdOutlineSummarize color="inherit" />,
-        component: RuleStats,
+        component: TxnPieCharts,
+        layout: "/admin",
+        isProtected: true,
+        isVisible: true
+      },
+      {
+        path: "/rulesBreakdown",
+        name: "Txn. Breakdown by Rules",
+        icon: <StatsIcon color="inherit" />,
+        icon: <MdOutlineSummarize color="inherit" />,
+        component: TxnRulesBreakdownPage,
         layout: "/admin",
         isProtected: true,
         isVisible: true

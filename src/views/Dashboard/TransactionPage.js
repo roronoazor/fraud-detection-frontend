@@ -48,9 +48,7 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react'
 import { TransactionDetailContent } from "./TransactionDetailContent";
-import { rules } from "eslint-config-prettier";
 
-//dummy data
 
 export const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 

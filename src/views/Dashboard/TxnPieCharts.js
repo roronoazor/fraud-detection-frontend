@@ -54,7 +54,7 @@ import PieCard from "components/PieCard";
 
 
 
-const RuleStats = (props) => {
+const TxnPieCharts = (props) => {
 
     const textColor = useColorModeValue("gray.700", "white");
 
@@ -67,12 +67,12 @@ const RuleStats = (props) => {
             <Box p='2'>
               <HStack spacing={8}>
                 <HStack>
-                  <Text as="b">Start Date</Text>
+                  <Text as="b" sx={{ minWidth: '90px' }}>Start Date: </Text>
                   <Input type='date' />
                 </HStack>
 
                 <HStack>
-                  <Text as="b">End Date</Text>
+                  <Text as="b" sx={{ minWidth: '90px' }}>End Date: </Text>
                   <Input type='date' />
                 </HStack>
               </HStack>
@@ -125,4 +125,4 @@ const RuleStats = (props) => {
 }
 
 
-export default RuleStats;
+export default TxnPieCharts;

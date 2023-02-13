@@ -73,7 +73,7 @@ export const injectArguments = (url, dict_of_args) => {
 
 export const initializeUrlWithFilters = (url, filters) => {
 
-    console.log('initialize', filters);
+    
     filters.map(({fieldQueryName, fieldValue, isSelected}) => {
         if (isSelected){
             url += `&${fieldQueryName}=${fieldValue}`;
@@ -142,3 +142,25 @@ export const firstLetterUpper = function(theString) {
 	var newString = theString.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g,function(c){return c.toUpperCase()});
   return newString;
 }
+
+
+export const getCurrentDateInput = () => {
+
+    const dateObj = new Date();
+  
+    // get the month in this format of 04, the same for months
+    const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
+    const day = ("0" + dateObj.getDate()).slice(-2);
+    const year = dateObj.getFullYear();
+  
+    const shortDate = `${year}-${month}-${day}`;
+  
+    return shortDate;
+  };
+
+  export function calculateSuspectedTransactionPercentage(suspectedTransactions, totalTransactions) {
+    const total = Object.values(totalTransactions).reduce((acc, val) => acc + val, 0);
+    const suspected = Object.values(suspectedTransactions).reduce((acc, val) => acc + val, 0);
+    const percentage = (suspected / total) * 100;
+    return parseFloat(percentage.toFixed(2));
+  }
