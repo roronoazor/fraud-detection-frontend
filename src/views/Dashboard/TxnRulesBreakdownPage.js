@@ -3,15 +3,7 @@ import {
   Box,
   Button,
   Flex,
-  Grid,
-  Icon,
-  Image,
-  Portal,
-  Progress,
   SimpleGrid,
-  Heading,
-  Stat,
-  StatLabel,
   Text,
   HStack,
   Input,
@@ -24,30 +16,9 @@ import {
 
 // Custom components
 import Card from "components/Card/Card.js";
-import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
-import CardFooter from "components/Card/CardFooter";
-import BarChart from "components/Charts/BarChart";
-import LineChart from "components/Charts/LineChart";
-import IconBox from "components/Icons/IconBox";
-  
-// Custom icons
-import {
-  CartIcon,
-  DocumentIcon,
-  GlobeIcon,
-  RocketIcon,
-  StatsIcon,
-  WalletIcon,
-  PersonIcon
-} from "components/Icons/Icons.js";
-import { ChevronDownIcon } from '@chakra-ui/icons';
+
 import React, { useState } from "react";
-import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
-import { timelineData } from "variables/general";
-import { suspectedData } from "variables/general";
-import { useHistory } from "react-router-dom";
-import { pieChartData, pieChartOptions } from "variables/charts";
 import { useSelector } from 'react-redux';
 import PieCard from "components/PieCard";
 import { GET_TRANSACTIONS_STATS, GET_TRANSACTION_RULE_BREAKDOWN } from '../../config/serverUrls';
@@ -55,7 +26,6 @@ import { getAuthToken } from "modules/auth/redux/authSelector";
 import { useQuery } from "react-query";
 import { fetchData } from '../../modules/utilities/util_query';
 import { 
-  initializeUrlWithFilters,
   calculateSuspectedTransactionPercentage,
   getCurrentDateInput,
   firstLetterUpper
@@ -63,7 +33,6 @@ import {
 import { handleApiError } from "modules/utilities/responseHandlers";
 import StackedBarChart from "components/StackedBarChart";
 import { Select } from "chakra-react-select";
-import { GiConsoleController } from "react-icons/gi";
 
 
 const today = getCurrentDateInput();

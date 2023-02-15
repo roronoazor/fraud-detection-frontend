@@ -164,3 +164,23 @@ export const getCurrentDateInput = () => {
     const percentage = (suspected / total) * 100;
     return parseFloat(percentage.toFixed(2));
   }
+
+export function calculateSuspectedTransactionValuePercentage(suspected, total) {
+    
+    const percentage = (suspected / total) * 100;
+    return parseFloat(percentage.toFixed(2));
+  }
+
+
+export function replaceUnderscores(str) {
+    // split the string by underscores
+    let words = str.split('_');
+    
+    // capitalize each word
+    words = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+    
+    // join the words with spaces
+    let result = words.join(' ');
+  
+    return result;
+  }

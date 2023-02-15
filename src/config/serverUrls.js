@@ -22,4 +22,4 @@ export const GET_TRANSACTIONS_STATS = BASE_URL + 'api/transactions/stats/';
 
 export const GET_TRANSACTION_RULE_BREAKDOWN = BASE_URL + 'api/transactions/rule/breakdown/';
 
-
+export const GET_TRANSACTION_TYPE_BREAKDOWN = BASE_URL + 'api/transactions/type/breakdown/';

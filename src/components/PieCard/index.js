@@ -62,7 +62,7 @@ export default function Conversion(props) {
             </Text>
           </Flex>
           <Text fontSize='lg' color={textColor} fontWeight='700'>
-            {`${suspectedPercentage}%`}
+            {`${suspectedPercentage ? `${suspectedPercentage}%` : '-'}`}
           </Text>
         </Flex>
         <VSeparator mx={{ base: "60px", xl: "60px", "2xl": "60px" }} />
@@ -78,7 +78,7 @@ export default function Conversion(props) {
             </Text>
           </Flex>
           <Text fontSize='lg' color={textColor} fontWeight='700'>
-            {`${clearedPercentage}%`}
+            {`${clearedPercentage ? `${clearedPercentage}%` : '-'}`}
           </Text>
         </Flex>
       </Card>
