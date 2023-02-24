@@ -98,8 +98,9 @@ const TxnPieCharts = (props) => {
           {
             retry:false,
             onSuccess: (response) => {
-              const { data } = response?.data;
+              let { data } = response?.data;
               
+
               let transferData = data.find(txn=>(txn?.transaction_type).toLowerCase()=='transfer');
               let withdrawData = data.find(txn=>(txn?.transaction_type).toLowerCase()=='withdrawal');
               setTransferTxn(transferData);

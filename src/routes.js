@@ -8,12 +8,16 @@ import FraudDashboard from "views/Dashboard/FraudDashbaord.js";
 import BankSummaryChartPage from "views/Dashboard/BankSummaryChartPage";  
 import TransactionPage from "views/Dashboard/TransactionPage";
 import TxnRulesBreakdownPage from "views/Dashboard/TxnRulesBreakdownPage";
+import Profile from "views/Dashboard/Profile.js";
+import SignIn from "views/Pages/SignIn.js";
+import SignUp from "views/Pages/SignUp.js";
 
 import {
   HomeIcon,
   StatsIcon,
-  CreditIcon,
   PersonIcon,
+  DocumentIcon,
+  RocketIcon,
 } from "components/Icons/Icons";
 
 import { GiBank } from "react-icons/gi";
@@ -116,7 +120,7 @@ var dashRoutes = [
         path: "/fraud",
         name: "Fraud Dashboard",
         icon: <PersonIcon color="inherit" />,
-        icon: <MdOutlineSummarize color="inherit" />,
+        // icon: <MdOutlineSummarize color="inherit" />,
         component: FraudDashboard,
         layout: "/admin",
         isProtected: true,
@@ -126,7 +130,7 @@ var dashRoutes = [
         path: "/pTransactionsChart",
         name: "Rule Metrics",
         icon: <StatsIcon color="inherit" />,
-        icon: <MdOutlineSummarize color="inherit" />,
+        // icon: <MdOutlineSummarize color="inherit" />,
         component: TxnPieCharts,
         layout: "/admin",
         isProtected: true,
@@ -136,7 +140,7 @@ var dashRoutes = [
         path: "/rulesBreakdown",
         name: "Txn. Breakdown by Rules",
         icon: <StatsIcon color="inherit" />,
-        icon: <MdOutlineSummarize color="inherit" />,
+        // icon: <MdOutlineSummarize color="inherit" />,
         component: TxnRulesBreakdownPage,
         layout: "/admin",
         isProtected: true,
@@ -144,6 +148,39 @@ var dashRoutes = [
       }
     ],
   },
+  {
+    name: "ACCOUNT PAGES",
+    category: "account",
+    state: "pageCollapse",
+    isVisible: false,
+    views: [
+      {
+        path: "/profile",
+        name: "Profile",
+        icon: <PersonIcon color="inherit" />,
+        secondaryNavbar: true,
+        component: Profile,
+        layout: "/admin",
+        isProtected: true,
+      },
+      {
+        path: "/signin",
+        name: "Sign In",
+        icon: <DocumentIcon color="inherit" />,
+        component: SignIn,
+        secondaryNavbar: false,
+        layout: "/auth",
+      },
+      {
+        path: "/signup",
+        name: "Sign Up",
+        icon: <RocketIcon color="inherit" />,
+        secondaryNavbar: false,
+        component: SignUp,
+        layout: "/auth",
+      },
+    ],
+  }
 ];
 
 export default dashRoutes;
