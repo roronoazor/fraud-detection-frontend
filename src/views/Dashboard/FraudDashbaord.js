@@ -77,6 +77,10 @@ import { isFulfilled } from "@reduxjs/toolkit";
     ]);
     const [withdrawalLineChartData, setWithdrawalLineChartData] = useState([]);
     const [withdrawalLineChartLabels, setWithdrawalLineChartLabels] = useState([]);
+    const [transferLineChartData, setTransferLineChartData] = useState([]);
+    const [transferLineChartLabels, setTransferLineChartLabels] = useState([]);
+    const [vasLineChartData, setVasLineChartData] = useState([]);
+    const [vasLineChartLabels, setVasLineChartLabels] = useState([]);
     const history = useHistory();
     let payload_data = {};
 
@@ -99,10 +103,23 @@ import { isFulfilled } from "@reduxjs/toolkit";
               setWithdrawalLineChartData([withdrawal_total_l30, withdrawal_suspected_l30]);
               setWithdrawalLineChartLabels(Object.keys(data?.withdrawal?.total_l30));
 
+
+              const transfer_total_l30 = { name: 'Total Transactions', data: Object.values(data?.transfer?.total_l30) };
+              const transfer_suspected_l30 = { name: 'Suspected Transactions', data: Object.values(data?.transfer?.suspected_l30) };
+              setTransferLineChartData([transfer_total_l30, transfer_suspected_l30]);
+              setTransferLineChartLabels(Object.keys(data?.transfer?.total_l30));
+
+              const vas_total_l30 = { name: 'Total Transactions', data: Object.values(data?.vas?.total_l30) };
+              const vas_suspected_l30 = { name: 'Suspected Transactions', data: Object.values(data?.vas?.suspected_l30) };
+              setVasLineChartData([vas_total_l30, vas_suspected_l30]);
+              setVasLineChartLabels(Object.keys(data?.vas?.total_l30));
+
+
             },
             onError: (error) => {
               handleApiError(error);
-            }
+            },
+            StaleTime: 10000
           }
           );
     const { isLoading } = fetchInfo;
@@ -134,7 +151,7 @@ import { isFulfilled } from "@reduxjs/toolkit";
                   </StatLabel>
                   <Flex>
                     <StatNumber fontSize="lg" color={textColor}>
-                      {formatCurrencyNumber(dashboardData?.rules_count)}
+                      {formatCurrencyNumber(dashboardData?.rules_count) || '0'}
                     </StatNumber>
                     <Spacer />
                     <Box sx={{ float: 'right' }}>
@@ -161,7 +178,7 @@ import { isFulfilled } from "@reduxjs/toolkit";
                   </StatLabel>
                   <Flex>
                     <StatNumber fontSize="lg" color={textColor}>
-                      {formatCurrencyNumber(dashboardData?.suspected_transactions_today)}
+                      {formatCurrencyNumber(dashboardData?.suspected_transactions_today) || '0'}
                     </StatNumber>
                     <Spacer />
                     <Box sx={{ float: 'right' }}>
@@ -188,7 +205,7 @@ import { isFulfilled } from "@reduxjs/toolkit";
                   </StatLabel>
                   <Flex>
                     <StatNumber fontSize="lg" color={textColor}>
-                      {formatCurrencyNumber(dashboardData?.total_transactions_today)}
+                      {formatCurrencyNumber(dashboardData?.total_transactions_today) || '0'}
                     </StatNumber>
                     <Spacer />
                     <Box sx={{ float: 'right' }}>
@@ -237,7 +254,7 @@ import { isFulfilled } from "@reduxjs/toolkit";
                 <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
                   <Box>
                     <Heading size='sm'>Withdrawal Txn Overview</Heading>
-                    <Text fontSize='xs' as='i'>{`${formatCurrencyNumber(dashboardData?.withdrawal?.suspected)} suspected withdrawal transactions recorded this month`}</Text>
+                    <Text fontSize='xs' as='i'>{`${formatCurrencyNumber(dashboardData?.withdrawal?.suspected)} suspected withdrawal transactions recorded in the last 30 days`}</Text>
                   </Box>
                 </Flex>
               </Flex>
@@ -292,7 +309,7 @@ import { isFulfilled } from "@reduxjs/toolkit";
                       mb="6px"
                       my="6px"
                     >
-                      {formatCurrencyNumber(dashboardData?.withdrawal?.total)}
+                      {formatCurrencyNumber(dashboardData?.withdrawal?.total) || '0'}
                     </Text>
                     <Progress
                       colorScheme="teal"
@@ -354,7 +371,7 @@ import { isFulfilled } from "@reduxjs/toolkit";
                       mb="6px"
                       my="6px"
                     >
-                      {formatCurrencyNumber(dashboardData?.withdrawal?.failed) ? formatCurrencyNumber(dashboardData?.withdrawal?.failed) : 0}
+                      {formatCurrencyNumber(dashboardData?.withdrawal?.failed) || '0'}
                     </Text>
                     <Progress
                       colorScheme="teal"
@@ -385,7 +402,7 @@ import { isFulfilled } from "@reduxjs/toolkit";
                       mb="6px"
                       my="6px"
                     >
-                      {formatCurrencyNumber(dashboardData?.withdrawal?.successful)}
+                      {formatCurrencyNumber(dashboardData?.withdrawal?.successful) || '0'}
                     </Text>
                     <Progress
                       colorScheme="teal"
@@ -396,33 +413,6 @@ import { isFulfilled } from "@reduxjs/toolkit";
                   </Flex>
                 </SimpleGrid>
               </Box>
-              <Divider />
-              <CardBody p={2}>
-              <Flex direction="column" p='30px 15px'>
-                  <Box>
-                    <Text
-                      fontSize="md"
-                      color={textColor}
-                      pb=".5rem"
-                    >
-                      Suspected Withdrawal Txn Breakdown (Today)
-                    </Text>
-                  </Box>
-                  {suspectedData.map((row, index, arr) => {
-                    return (
-                      <TimelineRow
-                        logo={row.logo}
-                        title={row.title}
-                        date={row.date}
-                        color={row.color}
-                        index={index}
-                        arrLength={arr.length}
-                      />
-                    );
-                  })}
-              
-              </Flex>
-              </CardBody>
               <CardFooter justify='flex-end'>
                 <Spacer />
                 <ButtonGroup spacing='2' padding='2'>
@@ -441,23 +431,27 @@ import { isFulfilled } from "@reduxjs/toolkit";
           mb={{ lg: "26px" }}
         > 
           {/** UI COMPONENT FOR SUSPECTED BANK TRANSFER COMPONENT */}
-          <Card p="28px 10px 16px 0px" mb={{ sm: "26px", lg: "0px" }}>
+          <Card w="100%" p="28px 10px 16px 0px" mb={{ sm: "26px", lg: "0px" }}>
               <CardHeader mb="20px" pl="22px">
                 <Flex spacing='4'>
                   <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
                     <Box>
                       <Heading size='sm'>Bank Transfer Txn Overview </Heading>
-                      <Text fontSize='xs' as='i'>{`4,200 suspected transfer transactions recorded today`}</Text>
+                      <Text fontSize='xs' as='i'>{`${formatCurrencyNumber(dashboardData?.transfer?.suspected)} suspected transfer transactions recorded in the last 30 days`}</Text>
                     </Box>
                   </Flex>
                 </Flex>
               </CardHeader>
                 <CardBody p={2}>
-                  <BarChart />
-                  {/* <LineChart /> */}
+                <Box w="100%" h={{ sm: "300px" }} ps="8px">
+                  <LineChart 
+                      chartData={transferLineChartData}
+                      chartOptions={transferLineChartLabels}
+                    />
+                </Box>  
                 </CardBody>
                 <Box p="5" align='center'>
-                  <Text>{`Last 7 days overview`}</Text>
+                  <Text>{`Last 30 days overview`}</Text>
                 </Box>
                 <Divider />
                 <Box p='15'>
@@ -498,7 +492,7 @@ import { isFulfilled } from "@reduxjs/toolkit";
                       mb="6px"
                       my="6px"
                     >
-                      32,984
+                      {formatCurrencyNumber(dashboardData?.transfer?.total) || '0'}
                     </Text>
                     <Progress
                       colorScheme="teal"
@@ -529,7 +523,7 @@ import { isFulfilled } from "@reduxjs/toolkit";
                       mb="6px"
                       my="6px"
                     >
-                      2,420
+                      {formatCurrencyNumber(dashboardData?.transfer?.suspected) || '0'}
                     </Text>
                     <Progress
                       colorScheme="teal"
@@ -560,7 +554,7 @@ import { isFulfilled } from "@reduxjs/toolkit";
                       mb="6px"
                       my="6px"
                     >
-                      2,400
+                      {formatCurrencyNumber(dashboardData?.transfer?.failed) || '0'}
                     </Text>
                     <Progress
                       colorScheme="teal"
@@ -591,7 +585,7 @@ import { isFulfilled } from "@reduxjs/toolkit";
                       mb="6px"
                       my="6px"
                     >
-                      320
+                      {formatCurrencyNumber(dashboardData?.transfer?.successful) || '0'}
                     </Text>
                     <Progress
                       colorScheme="teal"
@@ -602,33 +596,6 @@ import { isFulfilled } from "@reduxjs/toolkit";
                   </Flex>
                 </SimpleGrid>
                 </Box>
-                <Divider />
-                <CardBody p={2}>
-              <Flex direction="column" p='30px 15px'>
-                  <Box>
-                    <Text
-                      fontSize="md"
-                      color={textColor}
-                      pb=".5rem"
-                    >
-                      Suspected Bank Transfer Txn Breakdown (Today)
-                    </Text>
-                  </Box>
-                  {suspectedData.map((row, index, arr) => {
-                    return (
-                      <TimelineRow
-                        logo={row.logo}
-                        title={row.title}
-                        date={row.date}
-                        color={row.color}
-                        index={index}
-                        arrLength={arr.length}
-                      />
-                    );
-                  })}
-              
-              </Flex>
-              </CardBody>
               <CardFooter justify='flex-end'>
                 <Spacer />
                 <ButtonGroup spacing='2' padding='2'>
@@ -644,45 +611,166 @@ import { isFulfilled } from "@reduxjs/toolkit";
                 <Flex spacing='4'>
                   <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
                     <Box>
-                      <Heading size='sm'>Airtime Recharge Txn Overview</Heading>
-                      <Text fontSize='xs' as='i'>{`5,700 suspected Withdrawal transactions recorded today`}</Text>
+                      <Heading size='sm'>V.A.S Txn Overview</Heading>
+                      <Text fontSize='xs' as='i'>{`${formatCurrencyNumber(dashboardData?.vas?.suspected) || '0'} suspected v.a.s transactions recorded in the last 30 days`}</Text>
                     </Box>
                   </Flex>
                 </Flex>
               </CardHeader>
                 <CardBody p={2}>
-                  <BarChart />
+                  <Box w="100%" h={{ sm: "300px" }} ps="8px">
+                    <LineChart 
+                      chartData={vasLineChartData}
+                      chartOptions={vasLineChartLabels}
+                    />
+                  </Box>
                 </CardBody>
                 <Box p="5" align='center'>
-                  <Text>{`Last 7 days overview`}</Text>
+                  <Text>{`Last 30 days overview`}</Text>
                 </Box>
                 <Divider />
-                <CardBody p={2}>
-              <Flex direction="column" p='30px 15px'>
-                  <Box>
+                <Box p='15'>
+                  <Flex
+                    direction="column"
+                    mt="14px"
+                    mb="26px"
+                    alignSelf="flex-start"
+                  >
                     <Text
                       fontSize="md"
                       color={textColor}
-                      pb=".5rem"
+                      mb="6px"
                     >
-                      Suspected Bank Transfer Txn Breakdown (Today)
+                      Value Added Services Transaction Stats this month
                     </Text>
-                  </Box>
-                  {suspectedData.map((row, index, arr) => {
-                    return (
-                      <TimelineRow
-                        logo={row.logo}
-                        title={row.title}
-                        date={row.date}
-                        color={row.color}
-                        index={index}
-                        arrLength={arr.length}
-                      />
-                    );
-                  })}
-              
-              </Flex>
-              </CardBody>
+                  </Flex>
+                <SimpleGrid gap={{ sm: "12px" }} columns={4}>
+                  <Flex direction="column">
+                    <Flex alignItems="center">
+                      <IconBox
+                        as="box"
+                        h={"30px"}
+                        w={"30px"}
+                        bg={iconTeal}
+                        me="6px"
+                      >
+                        <WalletIcon h={"15px"} w={"15px"} color={iconBoxInside} />
+                      </IconBox>
+                      <Text fontSize="sm" color="gray.400" fontWeight="semibold">
+                       V.A.S 
+                      </Text>
+                    </Flex>
+                    <Text
+                      fontSize="lg"
+                      color={textColor}
+                      fontWeight="bold"
+                      mb="6px"
+                      my="6px"
+                    >
+                      {formatCurrencyNumber(dashboardData?.vas?.total) || '0'}
+                    </Text>
+                    <Progress
+                      colorScheme="teal"
+                      borderRadius="12px"
+                      h="5px"
+                      value={20}
+                    />
+                  </Flex>
+                  <Flex direction="column">
+                    <Flex alignItems="center">
+                      <IconBox
+                        as="box"
+                        h={"30px"}
+                        w={"30px"}
+                        bg={iconTeal}
+                        me="6px"
+                      >
+                        <RocketIcon h={"15px"} w={"15px"} color={iconBoxInside} />
+                      </IconBox>
+                      <Text fontSize="sm" color="gray.400" fontWeight="semibold">
+                        Suspected
+                      </Text>
+                    </Flex>
+                    <Text
+                      fontSize="lg"
+                      color={'red.400'}
+                      fontWeight="bold"
+                      mb="6px"
+                      my="6px"
+                    >
+                      {formatCurrencyNumber(dashboardData?.vas?.suspected) || '0'}
+                    </Text>
+                    <Progress
+                      colorScheme="teal"
+                      borderRadius="12px"
+                      h="5px"
+                      value={90}
+                    />
+                  </Flex>
+                  <Flex direction="column">
+                    <Flex alignItems="center">
+                      <IconBox
+                        as="box"
+                        h={"30px"}
+                        w={"30px"}
+                        bg={iconTeal}
+                        me="6px"
+                      >
+                        <CartIcon h={"15px"} w={"15px"} color={iconBoxInside} />
+                      </IconBox>
+                      <Text fontSize="sm" color="gray.400" fontWeight="semibold">
+                        Failed
+                      </Text>
+                    </Flex>
+                    <Text
+                      fontSize="lg"
+                      color={'red.400'}
+                      fontWeight="bold"
+                      mb="6px"
+                      my="6px"
+                    >
+                      {formatCurrencyNumber(dashboardData?.vas?.failed || '0')}
+                    </Text>
+                    <Progress
+                      colorScheme="teal"
+                      borderRadius="12px"
+                      h="5px"
+                      value={30}
+                    />
+                  </Flex>
+                  <Flex direction="column">
+                    <Flex alignItems="center">
+                      <IconBox
+                        as="box"
+                        h={"30px"}
+                        w={"30px"}
+                        bg={iconTeal}
+                        me="6px"
+                      >
+                        <StatsIcon h={"15px"} w={"15px"} color={iconBoxInside} />
+                      </IconBox>
+                      <Text fontSize="sm" color="gray.400" fontWeight="semibold">
+                        Success
+                      </Text>
+                    </Flex>
+                    <Text
+                      fontSize="lg"
+                      color={'green.400'}
+                      fontWeight="bold"
+                      mb="6px"
+                      my="6px"
+                    >
+                      {formatCurrencyNumber(dashboardData?.vas?.successful) || '0'}
+                    </Text>
+                    <Progress
+                      colorScheme="teal"
+                      borderRadius="12px"
+                      h="5px"
+                      value={50}
+                    />
+                  </Flex>
+                </SimpleGrid>
+                </Box>
               <CardFooter justify='flex-end'>
                 <Spacer />
                 <ButtonGroup spacing='2' padding='2'>

@@ -84,10 +84,10 @@ export const initializeUrlWithFilters = (url, filters) => {
 
 }
 
-export const formatCurrencyNumber = (number, decimals = 2, floatSeparator = '.', separator = ',', prefix="") => {
+export const formatCurrencyNumber = (number, decimals = 2, floatSeparator = '.', separator = ',', prefix="", placeholder="") => {
 
     if (!number){
-        return '';
+        return placeholder ;
     }
 
     let stringified = number.toString();
@@ -125,7 +125,7 @@ export const formatCurrencyNumber = (number, decimals = 2, floatSeparator = '.',
         }
     }
     if (result == ''){
-        return ""
+        return placeholder
     }
     return prefix + ' ' + result;
 }

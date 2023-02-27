@@ -8,14 +8,28 @@ class LineChart extends React.Component {
     this.state = {
       chartData: this.props.chartData,
       chartOptions: {...lineChartOptions,  xaxis: {...lineChartOptions.xaxis, categories: this.props.chartOptions}},
+      intervalId: 0
     };
   }
 
   componentDidMount() {
-    this.setState({
-      chartData: this.props.chartData,
-      chartOptions: {...lineChartOptions,  xaxis: {...lineChartOptions.xaxis, categories: this.props.chartOptions}}}
-    );
+    const intervalId = setInterval(() => {
+      this.setState({
+        chartData: this.props.chartData,
+        chartOptions: {...lineChartOptions,  xaxis: {...lineChartOptions.xaxis, categories: this.props.chartOptions}}},
+      );
+    }, 2000);
+
+    this.setState(prevState => {
+      return {
+        ...prevState,
+        intervalId
+      }
+    })
+  }
+
+  componentWillUnmount(){
+    clearInterval(this.state.intervalId);
   }
 
 
