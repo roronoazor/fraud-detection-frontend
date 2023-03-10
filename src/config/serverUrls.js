@@ -12,7 +12,13 @@ export const GET_BANK_SUMMARIES = BASE_URL + 'api/bank_summaries/';
 
 export const GET_MERCHANT_SUMMARIES = BASE_URL + 'api/merchant_summaries/';
 
-export const GET_USERS = BASE_URL + 'authentication/users/';
+export const GET_CREATE_USERS = BASE_URL + 'authentication/users/';
+
+export const ACTIVATE_USERS = BASE_URL + 'authentication/activate_user/';
+
+export const DEACTIVATE_USERS = BASE_URL + 'authentication/deactivate_user/';
+
+export const DELETE_USERS = BASE_URL + 'authentication/delete_user/';
 
 export const CHANGE_PASSWORD = BASE_URL + 'authentication/change_password/';
 

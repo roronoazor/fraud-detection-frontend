@@ -175,7 +175,7 @@ const TxnPieCharts = (props) => {
              <CardHeader mb="2px" pl="22px">
                 <Flex direction="column" alignSelf="flex-start">
                   <Text fontSize="lg" color={textColor} fontWeight="bold" mb="6px">
-                    Transfer & Withdrawal
+                    Agency Banking
                   </Text>
                 </Flex>
               </CardHeader>
