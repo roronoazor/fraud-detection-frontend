@@ -17,7 +17,7 @@ import {
     Spacer,
     Button,
     Icon,
-    Stack
+    useToast
   } from "@chakra-ui/react";
   // Custom components
   import Card from "components/Card/Card.js";
@@ -30,7 +30,9 @@ import {
     GET_CREATE_USERS,
     ACTIVATE_USERS,
     DEACTIVATE_USERS,
-    DELETE_USERS
+    DELETE_USERS,
+    RESET_PASSWORD_URL,
+    UPDATE_USER
   } from '../../config/serverUrls';
   import { fetchData, postData } from '../../modules/utilities/util_query';
   import { useSelector } from 'react-redux';
@@ -42,10 +44,12 @@ import {
   import { SiActigraph, SiAdblock } from 'react-icons/si';
   import { BsFillCheckCircleFill  } from 'react-icons/bs';
   import { RiErrorWarningFill } from 'react-icons/ri';
-  import { MdDeleteForever } from 'react-icons/md';
+  import { MdDeleteForever, MdOutlinePassword } from 'react-icons/md';
   import  ModalUserForm  from 'views/Dashboard/Forms/ModalUserForm';
+  import ModalResetPasswordForm from 'views/Dashboard/Forms/ModalResetPasswordForm';
   import { useQueryClient } from 'react-query';
   import toast from 'react-hot-toast';
+  import { FaEdit } from 'react-icons/fa';
 
 
 const fields = [
@@ -107,7 +111,7 @@ const tableHeaders = [
     },
     {
         id: 6,
-        value: 'action'
+        value: 'actions'
     }
 ]
 
@@ -129,15 +133,23 @@ const users = [
 ]
 
 
+
 const UserRow = (props) => {
 
-    const { user, onSelectCheckbox, selected } = props;
+    const { 
+      user,
+      onSelectCheckbox,
+      selected,
+      openPasswordReset,
+      closePasswordReset,
+      openEditUser
+    } = props;
     const textColor = useColorModeValue("gray.700", "white");
 
     return (
         <Tr>
           <Td minWidth={{ sm: "150px" }} pl="0px">
-            <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
+            <Flex align="center"  minWidth="100%" flexWrap="nowrap">
               <Flex direction="column">
                 <Checkbox
                   isChecked={selected.includes(user?.id)}
@@ -156,7 +168,7 @@ const UserRow = (props) => {
             </Flex>
           </Td>
           <Td minWidth={{ sm: "150px" }} pl="0px">
-            <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
+            <Flex align="center"  minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
               <Flex direction="column">
                 <Text fontSize="sm" color="gray.400" fontWeight="normal">
                   {user.first_name}
@@ -165,7 +177,7 @@ const UserRow = (props) => {
             </Flex>
           </Td>
           <Td minWidth={{ sm: "250px" }} pl="0px">
-            <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
+            <Flex align="center"  minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
               <Flex direction="column">
                 <Text fontSize="sm" color="gray.400" fontWeight="normal">
                   {user.email}
@@ -174,7 +186,7 @@ const UserRow = (props) => {
             </Flex>
           </Td>
           <Td minWidth={{ sm: "250px" }} pl="0px">
-            <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
+            <Flex align="center"  minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
               <Flex direction="column">
                 <Text fontSize="sm" color="gray.400" fontWeight="normal">
                   {user.department_name}
@@ -183,7 +195,7 @@ const UserRow = (props) => {
             </Flex>
           </Td>
           <Td minWidth={{ sm: "250px" }} pl="0px">
-            <Flex py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
+            <Flex  minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
               <Flex direction="column">
                   { user.is_active 
                   ? 
@@ -231,7 +243,7 @@ const UserRow = (props) => {
                               <br />
                               <Text as="samp">Disabled</Text>
                             </Text>
-                          </Center>
+                        </Center>
                       </>
                     ) 
                   }               
@@ -239,12 +251,47 @@ const UserRow = (props) => {
             </Flex>
           </Td>
           <Td minWidth={{ sm: "250px" }} pl="0px">
-            <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
-              <Flex direction="column">
-                <Button colorScheme={'red'}>
-                    Reset Password
-                </Button>
-              </Flex>
+          <Flex  minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
+              <HStack>
+                <Center>
+                    <Text
+                        fontSize="md"
+                        color={textColor}
+                        fontWeight="bold"
+                        minWidth="100%"
+                        align='center'
+                    >
+                      <Icon 
+                        as={MdOutlinePassword}
+                        w={25}
+                        h={25}
+                        color="orange.500"
+                        onClick={()=>openPasswordReset(user)}
+                        />
+                      <br />
+                      <Text as="samp">Reset Password</Text>
+                    </Text>
+                </Center>
+                <Center>
+                    <Text
+                        fontSize="md"
+                        color={textColor}
+                        fontWeight="bold"
+                        minWidth="100%"
+                        align='center'
+                    >
+                      <Icon 
+                        as={FaEdit}
+                        w={25}
+                        h={25}
+                        color="teal.500"
+                        onClick={()=>{ openEditUser(user) }}
+                        />
+                      <br />
+                      <Text as="samp">Edit User</Text>
+                    </Text>
+                </Center>
+              </HStack>       
             </Flex>
           </Td>
         </Tr>
@@ -262,8 +309,11 @@ const UserMgt = (props) => {
     const [pageCount, setPageCount] = useState(1);
     const [urlWithFilters, setUrlWithFilters] = useState("");
     const [openForm, setOpenForm] = useState(false);
+    const [openPasswordResetForm, setOpenPasswordResetForm] = useState(false);
     const [selected, setSelected] = useState([]);
+    const [selectedUser, setSelectedUser] = useState({});
     const queryClient = useQueryClient();
+    const toastAlert = useToast();
 
     // call the api that loads this data only once
     let payload_data = {
@@ -296,6 +346,9 @@ const UserMgt = (props) => {
           queryClient.invalidateQueries('users');
           setOpenForm(false);
           setSelected([]);
+          setSelectedUser({});
+          setOpenPasswordResetForm(false);
+
       },
       onError: (error) => {
           handleApiError(error);
@@ -367,6 +420,15 @@ const UserMgt = (props) => {
   const handleSubmit = (actionType, data={}) => {
 
     if (actionType == 'create') {
+
+      if (!data?.first_name || !data?.last_name || !data?.email || !data?.password || !data?.dept) {
+        toastAlert({
+          title: 'Please fill all required fields',
+          status: 'warning',
+          isClosable: true
+        })
+        return;
+      }
       mutation.mutate({
         url: GET_CREATE_USERS,
         payload_data: data,
@@ -376,7 +438,40 @@ const UserMgt = (props) => {
       return;
     }
 
+    if (actionType == 'edit') {
+      console.log('edit', data);
+      if (!data?.first_name || !data?.last_name || !data?.email || !data?.dept) {
+        toastAlert({
+          title: 'Please fill all required fields',
+          status: 'warning',
+          isClosable: true
+        })
+        return;
+      }
+      mutation.mutate({
+        url: UPDATE_USER,
+        payload_data: {
+          id: selectedUser.id,
+          first_name: data?.first_name,
+          last_name: data?.last_name,
+          email: data?.email,
+          dept: data?.dept
+        },
+        token: token,
+        authenticate: true
+      });
+      return;
+    }
+
     if (actionType == 'activate') {
+      if ( selected?.length <= 0 ) {
+        toastAlert({
+          title: 'You havent selected any users',
+          status: 'warning',
+          isClosable: true
+        })
+        return;
+      }
       mutation.mutate({
         url: ACTIVATE_USERS,
         payload_data: { ids: selected },
@@ -387,6 +482,14 @@ const UserMgt = (props) => {
     }
 
     if (actionType == 'deactivate') {
+      if ( selected?.length <= 0 ) {
+        toastAlert({
+          title: 'You havent selected any users',
+          status: 'warning',
+          isClosable: true
+        })
+        return;
+      }
       mutation.mutate({
         url: DEACTIVATE_USERS,
         payload_data: { ids: selected },
@@ -397,11 +500,42 @@ const UserMgt = (props) => {
     }
 
     if (actionType == 'delete') {
+      if ( selected?.length <= 0 ) {
+        toastAlert({
+          title: 'You havent selected any users',
+          status: 'warning',
+          isClosable: true
+        })
+        return;
+      }
       mutation.mutate({
         url: DELETE_USERS,
         payload_data: { ids: selected },
         token: token,
         authenticate: true
+      });
+      return;
+    }
+
+    if (actionType == 'reset_password') { 
+
+      if (data?.password != data?.confirm_password){
+        toastAlert({
+          title: 'Passwords do not match',
+          status: 'warning',
+          isClosable: true
+        })
+        return;
+      }
+
+      mutation.mutate({
+        url: RESET_PASSWORD_URL,
+        payload_data: { 
+          id: selectedUser.id,
+          password: data?.password, 
+          confirm_password: data?.confirm_password },
+          token: token,
+          authenticate: true
       });
       return;
     }
@@ -418,6 +552,22 @@ const UserMgt = (props) => {
       </Flex>
     )
   }
+
+  const openPasswordReset = (user) => {
+    setSelectedUser(user);
+    setOpenPasswordResetForm(true);
+  }
+
+  const closePasswordReset = () => {
+    setSelectedUser({});
+    setOpenPasswordResetForm(false);
+  }
+
+  const openEditUser = (user) => {
+    console.log('xxx: ', user);
+    setSelectedUser(user);
+    setOpenForm(true);
+  };
 
   return (
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -472,9 +622,19 @@ const UserMgt = (props) => {
       <Card overflowX={{ sm: "scroll", xl: "hidden" }}>
         <ModalUserForm 
           isOpen={openForm}
-          onClose={()=>{setOpenForm(false)}}
+          onClose={()=>{setSelectedUser({}); setOpenForm(false)}}
           handleSubmit={handleSubmit} 
+          selectedUser={selectedUser}
+          setSelectedUser={setSelectedUser}
           isLoading={mutation?.isLoading} 
+        />
+        <ModalResetPasswordForm
+          isOpen={openPasswordResetForm}
+          onClose={closePasswordReset}
+          handleSubmit={handleSubmit} 
+          selectedUser={selectedUser}
+          setSelectedUser={setSelectedUser}
+          isLoading={mutation?.isLoading}
         />
         <CardHeader p="6px 0px 22px 0px">
           <Text fontSize="xl" color={textColor} fontWeight="bold">
@@ -483,7 +643,7 @@ const UserMgt = (props) => {
         </CardHeader>
         <CardBody>
         <Box overflowX="scroll">
-          <Table variant="simple" color={textColor}>
+          <Table size="sm" variant="simple" color={textColor}>
             <Thead>
               <Tr my=".8rem" pl="0px" color="gray.400">
                 {
@@ -514,6 +674,9 @@ const UserMgt = (props) => {
                         user={user}
                         onSelectCheckbox={onSelectCheckbox}
                         selected={selected}
+                        openPasswordReset={openPasswordReset}
+                        onClose={closePasswordReset}
+                        openEditUser={openEditUser}
                         />
                     );
                 })}

@@ -14,6 +14,8 @@ export const GET_MERCHANT_SUMMARIES = BASE_URL + 'api/merchant_summaries/';
 
 export const GET_CREATE_USERS = BASE_URL + 'authentication/users/';
 
+export const UPDATE_USER = BASE_URL + 'authentication/users/update/';
+
 export const ACTIVATE_USERS = BASE_URL + 'authentication/activate_user/';
 
 export const DEACTIVATE_USERS = BASE_URL + 'authentication/deactivate_user/';
@@ -21,6 +23,8 @@ export const DEACTIVATE_USERS = BASE_URL + 'authentication/deactivate_user/';
 export const DELETE_USERS = BASE_URL + 'authentication/delete_user/';
 
 export const CHANGE_PASSWORD = BASE_URL + 'authentication/change_password/';
+
+export const RESET_PASSWORD_URL = BASE_URL + 'authentication/reset_password/';
 
 export const GET_TRANSACTIONS = BASE_URL + 'api/transactions/';
 

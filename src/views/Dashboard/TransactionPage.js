@@ -299,7 +299,7 @@ function TransactionRow(props) {
     return (
         <Tr>
         <Td minWidth={{ sm: "150px" }} pl="0px">
-          <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
+          <Flex align="center"  minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
             <Flex direction="column">
             <Center>
                 <Text
@@ -352,7 +352,7 @@ function TransactionRow(props) {
           </Flex>
         </Td>
         <Td minWidth={{ sm: "250px" }} pl="0px">
-          <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
+          <Flex align="center"  minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
             <Flex direction="column">
               <Text
                 fontSize="md"
@@ -367,7 +367,7 @@ function TransactionRow(props) {
           </Flex>
         </Td>
         <Td minWidth={{ sm: "250px" }} pl="0px">
-          <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
+          <Flex align="center"  minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
             <Flex direction="column">
                 <Center>
                     <Text
@@ -409,7 +409,7 @@ function TransactionRow(props) {
           </Flex>
         </Td>
         <Td minWidth={{ sm: "250px" }} pl="0px">
-          <Flex py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
+          <Flex  minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
             <Text
                 fontSize="md"
                 color={textColor}
@@ -423,7 +423,7 @@ function TransactionRow(props) {
           </Flex>
         </Td>
         <Td minWidth={{ sm: "250px" }} pl="0px">
-          <Flex py=".8rem" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
+          <Flex  minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
             <Button
             colorScheme='teal'
             onClick={()=>{showDetails(transaction)}}
@@ -624,7 +624,7 @@ function Tables() {
         </CardHeader>
         <CardBody>
         <Box overflowX="scroll">  
-          <Table variant="simple" color={textColor}>
+          <Table size="sm" variant="simple" color={textColor}>
             <Thead>
               <Tr my=".8rem" pl="0px" color="gray.400">
                 {
