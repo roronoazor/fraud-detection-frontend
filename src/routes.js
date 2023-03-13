@@ -1,11 +1,5 @@
 // import
 import Dashboard from "views/Dashboard/Dashboard.js";
-import Tables from "views/Dashboard/Tables.js";
-import Billing from "views/Dashboard/Billing.js";
-import RTLPage from "views/RTL/RTLPage.js";
-import Profile from "views/Dashboard/Profile.js";
-import SignIn from "views/Pages/SignIn.js";
-import SignUp from "views/Pages/SignUp.js";
 import BankTable from "views/Dashboard/BankTable.js";
 import MerchantTable from "views/Dashboard/MerchantTable.js";
 import BankSummaryTable from "views/Dashboard/BankSummaryTable";
@@ -13,15 +7,18 @@ import MerchantSummaryTable from "views/Dashboard/MerchantSummaryTable";
 import TransferSummary from "views/Dashboard/TransferSummary.js";
 import FraudDashboard from "views/Dashboard/FraudDashbaord.js";
 import BankSummaryChartPage from "views/Dashboard/BankSummaryChartPage";  
+import TransactionPage from "views/Dashboard/TransactionPage";
+import TxnRulesBreakdownPage from "views/Dashboard/TxnRulesBreakdownPage";
+import Profile from "views/Dashboard/Profile.js";
+import SignIn from "views/Pages/SignIn.js";
+import SignUp from "views/Pages/SignUp.js";
 
 import {
   HomeIcon,
   StatsIcon,
-  CreditIcon,
   PersonIcon,
   DocumentIcon,
   RocketIcon,
-  SupportIcon,
 } from "components/Icons/Icons";
 
 import { GiBank } from "react-icons/gi";
@@ -30,6 +27,7 @@ import { MdOutlineSummarize } from "react-icons/md";
 import { TbSum } from "react-icons/tb";
 import UserMgt from "views/Management/UserMgt";
 import Settings from "views/Management/Settings";
+import TxnPieCharts from "views/Dashboard/TxnPieCharts";
 
 var dashRoutes = [
   {
@@ -78,15 +76,6 @@ var dashRoutes = [
     isVisible: true
   },
   {
-    path: "/fraud",
-    name: "Fraud Monitoring",
-    icon: <MdOutlineSummarize color="inherit" />,
-    component: FraudDashboard,
-    layout: "/admin",
-    isProtected: true,
-    isVisible: true
-  },
-  {
     path: "/bankSummary2/:id",
     name: "BankSummaryChart",
     icon: <MdOutlineSummarize color="inherit" />,
@@ -114,18 +103,57 @@ var dashRoutes = [
     isVisible: false
   },
   {
-    path: "/transfers",
-    name: "Transfers",
-    icon: <BsPersonLinesFill color="inherit" />,
-    component: TransferSummary,
+    path: "/transaction",
+    name: " Transaction Overview",
+    icon: <MdOutlineSummarize color="inherit" />,
+    component: TransactionPage,
     layout: "/admin",
     isProtected: true,
-    isVisible: true
+    isVisible: false
+  },
+  {
+    name: "Fraud Monitoring",
+    category: "account",
+    state: "pageCollapse",
+    isVisible: true,
+    views: [
+      {
+        path: "/fraud",
+        name: "Fraud Dashboard",
+        icon: <PersonIcon color="inherit" />,
+        // icon: <MdOutlineSummarize color="inherit" />,
+        component: FraudDashboard,
+        layout: "/admin",
+        isProtected: true,
+        isVisible: true
+      },
+      {
+        path: "/pTransactionsChart",
+        name: "Rule Metrics",
+        icon: <StatsIcon color="inherit" />,
+        // icon: <MdOutlineSummarize color="inherit" />,
+        component: TxnPieCharts,
+        layout: "/admin",
+        isProtected: true,
+        isVisible: true
+      },
+      {
+        path: "/rulesBreakdown",
+        name: "Txn. Breakdown by Rules",
+        icon: <StatsIcon color="inherit" />,
+        // icon: <MdOutlineSummarize color="inherit" />,
+        component: TxnRulesBreakdownPage,
+        layout: "/admin",
+        isProtected: true,
+        isVisible: true
+      }
+    ],
   },
   {
     name: "ACCOUNT PAGES",
     category: "account",
     state: "pageCollapse",
+    isVisible: false,
     views: [
       {
         path: "/profile",
@@ -153,7 +181,7 @@ var dashRoutes = [
         layout: "/auth",
       },
     ],
-  },
+  }
 ];
 
 export default dashRoutes;

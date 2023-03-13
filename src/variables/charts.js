@@ -1,7 +1,12 @@
 export const barChartData = [
   {
     name: "Sales",
-    data: [330, 250, 110, 300, 490, 350, 270, 130, 425],
+    data: [
+      330100, 250000, 110200, 100300, 231490, 135000, 270240, 130250, 425200,
+      330100, 250000, 110200, 100300, 231490, 135000, 270240, 130250, 425200,
+      330100, 250000, 110200, 100300, 231490, 135000, 270240, 130250, 425200,
+      330100, 250000, 110200, 100300
+    ],
   },
 ];
 
@@ -86,11 +91,21 @@ export const barChartOptions = {
 export const lineChartData = [
   {
     name: "Transaction Limit",
-    data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+    data: [
+      50, 40, 300, 220, 500, 250, 400, 230, 500,
+      50, 40, 300, 220, 500, 250, 400, 230, 500,
+      50, 40, 300, 220, 500, 250, 400, 230, 500,
+      50, 40, 300
+    ],
   },
   {
     name: "Overdrawn Transaction Limit",
-    data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
+    data: [
+      30, 90, 40, 140, 290, 290, 340, 230, 400,
+      30, 90, 40, 140, 290, 290, 340, 230, 400,
+      30, 90, 40, 140, 290, 290, 340, 230, 400,
+      30, 90, 40
+    ],
   },
 ];
 
@@ -124,6 +139,24 @@ export const lineChartOptions = {
       "Oct",
       "Nov",
       "Dec",
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jn"
     ],
     labels: {
       style: {
@@ -162,3 +195,46 @@ export const lineChartOptions = {
   },
   colors: ["#4FD1C5", "#ff0f0f"],
 };
+
+
+
+export const pieChartOptions = {
+  labels: ["Cleared Txn", "Suspected Txn"],
+  colors: ["#4FD1C5", "#F56565"],
+  chart: {
+    width: "50px",
+  },
+  states: {
+    hover: {
+      filter: {
+        type: "none",
+      },
+    },
+  },
+  legend: {
+    show: true,
+  },
+  dataLabels: {
+    enabled: true,
+  },
+  hover: { mode: null },
+  plotOptions: {
+    donut: {
+      expandOnClick: false,
+      donut: {
+        labels: {
+          show: false,
+        },
+      },
+    },
+  },
+  fill: {
+    colors: ["#4FD1C5", "#F56565"],
+  },
+  tooltip: {
+    enabled: true,
+    theme: "dark",
+  },
+};
+
+export const pieChartData = [63, 37];
