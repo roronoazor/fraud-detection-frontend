@@ -35,3 +35,9 @@ export const GET_TRANSACTION_RULE_BREAKDOWN = BASE_URL + 'api/transactions/rule/
 export const GET_TRANSACTION_TYPE_BREAKDOWN = BASE_URL + 'api/transactions/type/breakdown/';
 
 export const GET_FRAUD_DASHBOARD = BASE_URL + 'api/transactions/fraud/dashboard/';
+
+export const GET_CREATE_RULES = BASE_URL + 'api/transactions/rules/';
+
+export const GET_RULE_PREREQUISITE = BASE_URL + 'api/rules/prerequisites/';
+
+export const CREATE_RULE = BASE_URL + 'api/rules/create/';

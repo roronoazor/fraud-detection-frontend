@@ -39,12 +39,7 @@ import {
     StatsIcon,
     WalletIcon,
   } from "components/Icons/Icons.js";
-  import DashboardTableRow from "components/Tables/DashboardTableRow";
-  import TimelineRow from "components/Tables/TimelineRow";
   import React, { useState } from "react";
-  import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
-  import { timelineData } from "variables/general";
-  import { suspectedData } from "variables/general";
   import { useHistory } from "react-router-dom";
   import { GET_FRAUD_DASHBOARD } from "config/serverUrls";
   import { useQuery } from "react-query";
@@ -52,7 +47,6 @@ import {
   import { getAuthToken } from "modules/auth/redux/authSelector";
   import { fetchData } from '../../modules/utilities/util_query';
 import { formatCurrencyNumber } from "modules/utilities";
-import { isFulfilled } from "@reduxjs/toolkit";
   
   export default function FraudDashboard() {
     
