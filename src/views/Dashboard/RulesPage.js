@@ -18,6 +18,7 @@ import {
     Spacer,
     Button,
     Icon,
+    Link,
     useToast
   } from "@chakra-ui/react";
   // Custom components
@@ -28,12 +29,8 @@ import {
   import Filter from "components/Filter";
   import { useQuery, useMutation } from "react-query";
   import {  
-    GET_CREATE_USERS,
-    ACTIVATE_USERS,
-    DEACTIVATE_USERS,
-    DELETE_USERS,
-    RESET_PASSWORD_URL,
-    UPDATE_USER,
+    DEACTIVATE_RULES,
+    ACTIVATE_RULES,
     GET_CREATE_RULES
   } from '../../config/serverUrls';
   import { fetchData, postData } from '../../modules/utilities/util_query';
@@ -42,7 +39,7 @@ import {
   import { handleApiError } from "modules/utilities/responseHandlers";
   import { Spinner, Center } from '@chakra-ui/react'
   import { initializeUrlWithFilters, formatCurrencyNumber } from "modules/utilities";
-  import { FiUserPlus } from 'react-icons/fi';
+  import { FiUserPlus, FiEdit } from 'react-icons/fi';
   import { SiActigraph, SiAdblock } from 'react-icons/si';
   import { BsFillCheckCircleFill  } from 'react-icons/bs';
   import { RiErrorWarningFill } from 'react-icons/ri';
@@ -85,6 +82,7 @@ const RulesRow = (props) => {
       onSelectCheckbox
     } = props;
     const textColor = useColorModeValue("gray.700", "white");
+    const history = useHistory();
 
 
     return (
@@ -110,7 +108,16 @@ const RulesRow = (props) => {
           </Flex>
         </Flex>
       </Td>
-      <Td minWidth={{ base: "20%", sm: "250px" }} pl="0px">
+      <Td minWidth={{ base: "20%", sm: "80px" }} pl="0px">
+        <Flex align="center" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
+          <Box as="button" onClick={() => { /* handle edit status */ }}>
+            <Icon as={FiEdit} w={25} h={25} color="blue.500" onClick={()=>{history.push(`/admin/rule/${rule?.id}`)}} />
+            <br />
+            <Text as="samp">Edit</Text>
+          </Box>
+        </Flex>
+      </Td>
+      <Td minWidth={{ base: "20%", sm: "80px" }} pl="0px">  
         <Flex align="center" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
           <Flex direction="column">
             {rule.active ? (
@@ -272,8 +279,26 @@ const RulesPage = (props) => {
 
   const handleSubmit = (actionType, data={}) => {
 
-   
-    return
+    if (actionType == 'activate') {
+      mutation.mutate({
+        url: ACTIVATE_RULES,
+        payload_data: {selected},
+        token: token,
+        authenticate: true
+      });
+      return;
+    }
+
+   if (actionType == 'deactivate') {
+    mutation.mutate({
+      url: DEACTIVATE_RULES,
+      payload_data: {selected},
+      token: token,
+      authenticate: true
+    });
+    return;
+   }
+   return
   }
 
   
@@ -285,11 +310,6 @@ const RulesPage = (props) => {
         </Center>
       </Flex>
     )
-  }
-
-  const closePasswordReset = () => {
-    setSelectedUser({});
-    setOpenPasswordResetForm(false);
   }
 
   return (
@@ -314,6 +334,15 @@ const RulesPage = (props) => {
               New Rule
           </Button>
           <Button 
+            colorScheme="teal"
+            isLoading={mutation?.isLoading}
+            onClick={() => handleSubmit('activate')}
+            variant="outline"
+            leftIcon={<SiActigraph />}
+          >
+              Activate
+          </Button>
+          <Button 
             colorScheme="yellow"
             isLoading={mutation?.isLoading}
             onClick={() => handleSubmit('deactivate')}
@@ -325,22 +354,6 @@ const RulesPage = (props) => {
         </HStack>
       </Box>
       <Card overflowX={{ sm: "scroll", xl: "hidden" }}>
-        <ModalUserForm 
-          isOpen={openForm}
-          onClose={()=>{setSelectedUser({}); setOpenForm(false)}}
-          handleSubmit={handleSubmit} 
-          selectedUser={selectedUser}
-          setSelectedUser={setSelectedUser}
-          isLoading={mutation?.isLoading} 
-        />
-        <ModalResetPasswordForm
-          isOpen={openPasswordResetForm}
-          onClose={closePasswordReset}
-          handleSubmit={handleSubmit} 
-          selectedUser={selectedUser}
-          setSelectedUser={setSelectedUser}
-          isLoading={mutation?.isLoading}
-        />
         <CardHeader p="6px 0px 22px 0px">
           <Text fontSize="xl" color={textColor} fontWeight="bold">
              {`Rules (${formatCurrencyNumber(ruleCount)})`}
@@ -352,6 +365,7 @@ const RulesPage = (props) => {
             <Thead>
               <Tr>
                 <Th>Description</Th>
+                <Th>Actions</Th>
                 <Th>Status</Th>
               </Tr>
             </Thead>

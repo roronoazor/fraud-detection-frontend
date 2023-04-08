@@ -10,6 +10,7 @@ import TransactionPage from "views/Dashboard/TransactionPage";
 import TxnRulesBreakdownPage from "views/Dashboard/TxnRulesBreakdownPage";
 import RulesPage from "views/Dashboard/RulesPage";
 import RulesCreateForm from "views/Dashboard/Forms/RulesCreateForm";
+import RulesEditForm from "views/Dashboard/Forms/RulesEditForm";
 import Profile from "views/Dashboard/Profile.js";
 import SignIn from "views/Pages/SignIn.js";
 import SignUp from "views/Pages/SignUp.js";
@@ -123,12 +124,21 @@ var dashRoutes = [
   },
   {
     path: "/createRule",
-    name: " Rules Create Form",
+    name: "Rules Create Form",
     icon: <MdOutlineSummarize color="inherit" />,
     component: RulesCreateForm,
     layout: "/admin",
     isProtected: true,
-    isVisible: true
+    isVisible: false
+  },
+  {
+    path: "/rule/:id",
+    name: "Rules Edit Form",
+    icon: <MdOutlineSummarize color="inherit" />,
+    component: RulesEditForm,
+    layout: "/admin",
+    isProtected: true,
+    isVisible: false
   },
   {
     name: "Fraud Monitoring",

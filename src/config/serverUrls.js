@@ -41,3 +41,9 @@ export const GET_CREATE_RULES = BASE_URL + 'api/transactions/rules/';
 export const GET_RULE_PREREQUISITE = BASE_URL + 'api/rules/prerequisites/';
 
 export const CREATE_RULE = BASE_URL + 'api/rules/create/';
+
+export const EDIT_RULE = BASE_URL + 'api/rules/:id/';
+
+export const ACTIVATE_RULES = BASE_URL + 'api/rules/activate/';
+
+export const DEACTIVATE_RULES = BASE_URL + 'api/rules/deactivate/';

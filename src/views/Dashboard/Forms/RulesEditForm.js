@@ -25,10 +25,16 @@ import { fetchData, postData } from 'modules/utilities/util_query';
 import { GET_RULE_PREREQUISITE, CREATE_RULE } from 'config/serverUrls';
 import { handleApiError } from "modules/utilities/responseHandlers";
 import { useSelector } from 'react-redux';
-// import { LoadingButton } from '@mui/lab';
+import { useParams, useHistory } from 'react-router-dom';
 import { useToast } from '@chakra-ui/react';
-import { GET_CREATE_RULES } from 'config/serverUrls';
-import { useHistory } from 'react-router-dom';
+import { injectArguments } from 'modules/utilities';
+import { EDIT_RULE } from 'config/serverUrls';
+
+
+function getUnselectedItems(selectedItems, unselectedItems) {
+  const selectedUserIds = selectedItems.map(item => item.id);
+  return unselectedItems.filter(item => !selectedUserIds.includes(item.id));
+}
 
 const Form1 = ({ onChange, values, products=[] }) => {
   const [show, setShow] = React.useState(false);
@@ -47,7 +53,8 @@ const Form1 = ({ onChange, values, products=[] }) => {
           placeholder="Description"
           name="description"
           onChange={onChange}
-          values={values?.description || ''}
+          value={values?.description || ''}
+          disabled
         />
       </FormControl>
 
@@ -61,6 +68,7 @@ const Form1 = ({ onChange, values, products=[] }) => {
           value={values?.condition}
           onChange={onChange}
           name="condition"
+          disabled
         >
           <option value="exceeded daily limit">Exceeded Daily Limit</option>
           <option value="flag duplicate transaction">Flag Duplicate Transaction</option>
@@ -81,6 +89,7 @@ const Form1 = ({ onChange, values, products=[] }) => {
           value={values?.product}
           onChange={onChange}
           name="product"
+          disabled
         >
           {
             products.map( (product, index) => {
@@ -101,6 +110,7 @@ const Form1 = ({ onChange, values, products=[] }) => {
           placeholder="Rule Value"
           value={values?.rule_value || ''}
           onChange={onChange}
+          disabled
         />
       </FormControl>
 
@@ -294,6 +304,8 @@ export default function multistep() {
   const [selectedWarning, setSelectedWarning] = useState([]);
   const [selectedDanger, setSelectedDanger] = useState([]);
   const history = useHistory();
+  const { id:ruleId } = useParams();
+  
   let payload_data = {};
 
   const onChange = (e) => {
@@ -324,12 +336,35 @@ export default function multistep() {
             }
           }
           );
-  
+
+   const fetchRuleById = useQuery(['fetch_rule_by_id',
+          { 
+            url: injectArguments(EDIT_RULE, { id: ruleId }),
+            payload_data,
+            authenticate:true,
+            token
+            }],
+          fetchData, 
+          {
+            retry:false,
+            onSuccess: (response) => {
+              const { data } = response;
+              setValues(data?.data);
+              setSelectedManageable(data?.data?.manageable_actors);
+              setSelectedWarning(data?.data?.warning_actors);
+              setSelectedDanger(data?.data?.danger_actors);
+              
+            },
+            onError: (error) => {
+              handleApiError(error);
+            }
+          }
+          );
   const mutation = useMutation(postData, {
     onSuccess: (response) => {
       toast({
         title: 'Success',
-        description: "Rule has been created",
+        description: "Rule has been edited",
         status: 'success',
         duration: 3000,
         isClosable: true,
@@ -369,7 +404,7 @@ export default function multistep() {
     const data = {...values, selectedManageable, selectedWarning, selectedDanger}
 
     mutation.mutate({
-      url: GET_CREATE_RULES,
+      url: injectArguments(EDIT_RULE, { id: ruleId }),
       payload_data: data,
       token: token,
       authenticate: true
@@ -413,9 +448,9 @@ export default function multistep() {
           isAnimated></Progress>
           { step === 1 ? 
             <Form1 onChange={onChange} values={values} products={products} /> : step === 2 ? 
-            <Form2 onChange={onChange} values={values} users={users} selectedUsers={selectedManageable} setSelectedUsers={setSelectedManageable} /> : step === 3 ?
-            <Form3 onChange={onChange} values={values} users={users} selectedUsers={selectedWarning} setSelectedUsers={setSelectedWarning} /> :
-            <Form4 onChange={onChange} values={values} users={users} selectedUsers={selectedDanger} setSelectedUsers={setSelectedDanger} /> 
+            <Form2 onChange={onChange} values={values} users={getUnselectedItems(selectedManageable, users)} selectedUsers={selectedManageable} setSelectedUsers={setSelectedManageable} /> : step === 3 ?
+            <Form3 onChange={onChange} values={values} users={getUnselectedItems(selectedWarning, users)} selectedUsers={selectedWarning} setSelectedUsers={setSelectedWarning} /> :
+            <Form4 onChange={onChange} values={values} users={getUnselectedItems(selectedDanger, users)} selectedUsers={selectedDanger} setSelectedUsers={setSelectedDanger} /> 
           }
         <ButtonGroup mt="5%" w="100%">
           <Flex w="100%" justifyContent="space-between">

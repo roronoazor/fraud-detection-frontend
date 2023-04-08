@@ -1,33 +1,35 @@
 import { useState } from "react";
 import { Box, Button, Text, Stack, VStack, HStack, Flex } from "@chakra-ui/react";
 
-const TransferList = ({ items, onChange }) => {
-  const [selectedItems, setSelectedItems] = useState([]);
+const TransferList = ({ items, onChange, selectedUsers, setSelectedUsers }) => {
+  const [selectedItems, setSelectedItems] = useState(selectedUsers);
   const [unselectedItems, setUnselectedItems] = useState(items);
 
   const handleSelect = (item) => {
     setSelectedItems([...selectedItems, item]);
+    setSelectedUsers([...selectedItems, item]);
     setUnselectedItems(unselectedItems.filter((i) => i !== item));
   };
 
   const handleUnselect = (item) => {
     setUnselectedItems([...unselectedItems, item]);
+    setSelectedUsers(selectedItems.filter((i) => i !== item));
     setSelectedItems(selectedItems.filter((i) => i !== item));
   };
 
   const handleSelectAll = () => {
     setSelectedItems([...selectedItems, ...unselectedItems]);
+    setSelectedUsers([...selectedItems, ...unselectedItems]);
     setUnselectedItems([]);
   };
 
   const handleUnselectAll = () => {
     setUnselectedItems([...unselectedItems, ...selectedItems]);
+    setSelectedUsers([]);
     setSelectedItems([]);
   };
 
-  const handleSubmit = () => {
-    onChange(selectedItems);
-  };
+
 
   return (
     <VStack spacing={4} align="stretch">
@@ -42,7 +44,7 @@ const TransferList = ({ items, onChange }) => {
           <Box borderWidth="1px" borderRadius="md" p={2}>
             {selectedItems.map((item) => (
               <Stack
-                key={item}
+                key={item?.id}
                 direction="row"
                 justify="space-between"
                 alignItems="center"
@@ -65,7 +67,7 @@ const TransferList = ({ items, onChange }) => {
           <Box borderWidth="1px" borderRadius="md" p={2}>
             {unselectedItems.map((item) => (
               <Stack
-                key={item}
+                key={item?.id}
                 direction="row"
                 justify="space-between"
                 alignItems="center"
