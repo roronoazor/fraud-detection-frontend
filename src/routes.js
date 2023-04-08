@@ -4,6 +4,7 @@ import BankTable from "views/Dashboard/BankTable.js";
 import MerchantTable from "views/Dashboard/MerchantTable.js";
 import BankSummaryTable from "views/Dashboard/BankSummaryTable";
 import MerchantSummaryTable from "views/Dashboard/MerchantSummaryTable";
+import TransferSummary from "views/Dashboard/TransferSummary.js";
 import FraudDashboard from "views/Dashboard/FraudDashbaord.js";
 import BankSummaryChartPage from "views/Dashboard/BankSummaryChartPage";  
 import TransactionPage from "views/Dashboard/TransactionPage";
