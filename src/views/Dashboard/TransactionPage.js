@@ -48,6 +48,7 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react'
 import { TransactionDetailContent } from "./TransactionDetailContent";
+import { useLocation } from "react-router-dom";
 
 
 export const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -448,6 +449,7 @@ function Tables() {
     const [urlWithFilters, setUrlWithFilters] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [transactionDetail, setTransactionDetail] = useState({});
+    const location = useLocation();
 
     // call the api that loads this data only once
     let payload_data = {
@@ -576,6 +578,16 @@ function Tables() {
     setTransactionDetail(transaction);
     setIsOpen(true);
   }
+
+  React.useEffect(() => {
+
+    const params = new URLSearchParams(location.search);
+    
+    if (params.get("ruleId")){
+      setUrlWithFilters(`${GET_TRANSACTIONS}?page=${page}&rule_id=${params.get('ruleId')}&start_date=${params.get('start_date')}&end_date=${params.get('end_date')}`);
+    }
+  }, []);
+
 
   if (isLoading) {
     return (

@@ -95,9 +95,9 @@ function SignIn() {
 
 
   return (
-    <Flex position="relative" mb="40px" bgColor={'#fff'}>
+    <Flex position="relative" bgColor={'#fff'}>
       <Flex
-        h={{ sm: "initial", md: "75vh", lg: "85vh" }}
+        h={{ sm: "initial", md: "75vh", lg: "95vh" }}
         w="100%"
         maxW="1044px"
         mx="auto"

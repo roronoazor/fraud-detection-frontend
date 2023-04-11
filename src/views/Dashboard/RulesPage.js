@@ -75,24 +75,18 @@ const tableHeaders = [
 ]
 
 const RulesRow = (props) => {
+  const { rule, selected, onSelectCheckbox } = props;
+  const textColor = useColorModeValue("gray.700", "white");
+  const history = useHistory();
 
-    const { 
-      rule,
-      selected, 
-      onSelectCheckbox
-    } = props;
-    const textColor = useColorModeValue("gray.700", "white");
-    const history = useHistory();
-
-
-    return (
-      <Tr>
-      <Td minWidth={{ base: "80%", sm: "150px" }} pl="0px">
+  return (
+    <Tr>
+      <Td minWidth={{ base: "60%", sm: "150px" }} pl="0px">
         <Flex align="center" flexWrap="nowrap">
           <Flex direction="column">
             <Checkbox
               isChecked={selected.includes(rule?.id)}
-              onChange={(e) => {
+              onChange={() => {
                 onSelectCheckbox(rule);
               }}
             >
@@ -109,9 +103,16 @@ const RulesRow = (props) => {
         </Flex>
       </Td>
       <Td minWidth={{ base: "20%", sm: "80px" }} pl="0px">
+        <Flex align="center" flexWrap="nowrap">
+          <Box as="button">
+            <Text as="samp">{rule?.product?.replaceAll("_", " ")}</Text>
+          </Box>
+        </Flex>
+      </Td>
+      <Td minWidth={{ base: "20%", sm: "80px" }} pl="0px">
         <Flex align="center" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
-          <Box as="button" onClick={() => { /* handle edit status */ }}>
-            <Icon as={FiEdit} w={25} h={25} color="blue.500" onClick={()=>{history.push(`/admin/rule/${rule?.id}`)}} />
+          <Box as="button" onClick={() => { history.push(`/admin/rule/${rule?.id}`) }}>
+            <Icon as={FiEdit} w={25} h={25} color="blue.500" />
             <br />
             <Text as="samp">Edit</Text>
           </Box>
@@ -153,9 +154,8 @@ const RulesRow = (props) => {
         </Flex>
       </Td>
     </Tr>
-    
-      );  
-}
+  );  
+};
 
 
 const RulesPage = (props) => {
@@ -361,10 +361,11 @@ const RulesPage = (props) => {
         </CardHeader>
         <CardBody>
         <Box w="100%">
-          <Table variant="simple" overflowX="scroll">
+          <Table  size="sm" variant="simple" overflowX="scroll">
             <Thead>
               <Tr>
                 <Th>Description</Th>
+                <Th>Product</Th>
                 <Th>Actions</Th>
                 <Th>Status</Th>
               </Tr>

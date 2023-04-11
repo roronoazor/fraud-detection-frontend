@@ -9,6 +9,7 @@ import {
   Input,
   Divider,
   ButtonGroup,
+  Spacer,
   Center,
   Spinner,
   useColorModeValue
@@ -33,6 +34,7 @@ import {
 import { handleApiError } from "modules/utilities/responseHandlers";
 import StackedBarChart from "components/StackedBarChart";
 import { Select } from "chakra-react-select";
+import { useHistory } from "react-router-dom";
 
 
 const today = getCurrentDateInput();
@@ -52,6 +54,7 @@ const TxnRulesBreakdownPage = (props) => {
       selectedRules: [],
     });    
     const [endpoint, setEndpoint] = useState('');
+    const history = useHistory();
     const transactionStat = useQuery(['transactions-stat',
           { 
             url: GET_TRANSACTIONS_STATS,
@@ -66,7 +69,7 @@ const TxnRulesBreakdownPage = (props) => {
               const data = response?.data;
               let mRules = data?.rules_data || [];
               mRules = mRules.map((rule, index) => {
-                return {value: rule.id, label: firstLetterUpper(rule.description)}
+                return {value: rule.id, label: firstLetterUpper(`${rule?.description}(${(firstLetterUpper(rule?.product)).replaceAll("_", " ")})`)}
               })
               setRules(mRules);
             },
@@ -114,6 +117,11 @@ const TxnRulesBreakdownPage = (props) => {
         `${GET_TRANSACTION_RULE_BREAKDOWN}?startDate=${filters?.startDate}&endDate=${filters?.endDate}&selectedRules=${ids}`
       );
     } 
+
+    const handleViewSuspectedTransactionsClick = (item) => {
+      const { id: ruleId } = item?.rule;
+      history.push(`/admin/transaction?ruleId=${ruleId}&start_date=${filters?.startDate}&end_date=${filters?.endDate}`);
+    };
 
     
   if (isLoading) {
@@ -201,12 +209,18 @@ const TxnRulesBreakdownPage = (props) => {
                   });
                    
                   return (
-                    <Card w='100%' p="28px 10px 16px 0px" mb={{ sm: "26px", lg: "0px" }}>
+                    <Card key={index} w='100%' p="28px 10px 16px 0px" mb={{ sm: "26px", lg: "0px" }}>
                       <CardHeader mb="2px" pl="22px">
-                          <Flex direction="column" alignSelf="flex-start">
+                          <Flex sx={{ width: '100%' }}>
                             <Text fontSize="lg" color={textColor} fontWeight="bold" mb="6px">
-                              {firstLetterUpper(item?.rule?.description)}
+                            {`${item?.rule?.description}(${(firstLetterUpper(item?.rule?.product)).replaceAll("_", " ")})`}
                             </Text>
+                            <Spacer />
+                            {
+                              (suspectedPercentage > 0) && (
+                                <Button variant='outline' colorScheme="red" onClick={() => handleViewSuspectedTransactionsClick(item)}>View Suspected</Button>
+                              )
+                            }
                           </Flex>
                         </CardHeader>
                         <Divider />
