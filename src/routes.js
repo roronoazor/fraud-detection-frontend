@@ -35,9 +35,9 @@ import TxnPieCharts from "views/Dashboard/TxnPieCharts";
 var dashRoutes = [
   {
     path: "/dashboard",
-    name: "Dashboard",
+    name: "Fraud Dashboard",
     icon: <HomeIcon color="inherit" />,
-    component: Dashboard,
+    component: FraudDashboard,
     layout: "/admin",
     isProtected: true,
     isVisible: true
@@ -49,7 +49,7 @@ var dashRoutes = [
     component: BankTable,
     layout: "/admin",
     isProtected: true,
-    isVisible: true
+    isVisible: false
   },
   {
     path: "/merchants",
@@ -58,7 +58,7 @@ var dashRoutes = [
     component: MerchantTable,
     layout: "/admin",
     isProtected: true,
-    isVisible: true
+    isVisible: false
   },
   {
     path: "/bankSummary",
@@ -67,7 +67,7 @@ var dashRoutes = [
     component: BankSummaryTable,
     layout: "/admin",
     isProtected: true,
-    isVisible: true
+    isVisible: false
   },
   {
     path: "/merchantSummary",
@@ -76,7 +76,7 @@ var dashRoutes = [
     component: MerchantSummaryTable,
     layout: "/admin",
     isProtected: true,
-    isVisible: true
+    isVisible: false
   },
   {
     path: "/bankSummary2/:id",
@@ -155,7 +155,7 @@ var dashRoutes = [
         component: FraudDashboard,
         layout: "/admin",
         isProtected: true,
-        isVisible: true
+        isVisible: false
       },
       {
         path: "/pTransactionsChart",
