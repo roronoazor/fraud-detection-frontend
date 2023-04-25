@@ -15,7 +15,7 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import avatar4 from "assets/img/apple-icon.bmp";
+import avatar4 from "assets/img/apple-icon2.png";
 // Assets
 import signInImage from "assets/img/monitoring.png";
 import { useSelector, useDispatch } from 'react-redux';
