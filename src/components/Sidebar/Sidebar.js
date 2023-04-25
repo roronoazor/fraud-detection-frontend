@@ -24,7 +24,7 @@ import { SidebarHelp } from "components/Sidebar/SidebarHelp";
 import PropTypes from "prop-types";
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import avatar4 from "../../assets/img/apple-icon.bmp";
+import avatar4 from "../../assets/img/apple-icon2.png";
 
 // FUNCTIONS
 
