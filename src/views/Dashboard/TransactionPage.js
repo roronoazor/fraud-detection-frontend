@@ -51,7 +51,15 @@ import { TransactionDetailContent } from "./TransactionDetailContent";
 import { useLocation } from "react-router-dom";
 
 
-export const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+export const dateOptions = {
+  weekday: 'long',
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+  hour12: true
+};
 
 const fields = [
     {
@@ -194,6 +202,10 @@ const tableHeaders = [
         range: 'all',
     },
     {
+      id : 11,
+      value: 'Name'
+    },
+    {
         id: 2,
         value: 'Transaction Amount',
     },
@@ -206,89 +218,9 @@ const tableHeaders = [
         value: 'Transaction Date'
     },
     {
-        id: 4,
+        id: 5,
         value: 'View Details'
-    },
-    // {
-    //     id: 5,
-    //     value: 'today Withdrawal success value',
-    //     range: 'today'
-    // },
-    // {
-    //     id: 6,
-    //     value: 'today Withdrawal failed volume',
-    //     range: 'today'
-    // },
-    // {
-    //     id: 7,
-    //     value: 'today Withdrawal failed value',
-    //     range: 'today'
-    // },
-    // {
-    //     id: 8,
-    //     value: 'last 30 days Withdrawal volume',
-    //     range: 'l30'
-    // },
-    // {
-    //     id: 9,
-    //     value: 'last 30 days Withdrawal value (Naira)',
-    //     range: 'l30'
-    // },
-    // {
-    //     id: 10,
-    //     value: 'last 30 days Withdrawal success volume',
-    //     range: 'l30'
-    // },
-    // {
-    //     id: 11,
-    //     value: 'last 30 days Withdrawal success value (Naira)',
-    //     range: 'l30'
-    // },
-    // {
-    //     id: 12,
-    //     value: 'last 30 days Withdrawal failed volume',
-    //     range: 'l30'
-    // },
-    // {
-    //     id: 13,
-    //     value: 'last 30 days Withdrawal failed value (Naira)',
-    //     range: 'l30'
-    // },
-    // {
-    //     id: 14,
-    //     value: 'all time Withdrawal volume',
-    //     range: 'allTime'
-    // },
-    // {
-    //     id: 15,
-    //     value: 'all time Withdrawal value (Naira)',
-    //     range: 'allTime',
-    // },
-    // {
-    //     id: 16,
-    //     value: 'all time Withdrawal success volume',
-    //     range: 'allTime',
-    // },
-    // {
-    //     id: 17,
-    //     value: 'all time Withdrawal success value (Naira)',
-    //     range: 'allTime',
-    // },
-    // {
-    //     id: 18,
-    //     value: 'all time Withdrawal failed volume',
-    //     range: 'allTime',
-    // },
-    // {
-    //     id: 19,
-    //     value: 'all time Withdrawal failed value (Naira)',
-    //     range: 'allTime',
-    // },
-    // {
-    //     id : 20,
-    //     value: 'Merchant Id',
-    //     range: 'all',
-    //   },
+    }
 ];
 
 
@@ -296,6 +228,11 @@ function TransactionRow(props) {
 
     const {  transaction, display, showDetails } = props;
     const textColor = useColorModeValue("gray.700", "white");
+    const transactionCreatedAt = new Date(transaction?.transaction_created_at);
+    const formattedDateTime = transactionCreatedAt.toLocaleDateString("en-US", dateOptions);
+
+    let name = transaction?.wallet_details?.businessName;
+    name = name || `${transaction?.wallet_details?.lastName} ${transaction?.wallet_details?.firstName}`;
 
     return (
         <Tr>
@@ -349,6 +286,21 @@ function TransactionRow(props) {
                   )}
                 </Text>
               </Center>
+            </Flex>
+          </Flex>
+        </Td>
+        <Td minWidth={{ sm: "250px" }} pl="0px">
+          <Flex align="center"  minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
+            <Flex direction="column">
+              <Text
+                fontSize="md"
+                color={textColor}
+                fontWeight="bold"
+                minWidth="100%"
+                // noOfLines={3}
+              >
+                {name}
+              </Text>
             </Flex>
           </Flex>
         </Td>
@@ -419,7 +371,7 @@ function TransactionRow(props) {
                 align='center'
                 // noOfLines={3}
             >
-                {new Date(transaction?.transaction_created_at).toLocaleDateString("en-US", dateOptions)}
+                {formattedDateTime}
             </Text>
           </Flex>
         </Td>

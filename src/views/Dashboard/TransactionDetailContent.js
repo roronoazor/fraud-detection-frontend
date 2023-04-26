@@ -39,6 +39,9 @@ export const TransactionDetailContent = (props) => {
     const textColor = useColorModeValue("gray.700", "white");
     let keys = Object.keys(transaction);
     let privateKeys = ['mongo_id', 'id', 'user_id', 'unique_id', 'created_at', 'updated_at']
+    let name = transaction?.wallet_details?.businessName;
+    name = name || `${transaction?.wallet_details?.lastName} ${transaction?.wallet_details?.firstName}`;
+
 
     const publicKeys = keys.filter(key => !privateKeys.includes(key));
     
@@ -413,6 +416,7 @@ export const TransactionDetailContent = (props) => {
                                     <>
                                         <Text fontSize="md">WALLET ID</Text>
                                         <Text as="samp"> { transaction?.wallet_id || ' - ' } </Text> 
+                                        <Text as="samp"> { name } </Text> 
                                     </>                            
                                 </Text>
                             </Center>
