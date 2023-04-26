@@ -28,6 +28,8 @@ const JsonCard = (props) => {
         );
     }
 
+    responseKeys = responseKeys.filter(key => !(typeof response[key] === "object" && response[key] !== null) ); 
+
     return (
         <Card sx={{ border: '1px', borderColor: 'gray.200' }}>
             <CardHeader>
@@ -44,6 +46,8 @@ const JsonCard = (props) => {
                     }else{
                         itemLabel = camelCaseToWords(item);
                     }
+
+                   
 
                     return (
                         <WrapItem key={index}>

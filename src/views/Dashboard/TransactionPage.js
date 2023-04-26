@@ -538,6 +538,9 @@ function Tables() {
     if (params.get("ruleId")){
       setUrlWithFilters(`${GET_TRANSACTIONS}?page=${page}&rule_id=${params.get('ruleId')}&start_date=${params.get('start_date')}&end_date=${params.get('end_date')}`);
     }
+    if (params.get("productType")){
+      setUrlWithFilters(`${GET_TRANSACTIONS}?page=${page}&product_type=${params.get('productType')}&start_date=${params.get('start_date')}&end_date=${params.get('end_date')}`);
+    }
   }, []);
 
 

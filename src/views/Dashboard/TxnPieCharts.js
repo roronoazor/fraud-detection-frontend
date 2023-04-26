@@ -32,29 +32,9 @@ import {
   import { useSelector } from 'react-redux';
   import { useQuery } from "react-query";
   import { getAuthToken } from "modules/auth/redux/authSelector";
-  import CardFooter from "components/Card/CardFooter";
-  import BarChart from "components/Charts/BarChart";
-  import LineChart from "components/Charts/LineChart";
-  import IconBox from "components/Icons/IconBox";
-  import { PersonIcon } from "components/Icons/Icons";
-  
-  // Custom icons
-  import {
-    CartIcon,
-    DocumentIcon,
-    GlobeIcon,
-    RocketIcon,
-    StatsIcon,
-    WalletIcon,
-  } from "components/Icons/Icons.js";
-  import DashboardTableRow from "components/Tables/DashboardTableRow";
-  import TimelineRow from "components/Tables/TimelineRow";
+
   import React, { useState } from "react";
-  import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
-  import { timelineData } from "variables/general";
-import { suspectedData } from "variables/general";
 import { useHistory } from "react-router-dom";
-import { pieChartData, pieChartOptions } from "variables/charts";
 import PieCard from "components/PieCard";
 import { 
   getCurrentDateInput,
@@ -85,6 +65,7 @@ const TxnPieCharts = (props) => {
       endDate: today,
     });    
     const [vasTxn, setVasTxn] = useState([]);
+    const history = useHistory();
     let payload_data = {};
     const [urlWithFilters, setUrlWithFilters] = useState(GET_TRANSACTION_TYPE_BREAKDOWN);
     const fetchInfo = useQuery(['get-transaction-type-breakdown',
@@ -127,6 +108,12 @@ const TxnPieCharts = (props) => {
         `${GET_TRANSACTION_TYPE_BREAKDOWN}?startDate=${filters?.startDate}&endDate=${filters?.endDate}`
       );
     }
+    console.log('vs: ', vasTxn);
+
+    const handleViewSuspectedTransactionsClick = (type) => {
+        history.push(`/admin/transaction?productType=${type}&start_date=${filters?.startDate}&end_date=${filters?.endDate}`);
+    };
+    
 
    
     if (isLoading) {
@@ -185,11 +172,13 @@ const TxnPieCharts = (props) => {
                  title={'Transfers'}
                  suspectedPercentage={calculateSuspectedTransactionValuePercentage(transferTxn?.suspected_transactions, transferTxn?.total_transactions)}
                  clearedPercentage={100 - (calculateSuspectedTransactionValuePercentage(transferTxn?.suspected_transactions, transferTxn?.total_transactions))}
+                 handleViewSuspectedTransactionsClick={() => handleViewSuspectedTransactionsClick('transfer')}
                 />
                 <PieCard 
                   title={'Withdrawals'} 
                   suspectedPercentage={calculateSuspectedTransactionValuePercentage(withdrawTxn?.suspected_transactions, withdrawTxn?.total_transactions)}
                   clearedPercentage={100 - (calculateSuspectedTransactionValuePercentage(withdrawTxn?.suspected_transactions, withdrawTxn?.total_transactions))}
+                  handleViewSuspectedTransactionsClick={() => handleViewSuspectedTransactionsClick('withdrawal')}
                 />
               </SimpleGrid>
             </Card>
@@ -214,6 +203,7 @@ const TxnPieCharts = (props) => {
                         title={replaceUnderscores(firstLetterUpper(vas?.transaction_type || ''))}
                         suspectedPercentage={calculateSuspectedTransactionValuePercentage(vas?.suspected_transactions, vas?.total_transactions)}
                         clearedPercentage={100 - (calculateSuspectedTransactionValuePercentage(vas?.suspected_transactions, vas?.total_transactions))}
+                        handleViewSuspectedTransactionsClick={() => handleViewSuspectedTransactionsClick((vas?.transaction_type || ''))}
                       />
                     </>
                   )

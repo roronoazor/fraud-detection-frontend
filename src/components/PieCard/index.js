@@ -1,5 +1,5 @@
 // Chakra imports
-import { Box, Flex, Text, Select, useColorModeValue } from "@chakra-ui/react";
+import { Box, Flex, Text, Select, useColorModeValue, Button } from "@chakra-ui/react";
 // Custom components
 import Card from "components/Card/Card.js";
 import PieChart from "components/Charts/PieChart";
@@ -12,6 +12,7 @@ export default function Conversion(props) {
     title,
     suspectedPercentage,
     clearedPercentage,
+    handleViewSuspectedTransactionsClick,
     ...rest
   } = props;
 
@@ -33,6 +34,11 @@ export default function Conversion(props) {
         <Text color={textColor} fontSize='md' fontWeight='600' mt='4px'>
           { title || 'Your Pie Chart' }
         </Text>
+        {
+          (suspectedPercentage > 0) && (
+            <Button variant='outline' colorScheme="red" onClick={handleViewSuspectedTransactionsClick}>View Suspected</Button>
+          )
+        }
       </Flex>
 
       <PieChart

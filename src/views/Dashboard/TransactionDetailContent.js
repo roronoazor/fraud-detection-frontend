@@ -42,7 +42,7 @@ export const TransactionDetailContent = (props) => {
     let name = transaction?.wallet_details?.businessName;
     name = name || `${transaction?.wallet_details?.lastName} ${transaction?.wallet_details?.firstName}`;
 
-
+    console.log('xx -. ', transaction);
     const publicKeys = keys.filter(key => !privateKeys.includes(key));
     
     return (
