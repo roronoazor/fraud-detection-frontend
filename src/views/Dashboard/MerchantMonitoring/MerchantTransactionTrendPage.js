@@ -52,6 +52,7 @@ import { handleApiError } from "modules/utilities/responseHandlers";
 import { firstLetterUpper, replaceUnderscores } from "modules/utilities";
 import SingleBarChart from "components/SingleBarChart";
 import StackedLineChart from "components/StackedLineChart";
+import StackedPieChart from "components/StackedPieChart";
 
 const today = getCurrentDateInput();
 
@@ -243,6 +244,67 @@ const MerchantTrendChart = (props) => {
   );
 }
 
+const MerchantActivityPieChart = (props) => {
+  const { 
+    isLoading,
+    handleChange=()=>{}
+  } = props;
+  const textColor = useColorModeValue("gray.700", "white");
+  
+  return (
+    <Box p='12px 0px'>
+    <Card w='100%' p="28px 10px 16px 0px" mb={{ sm: "26px", lg: "0px" }}>
+     {
+      (isLoading) ? (
+        <Center>
+          <Spinner size='xl' />
+        </Center>
+      ) : (
+        <>
+          <CardHeader mb="2px" pl="22px">
+          <VStack alignItems={'flex-start'} sx={{ width: '100%'}}>
+            <Flex direction="row" alignItems="flex-end" mb={6} sx={{ width: '100%'}}>
+              <Text fontSize="lg" color={textColor} fontWeight="bold" mr={6}>
+                {`Merchant Activity`}
+              </Text>
+              <Spacer />
+                <FormControl maxW="150px" marginX={2}>
+                  <FormLabel>Start Date</FormLabel>
+                  <Input 
+                    type='date'
+                    //value={filters?.startDate}
+                    name='startDate'
+                    onChange={handleChange}
+                  />
+                </FormControl>
+                <FormControl mt={4} maxW="150px" marginX={2}>
+                  <FormLabel>End Date</FormLabel>
+                  <Input
+                  type='date'
+                  //value={filters?.endDate}
+                  name='endDate'
+                  onChange={handleChange}
+                  />
+                </FormControl>
+                <ButtonGroup gap='2'>
+                <Button colorScheme='teal' onClick={()=>{}}>Apply</Button>
+              </ButtonGroup>
+            </Flex>
+          </VStack>
+          </CardHeader>
+          <Divider />
+          <SimpleGrid columns={{ sm: 1, md: 2, xl: 2 }} spacing="24px">
+            <StackedPieChart />
+            <StackedPieChart />
+          </SimpleGrid>
+          </>
+      )
+     }
+    </Card>
+  </Box>
+  );
+}
+
 const MerchantTransactionTrendPage = (props) => {
 
     const textColor = useColorModeValue("gray.700", "white");
@@ -323,95 +385,15 @@ const MerchantTransactionTrendPage = (props) => {
 
     return (
         <Flex flexDirection="column" pt={{ base: "120px", md: "75px" }}>
-          <Flex minWidth='max-content' bg="#fff" borderRadius="12px" p="20px 10px"  alignItems='center' gap='2'>
-            <Box p='2'>
-              <HStack spacing={8}>
-                <HStack>
-                  <Text as="b" sx={{ minWidth: '90px' }}>Start Date: </Text>
-                  <Input 
-                    type='date'
-                    value={filters?.startDate}
-                    name='startDate'
-                    onChange={onChange}
-                  />
-                </HStack>
-
-                <HStack>
-                  <Text as="b" sx={{ minWidth: '90px' }}>End Date: </Text>
-                  <Input
-                   type='date'
-                   value={filters?.endDate}
-                   name='endDate'
-                   onChange={onChange}
-                  />
-                </HStack>
-              </HStack>
-            </Box>
-            <Spacer />
-            <ButtonGroup gap='2'>
-              <Button colorScheme='teal' onClick={applyFetchData}>Apply</Button>
-            </ButtonGroup>
-          </Flex>
+          
           <MerchantMonitoringChart />
           <MerchantTrendChart />
-          <Box p='12px 0px'>
-            <Card w='100%' p="28px 10px 16px 0px" mb={{ sm: "26px", lg: "0px" }}>
-             <CardHeader mb="2px" pl="22px">
-                <Flex direction="column" alignSelf="flex-start">
-                  <Text fontSize="lg" color={textColor} fontWeight="bold" mb="6px">
-                    Agency Banking
-                  </Text>
-                </Flex>
-              </CardHeader>
-              <Divider />
-              <SimpleGrid columns={{ sm: 1, md: 2, xl: 2 }} spacing="24px">
-                <PieCard
-                 title={'Transfers'}
-                 suspectedPercentage={calculateSuspectedTransactionValuePercentage(transferTxn?.suspected_transactions, transferTxn?.total_transactions)}
-                 clearedPercentage={100 - (calculateSuspectedTransactionValuePercentage(transferTxn?.suspected_transactions, transferTxn?.total_transactions))}
-                 handleViewSuspectedTransactionsClick={() => handleViewSuspectedTransactionsClick('transfer')}
-                />
-                <PieCard 
-                  title={'Withdrawals'} 
-                  suspectedPercentage={calculateSuspectedTransactionValuePercentage(withdrawTxn?.suspected_transactions, withdrawTxn?.total_transactions)}
-                  clearedPercentage={100 - (calculateSuspectedTransactionValuePercentage(withdrawTxn?.suspected_transactions, withdrawTxn?.total_transactions))}
-                  handleViewSuspectedTransactionsClick={() => handleViewSuspectedTransactionsClick('withdrawal')}
-                />
-              </SimpleGrid>
-            </Card>
-          </Box>
-          <Box p='6px 0px'>
-            <Card w='100%' p="28px 2px 16px 0px" mb={{ sm: "26px", lg: "0px" }}>
-              <CardHeader mb="20px" pl="22px">
-                <Flex direction="column" alignSelf="flex-start">
-                  <Text fontSize="lg" color={textColor} fontWeight="bold" mb="6px">
-                    Value Added Services(V.A.S)
-                  </Text>
-                </Flex>
-              </CardHeader>
-              <Divider />
-            <CardBody>
-              <SimpleGrid columns={{ sm: 1, md: 2, xl: 3 }} spacing="24px">
-                {vasTxn.map(vas => {
-
-                  return (
-                    <>
-                      <PieCard 
-                        title={replaceUnderscores(firstLetterUpper(vas?.transaction_type || ''))}
-                        suspectedPercentage={calculateSuspectedTransactionValuePercentage(vas?.suspected_transactions, vas?.total_transactions)}
-                        clearedPercentage={100 - (calculateSuspectedTransactionValuePercentage(vas?.suspected_transactions, vas?.total_transactions))}
-                        handleViewSuspectedTransactionsClick={() => handleViewSuspectedTransactionsClick((vas?.transaction_type || ''))}
-                      />
-                    </>
-                  )
-                })}
-              </SimpleGrid>
-            </CardBody>
-            </Card>
-          </Box>
+          <MerchantActivityPieChart />
       </Flex>
     );
 }
+
+
 
 
 export default MerchantTransactionTrendPage;
