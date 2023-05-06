@@ -76,6 +76,7 @@ const Form1 = ({ onChange, values, products=[] }) => {
           <option value="exceeded balance">Exceeded Balance</option>
           <option value="exceeded single transaction limit">Exceeded Single Transaction Limit</option>
           <option value="exceeded number of daily transaction">Exceeded Number of Daily Transactions</option>
+          <option value="transaction time">Transaction Time</option>
         </Select>
       </FormControl>
 
@@ -102,7 +103,7 @@ const Form1 = ({ onChange, values, products=[] }) => {
 
       <FormControl mt="2%">
         <FormLabel htmlFor="value" fontWeight="normal">
-          Rule Value
+          { values?.condition === 'transaction time' ? 'Start Time' : 'Rule Value' }
         </FormLabel>
         <Input
           id="value"
@@ -110,10 +111,28 @@ const Form1 = ({ onChange, values, products=[] }) => {
           placeholder="Rule Value"
           value={values?.rule_value || ''}
           onChange={onChange}
+          type={values?.condition === 'transaction time' ? 'time' : 'text'} 
           disabled
         />
       </FormControl>
-
+      {
+          values?.condition === 'transaction time' && (
+            <FormControl mt="2%">
+              <FormLabel htmlFor="value" fontWeight="normal">
+                End Time
+              </FormLabel>
+              <Input
+                id="value2"
+                name="rule_value2"
+                placeholder="Rule Value"
+                value={values?.rule_value2 || values?.value2}
+                onChange={onChange}
+                type={'time'} 
+                disabled
+              />  
+            </FormControl>
+          )
+        }
     </>
   );
 };

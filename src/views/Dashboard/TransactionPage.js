@@ -36,7 +36,7 @@ import {
  } from '@chakra-ui/icons'
 import { Icon } from '@chakra-ui/react'
 import { CgData, CgScreen } from 'react-icons/cg';
-import { GiElectric, GiTakeMyMoney } from 'react-icons/gi';
+import { GiCondorEmblem, GiElectric, GiTakeMyMoney } from 'react-icons/gi';
 import { FcMoneyTransfer, FcCallTransfer } from 'react-icons/fc';
 import {
   Modal,
@@ -49,6 +49,7 @@ import {
 } from '@chakra-ui/react'
 import { TransactionDetailContent } from "./TransactionDetailContent";
 import { useLocation } from "react-router-dom";
+import { convertDateStringtoLocalDateString } from "modules/utilities";
 
 
 export const dateOptions = {
@@ -516,11 +517,23 @@ function Tables() {
   }
 
   const handlePageChange = (evt) => {
-    
     const { selected } = evt;
+    const newPageValue = selected + 1;
+  
+    const url = new URL(urlWithFilters);
+  
+    if (url.searchParams.has("page")) {
+      url.searchParams.set("page", newPageValue);
+    } else {
+      url.searchParams.append("page", newPageValue);
+    }
+  
+    const newUrlWithFilters = decodeURIComponent(url.toString());
+    
     setPage(selected + 1);
-    window.scrollTo(0, 0); // moves the compoent to the top of the page
-  }
+    setUrlWithFilters(newUrlWithFilters);
+    window.scrollTo(0, 0);
+  };
 
   const onClose = (evt) => {
     setIsOpen(false);

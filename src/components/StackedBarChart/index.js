@@ -17,6 +17,7 @@ export default function StackedBarChart(props) {
   // Chakra Color Mode
   const textColor = useColorModeValue("secondaryGray.900", "white");
 
+
   return (
     <Card p='20px' align='center' direction='column' w='100%' {...rest}>
       <Flex

@@ -31,6 +31,7 @@ import { TbSum } from "react-icons/tb";
 import UserMgt from "views/Management/UserMgt";
 import Settings from "views/Management/Settings";
 import TxnPieCharts from "views/Dashboard/TxnPieCharts";
+import MerchantTransactionTrendPage from "views/Dashboard/MerchantMonitoring/MerchantTransactionTrendPage";
 
 var dashRoutes = [
   {
@@ -173,6 +174,16 @@ var dashRoutes = [
         icon: <StatsIcon color="inherit" />,
         // icon: <MdOutlineSummarize color="inherit" />,
         component: TxnRulesBreakdownPage,
+        layout: "/admin",
+        isProtected: true,
+        isVisible: true
+      },
+      {
+        path: "/merchantTransactionTrend",
+        name: "Merchant Txn. Trend",
+        icon: <StatsIcon color="inherit" />,
+        // icon: <MdOutlineSummarize color="inherit" />,
+        component: MerchantTransactionTrendPage,
         layout: "/admin",
         isProtected: true,
         isVisible: true
