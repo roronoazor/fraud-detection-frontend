@@ -1,5 +1,7 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
+import Card from "components/Card/Card.js";
+import { Flex, Text, } from "@chakra-ui/react";
 
 
 class ApexLineChart extends React.Component {
@@ -69,7 +71,19 @@ class ApexLineChart extends React.Component {
     }
 
     render() {
+      const { title, ...rest } = this.props;
       return (
+        <Card p='20px' align='center' direction='column' w='100%' {...rest}>
+        <Flex
+          px={{ base: "0px", "2xl": "10px" }}
+          justifyContent='space-between'
+          alignItems='center'
+          w='100%'
+          mb='8px'>
+          <Text fontSize='md' fontWeight='600' mt='4px'>
+            { title || '' }
+          </Text>
+        </Flex>
         <div id="chart">
             <ReactApexChart 
                 options={this.state.options} 
@@ -78,6 +92,7 @@ class ApexLineChart extends React.Component {
                 height={350}
             />
         </div>
+        </Card>
         );
     }
 }

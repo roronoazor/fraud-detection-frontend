@@ -231,9 +231,11 @@ const MerchantTrendChart = (props) => {
           <SimpleGrid columns={{ sm: 1, md: 2, xl: 2 }} spacing="24px">
             <StackedLineChart 
               ySeriesName="Tranaction Count"
+              title="Tranaction Count"
             />
             <StackedLineChart
               ySeriesName="Transaction Volume"
+              title="Tranaction Volume"
             />
           </SimpleGrid>
           </>
