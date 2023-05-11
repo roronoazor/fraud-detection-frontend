@@ -2,21 +2,28 @@ import React from "react";
 import ReactApexChart from "react-apexcharts";
 import Card from "components/Card/Card.js";
 import { Flex, Text, } from "@chakra-ui/react";
+import numbro from 'numbro';
+
+const formatNumberWithCommas = (value) => {
+  return numbro(value).format({ thousandSeparated: true });
+};
 
 
 class ApexPieChart extends React.Component {
     constructor(props) {
       super(props);
+      const { series, labels } = props;
 
       this.state = {
       
-        series: [44, 55, 13, 43, 22],
+        // series: [44, 55, 13, 43, 22],
+        series: series,
         options: {
           chart: {
             width: 380,
             type: 'pie',
           },
-          labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+          labels: labels,
           responsive: [{
             breakpoint: 480,
             options: {
@@ -27,7 +34,12 @@ class ApexPieChart extends React.Component {
                 position: 'bottom'
               }
             }
-          }]
+          }],
+          tooltip: {
+            y: {
+              formatter: formatNumberWithCommas,
+            },
+          }
         },
       
       
@@ -54,7 +66,7 @@ class ApexPieChart extends React.Component {
             <ReactApexChart
               options={this.state.options}
               series={this.state.series}
-              type="pie" width={380}
+              type="pie" width={800}
              />
         </div>
       </Card>

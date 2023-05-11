@@ -2,7 +2,11 @@ import React from "react";
 import ReactApexChart from "react-apexcharts";
 import Card from "components/Card/Card.js";
 import {  Flex, Text } from "@chakra-ui/react";
+import numbro from 'numbro';
 
+const formatNumberWithCommas = (value) => {
+  return numbro(value).format({ thousandSeparated: true });
+};
 
 class ApexBarChart extends React.Component {
     constructor(props) {
@@ -67,6 +71,11 @@ class ApexBarChart extends React.Component {
               opacityFrom: 0.85,
               opacityTo: 0.85,
               stops: [50, 0, 100]
+            }
+          },
+          tooltip: {
+            y: {
+              formatter: formatNumberWithCommas,
             },
           }
         },

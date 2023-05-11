@@ -49,3 +49,11 @@ export const EDIT_RULE = BASE_URL + 'api/rules/:id/';
 export const ACTIVATE_RULES = BASE_URL + 'api/rules/activate/';
 
 export const DEACTIVATE_RULES = BASE_URL + 'api/rules/deactivate/';
+
+export const GET_MERCHANT_VOLUMES_FOR_BAR_CHART = BASE_URL + 'api/merchants/bar/series/';
+
+export const GET_MERCHANT_ACTIVITY_FOR_PIE_CHART = BASE_URL + 'api/merchants/pie/activity/';
+
+export const GET_MERCHANT_TREND_FOR_LINE_CHART = BASE_URL + 'api/merchants/trends/';
+
+export const GET_MERCHANTS_USERS = BASE_URL + 'api/merchants/users/';

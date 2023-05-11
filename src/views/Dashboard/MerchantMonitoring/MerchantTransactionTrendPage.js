@@ -32,280 +32,404 @@ import {
     NumberDecrementStepper,
     VStack,
   } from "@chakra-ui/react";
-  import Card from "components/Card/Card.js";
-  import CardBody from "components/Card/CardBody.js";
-  import CardHeader from "components/Card/CardHeader.js";
   import { useSelector } from 'react-redux';
   import { useQuery } from "react-query";
   import { getAuthToken } from "modules/auth/redux/authSelector";
 
   import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import PieCard from "components/PieCard";
 import { 
-  getCurrentDateInput,
-  calculateSuspectedTransactionValuePercentage
+  getCurrentDateInput
 } from "modules/utilities";
-import { GET_TRANSACTION_TYPE_BREAKDOWN } from '../../../config/serverUrls';
+import { 
+  GET_TRANSACTION_TYPE_BREAKDOWN,
+  GET_MERCHANT_VOLUMES_FOR_BAR_CHART,
+  GET_MERCHANT_ACTIVITY_FOR_PIE_CHART,
+  GET_MERCHANT_TREND_FOR_LINE_CHART,
+  GET_MERCHANTS_USERS
+} from '../../../config/serverUrls';
 import { fetchData } from '../../../modules/utilities/util_query';
 import { handleApiError } from "modules/utilities/responseHandlers";
-import { firstLetterUpper, replaceUnderscores } from "modules/utilities";
-import SingleBarChart from "components/SingleBarChart";
-import StackedLineChart from "components/StackedLineChart";
-import StackedPieChart from "components/StackedPieChart";
+import MerchantVolumeUI from "./components/MerchantVolumeUI";
+import MerchantTrendChartUI from "./components/MerchantTrendChartUI";
+import MerchantActivityPieChartUI from "./components/MerchantActivityUI";
+import { buildQueryString } from "modules/utilities";
 
 const today = getCurrentDateInput();
 
+const getMerchantName = (merchant) => {
 
-const MerchantMonitoringChart = (props) => {
-
-  const { 
-    isLoading,
-    merchantLimit=5,
-    noOfDays=7,
-    type='top',
-    handleChange=()=>{}
-  } = props;
-  const textColor = useColorModeValue("gray.700", "white");
-  const seriesState = [{
-    name: 'Total Txn',
-    data: []
+  if (merchant?.businessName) {
+    return merchant?.businessName;
   }
-]
 
-  return (
-    <Box p='12px 0px'>
-    <Card w='100%' p="28px 10px 16px 0px" mb={{ sm: "26px", lg: "0px" }}>
-     {
-      (isLoading) ? (
-        <Center>
-          <Spinner size='xl' />
-        </Center>
-      ) : (
-        <>
-          <CardHeader mb="2px" pl="22px">
-          <Flex direction="row" alignItems="flex-end" mb={6} sx={{ width: '100%'}}>
-            <Text fontSize="lg" color={textColor} fontWeight="bold" mr={6}>
-              {`${ type.charAt(0).toUpperCase() + type.slice(1)} Merchants (Last ${noOfDays} days)`}
-            </Text>
-            <Spacer />
-            
-            <RadioGroup name='type' onChange={handleChange} value={type}>
-              <Stack direction='row'>
-                <Radio value='top'>Top</Radio>
-                <Radio value='bottom'>Bottom</Radio>
-              </Stack>
-            </RadioGroup>
-            <FormControl  maxW="150px" marginX={2}>
-                <FormLabel textAlign="right">Merchant Limit</FormLabel>
-                <NumberInput name={'merchantLimit'} min={1} ml={2} value={merchantLimit} onChange={handleChange}>
-                  <NumberInputField />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
-              </FormControl>
-              <FormControl maxW="150px" marginX={2}>
-                <FormLabel>Start Date</FormLabel>
-                <Input 
-                  type='date'
-                  //value={filters?.startDate}
-                  name='startDate'
-                  onChange={handleChange}
-                />
-              </FormControl>
+  if (merchant?.firstName) {
+    return `${merchant?.firstName} ${merchant?.lastName}`
+  }
 
-              <FormControl maxW="150px" mt={4} marginX={2}>
-                <FormLabel>End Date</FormLabel>
-                <Input
-                type='date'
-                //value={filters?.endDate}
-                name='endDate'
-                onChange={handleChange}
-                />
-              </FormControl>
+  if (merchant?.username) {
+    return merchant?.username;
+  }
 
-            <ButtonGroup gap='2'>
-              <Button colorScheme='teal' onClick={()=>{}}>Apply</Button>
-            </ButtonGroup>
-          </Flex>
-          </CardHeader>
-          <Divider />
-          <SimpleGrid columns={{ sm: 1, md: 2, xl: 2 }} spacing="24px">
-          <SingleBarChart 
-            title={'Transaction Volume'}
-            totalTransactionSeries={[15, 25, 30]}
-            transactionSeries={['A', 'B', 'C']}
-            ySeriesName={'Transaction Count'}
-            />
-          <SingleBarChart 
-            title={'Transaction Volume'}
-            totalTransactionSeries={[15, 25, 30]}
-            transactionSeries={['A', 'B', 'C']}
-            ySeriesName={'Transaction Volume'}
-          />
-          </SimpleGrid>
-          </>
-      )
-     }
-    </Card>
-  </Box>
-  );
+  return 'N/A'
 }
 
+const orderMerchantsByLabel = (p_merchants) => {
+  const sortedMerchants = [...p_merchants]; // Create a shallow copy of the original array
 
-const MerchantTrendChart = (props) => {
+  sortedMerchants.sort((a, b) => {
+    const labelA = a.label.toUpperCase(); // Convert labels to uppercase for case-insensitive sorting
+    const labelB = b.label.toUpperCase();
 
-  const { 
-    isLoading,
-    merchantLimit=5,
-    noOfDays=7,
-    type='top',
-    handleChange=()=>{}
-  } = props;
-  const textColor = useColorModeValue("gray.700", "white");
-  const seriesState = [{
-    name: 'Total Txn',
-    data: []
-  }
-]
+    if (labelA < labelB) {
+      return -1; // a should come before b
+    }
+    if (labelA > labelB) {
+      return 1; // a should come after b
+    }
+    return 0; // a and b are equal in terms of sorting
+  });
 
-  return (
-    <Box p='12px 0px'>
-    <Card w='100%' p="28px 10px 16px 0px" mb={{ sm: "26px", lg: "0px" }}>
-     {
-      (isLoading) ? (
-        <Center>
-          <Spinner size='xl' />
-        </Center>
-      ) : (
-        <>
-          <CardHeader mb="2px" pl="22px">
-          <VStack alignItems={'flex-start'} sx={{ width: '100%'}}>
-            <Flex direction="row" alignItems="flex-end" mb={6} sx={{ width: '100%'}}>
-              <Text fontSize="lg" color={textColor} fontWeight="bold" mr={6}>
-                {`Merchant Trends`}
-              </Text>
-              <Spacer />
-                <FormControl maxW="150px" marginX={2}>
-                  <FormLabel>Start Date</FormLabel>
-                  <Input 
-                    type='date'
-                    //value={filters?.startDate}
-                    name='startDate'
-                    onChange={handleChange}
-                  />
-                </FormControl>
-                <FormControl mt={4} maxW="150px" marginX={2}>
-                  <FormLabel>End Date</FormLabel>
-                  <Input
-                  type='date'
-                  //value={filters?.endDate}
-                  name='endDate'
-                  onChange={handleChange}
-                  />
-                </FormControl>
-            </Flex>
-            <Flex direction="row" alignItems="flex-end" mb={6} sx={{ width: '100%'}}>
-              <div style={{width: '100%', marginRight: '1%'}}>
-                <Select
-                  isMulti
-                  onChange={(e) => {}}
-                  size="md"
-                  useBasicStyles
-                  name="merchants"
-                  options={[]}
-                  placeholder="Select merchants..."
-                  closeMenuOnSelect={false}
-                />
-              </div>
-              <Spacer />
-              <ButtonGroup gap='2'>
-                <Button colorScheme='teal' onClick={()=>{}}>Apply</Button>
-              </ButtonGroup>
-            </Flex>
-          </VStack>
-          </CardHeader>
-          <Divider />
-          <SimpleGrid columns={{ sm: 1, md: 2, xl: 2 }} spacing="24px">
-            <StackedLineChart 
-              ySeriesName="Tranaction Count"
-              title="Tranaction Count"
-            />
-            <StackedLineChart
-              ySeriesName="Transaction Volume"
-              title="Tranaction Volume"
-            />
-          </SimpleGrid>
-          </>
-      )
-     }
-    </Card>
-  </Box>
-  );
-}
+  return sortedMerchants;
+};
 
-const MerchantActivityPieChart = (props) => {
-  const { 
-    isLoading,
-    handleChange=()=>{}
-  } = props;
-  const textColor = useColorModeValue("gray.700", "white");
+
+const MerchantVolume = (props) => {
+
+  const token = useSelector(getAuthToken);
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  const lastSevenDays = sevenDaysAgo.toISOString().split('T')[0];
+  const [filters, setFilters] = useState({
+    type: 'top',
+    merchantLimit: 5,
+    startDate: lastSevenDays,
+    endDate: today,
+  });
+  const [urlWithFilters, setUrlWithFilters] = useState(buildQueryString(
+    GET_MERCHANT_VOLUMES_FOR_BAR_CHART, filters
+  ));
+  const [count, setCount] = useState([]);
+  const [countLabel, setCountLabel] = useState([]);
+  const [amount, setAmount] = useState([]);
+  const [amountLabel, setAmountLabel] = useState([]);
   
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFilters((prevFilters) => ({
+    ...prevFilters,
+    [name]: value,
+    }));
+  };
+
+  const applyFilter = () => {
+    setUrlWithFilters(buildQueryString(
+      GET_MERCHANT_VOLUMES_FOR_BAR_CHART,
+      filters
+    ));
+  }
+
+  const payload_data = {};
+  const fetchInfo = useQuery(['get-merchant-volume',
+          { 
+            url: urlWithFilters,
+            payload_data,
+            authenticate:true,
+            token
+            }],
+          fetchData, 
+          {
+            retry:false,
+            onSuccess: (response) => {
+              let { data } = response;
+              let { series_count, series_amount } = data;
+              series_count = series_count || [];
+              series_amount = series_amount || [];
+              let seriesCount = series_count.length > 0 ? series_count[0] : {};
+              let seriesAmount = series_amount.length > 0 ? series_amount[0] : {};
+
+              let seriesCountData = seriesCount?.data;
+              let seriesAmountData = seriesAmount?.data;
+
+              let transactionCount = seriesCountData.map((d) => d?.transaction_count);
+              let transactionAmount = seriesAmountData.map((d) => d?.transaction_amount);
+              let transactionCountLabel = seriesCountData.map((d) => getMerchantName(d?.merchant));
+              let transactionAmountLabel = seriesAmountData.map((d) => getMerchantName(d?.merchant));
+
+              setCountLabel(transactionCountLabel);
+              setCount(transactionCount);
+              setAmountLabel(transactionAmountLabel);
+              setAmount(transactionAmount);
+
+            },
+            onError: (error) => {
+              handleApiError(error);
+            }
+          }
+          );
+  const { isLoading } = fetchInfo;
+
+
+  return (<MerchantVolumeUI
+      startDate={filters?.startDate}
+      endDate={filters?.endDate}
+      type={filters?.type}
+      handleChange={handleChange}
+      merchantLimit={filters?.merchantLimit}
+      isLoading={isLoading}
+      count={count}
+      countLabel={countLabel}
+      amount={amount}
+      amountLabel={amountLabel}
+      applyFilter={applyFilter}
+    />
+  )
+}
+
+
+const MerchantTrend = (props) => {
+
+  const token = useSelector(getAuthToken);
+  const [filters, setFilters] = useState({
+    startDate: today,
+    endDate: today,
+    walletId: []
+  });
+  const [merchants, setMerchants] = useState([]);
+  const [xSeries, setXSeries] = useState([]);
+  const [yCount, setYCount] = useState([]);
+  const [yAmount, setYAmount] = useState([]);
+  const [merchantMap, setMerchantMap] = useState({});
+
+  const handleChange = (event, type) => {
+    if (type == 'multi') {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        walletId: event,
+        }));
+      return;
+    }
+    const { name, value } = event.target;
+    setFilters((prevFilters) => ({
+    ...prevFilters,
+    [name]: value,
+    }));
+  };
+  const payload_data = {};
+  const merchantsInfo = useQuery(['get-merchants',
+          { 
+            url: GET_MERCHANTS_USERS,
+            payload_data,
+            authenticate:true,
+            token
+            }],
+          fetchData, 
+          {
+            retry:false,
+            onSuccess: (response) => {
+              let { data: responseData } = response;
+              let { data, count} = responseData;
+              let p_merchantMap = {};
+              let p_merchants = data.map((p_merchant, index) => {
+                p_merchantMap[p_merchant?.wallet_id] = p_merchant?.merchant_name;
+                return {
+                  value: p_merchant?.wallet_id,
+                  label: p_merchant?.merchant_name,
+                }
+              });
+              setMerchantMap(p_merchantMap);
+              setMerchants(orderMerchantsByLabel(p_merchants));
+            },
+            onError: (error) => {
+              handleApiError(error);
+            }
+          }
+          );
+  const trendsInfo = useQuery(['get-merchants-trends',
+          { 
+            url: `${GET_MERCHANT_TREND_FOR_LINE_CHART}?walletId=${filters?.walletId?.map(obj => obj.value).join(',')}&startDate=${filters?.startDate}&endDate=${filters?.endDate}`,
+            payload_data,
+            authenticate:true,
+            token
+            }],
+          fetchData, 
+          {
+            retry:false,
+            onSuccess: (response) => {
+              let { data } = response;
+              let p_xSeries = [];
+              if (data?.length > 0) {
+                p_xSeries = data[0]?.dates || [];
+              }
+              let p_yCount = data.map((d) => {
+                
+                let wallet_id = d?.wallet_id;
+                return {
+                  name: merchantMap[wallet_id],
+                  data: d?.counts || []
+                }
+              })
+              let p_yAmount = data.map((d) => {
+                
+                let wallet_id = d?.wallet_id;
+                return {
+                  name: merchantMap[wallet_id],
+                  data: d?.amounts || []
+                }
+              })
+              setXSeries(p_xSeries);
+              setYCount(p_yCount);
+              setYAmount(p_yAmount);
+              
+            },
+            onError: (error) => {
+              handleApiError(error);
+            }, 
+            enabled: false
+          }
+          );
+
+  const applyFilter = () => {
+    trendsInfo.refetch();
+  }
+
   return (
-    <Box p='12px 0px'>
-    <Card w='100%' p="28px 10px 16px 0px" mb={{ sm: "26px", lg: "0px" }}>
-     {
-      (isLoading) ? (
-        <Center>
-          <Spinner size='xl' />
-        </Center>
-      ) : (
-        <>
-          <CardHeader mb="2px" pl="22px">
-          <VStack alignItems={'flex-start'} sx={{ width: '100%'}}>
-            <Flex direction="row" alignItems="flex-end" mb={6} sx={{ width: '100%'}}>
-              <Text fontSize="lg" color={textColor} fontWeight="bold" mr={6}>
-                {`Merchant Activity`}
-              </Text>
-              <Spacer />
-                <FormControl maxW="150px" marginX={2}>
-                  <FormLabel>Start Date</FormLabel>
-                  <Input 
-                    type='date'
-                    //value={filters?.startDate}
-                    name='startDate'
-                    onChange={handleChange}
-                  />
-                </FormControl>
-                <FormControl mt={4} maxW="150px" marginX={2}>
-                  <FormLabel>End Date</FormLabel>
-                  <Input
-                  type='date'
-                  //value={filters?.endDate}
-                  name='endDate'
-                  onChange={handleChange}
-                  />
-                </FormControl>
-                <ButtonGroup gap='2'>
-                <Button colorScheme='teal' onClick={()=>{}}>Apply</Button>
-              </ButtonGroup>
-            </Flex>
-          </VStack>
-          </CardHeader>
-          <Divider />
-          <SimpleGrid columns={{ sm: 1, md: 2, xl: 2 }} spacing="24px">
-            <StackedPieChart />
-            <StackedPieChart />
-          </SimpleGrid>
-          </>
-      )
-     }
-    </Card>
-  </Box>
+    <MerchantTrendChartUI 
+      isLoading={merchantsInfo?.isLoading || trendsInfo?.isLoading}
+      startDate={filters?.startDate}
+      endDate={filters?.endDate}
+      handleChange={handleChange}
+      applyFilter={applyFilter}
+      merchants={merchants}
+      xSeries={xSeries}
+      countSeries={yCount}
+      amountSeries={yAmount}
+    />
   );
 }
+
+
+const MerchantActivity = (props) => {
+
+  const token = useSelector(getAuthToken);
+  const [merchants, setMerchants] = useState([]);
+  const [merchantMap, setMerchantMap] = useState({});
+  const [amountSeries, setAmountSeries] = useState([]);
+  const [countSeries, setCountSeries] = useState([]);
+  const [amountLabel, setAmountLabel] = useState([]);
+  const [countLabel, setCountLabel] = useState([]);
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  const lastSevenDays = sevenDaysAgo.toISOString().split('T')[0];
+  const [filters, setFilters] = useState({
+    startDate: lastSevenDays,
+    endDate: today,
+  });
+  const [urlWithFilters, setUrlWithFilters] = useState(buildQueryString(
+    GET_MERCHANT_ACTIVITY_FOR_PIE_CHART, filters
+  ));
+  
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFilters((prevFilters) => ({
+    ...prevFilters,
+    [name]: value,
+    }));
+  };
+
+  const applyFilter = () => {
+    setUrlWithFilters(buildQueryString(
+      GET_MERCHANT_ACTIVITY_FOR_PIE_CHART,
+      filters
+    ));
+  }
+
+  const payload_data = {};
+  const merchantsInfo = useQuery(['get-merchants',
+          { 
+            url: GET_MERCHANTS_USERS,
+            payload_data,
+            authenticate:true,
+            token
+            }],
+          fetchData, 
+          {
+            retry:false,
+            onSuccess: (response) => {
+              let { data: responseData } = response;
+              let { data, count} = responseData;
+              let p_merchantMap = {};
+              let p_merchants = data.map((p_merchant, index) => {
+                p_merchantMap[p_merchant?.wallet_id] = p_merchant?.merchant_name;
+                return {
+                  value: p_merchant?.wallet_id,
+                  label: p_merchant?.merchant_name,
+                }
+              });
+              setMerchantMap(p_merchantMap);
+              setMerchants(orderMerchantsByLabel(p_merchants));
+            },
+            onError: (error) => {
+              handleApiError(error);
+            }
+          }
+          );
+  const fetchInfo = useQuery(['get-merchant-activity',
+          { 
+            url: urlWithFilters,
+            payload_data,
+            authenticate:true,
+            token
+            }],
+          fetchData, 
+          {
+            retry:false,
+            onSuccess: (response) => {
+              let { data } = response;
+              let { data: responseData } = data;
+
+              const { activity_by_count, activity_by_amount } = responseData;
+              // this is not optimal 
+              setCountLabel(activity_by_count.map((d) => {
+                if (merchantMap[d.wallet_id]) {
+                  return merchantMap[d.wallet_id]
+                }
+                return 'N/A';
+              }));
+              setCountSeries(activity_by_count.map((d) => d.count));
+              setAmountLabel(activity_by_amount.map((d) => {
+                if (merchantMap[d.wallet_id]) {
+                  return merchantMap[d.wallet_id]
+                }
+                return 'N/A';
+              }));
+              setAmountSeries(activity_by_amount.map((d) => d.amount));
+            },
+            onError: (error) => {
+              handleApiError(error);
+            }
+          }
+          );
+  const { isLoading } = fetchInfo;
+
+
+  return (
+    <MerchantActivityPieChartUI 
+      isLoading={isLoading}
+      handleChange={handleChange}
+      applyFilter={applyFilter}
+      startDate={filters?.startDate}
+      endDate={filters?.endDate}
+      amountSeries={amountSeries}
+      amountLabel={amountLabel}
+      countSeries={countSeries}
+      countLabel={countLabel}
+    />
+  )
+}
+
+
+
 
 const MerchantTransactionTrendPage = (props) => {
 
@@ -387,15 +511,12 @@ const MerchantTransactionTrendPage = (props) => {
 
     return (
         <Flex flexDirection="column" pt={{ base: "120px", md: "75px" }}>
-          
-          <MerchantMonitoringChart />
-          <MerchantTrendChart />
-          <MerchantActivityPieChart />
+          <MerchantVolume />
+          <MerchantTrend />
+          <MerchantActivity />
       </Flex>
     );
 }
-
-
 
 
 export default MerchantTransactionTrendPage;

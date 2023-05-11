@@ -69,7 +69,10 @@ const TxnRulesBreakdownPage = (props) => {
               const data = response?.data;
               let mRules = data?.rules_data || [];
               mRules = mRules.map((rule, index) => {
-                return {value: rule.id, label: firstLetterUpper(`${rule?.description}(${(firstLetterUpper(rule?.product)).replaceAll("_", " ")})`)}
+                return {
+                  value: rule.id,
+                  label: firstLetterUpper(`${rule?.description}(${(firstLetterUpper(rule?.product)).replaceAll("_", " ")})`)
+                }
               })
               setRules(mRules);
             },

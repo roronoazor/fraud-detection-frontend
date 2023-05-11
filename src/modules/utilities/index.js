@@ -184,3 +184,15 @@ export function replaceUnderscores(str) {
   
     return result;
   }
+
+export function buildQueryString(url, queryParams) {
+    const queryString = Object.entries(queryParams)
+      .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+      .join('&');
+  
+    if (queryString) {
+      return `${url}?${queryString}`;
+    }
+  
+    return url;
+  }
