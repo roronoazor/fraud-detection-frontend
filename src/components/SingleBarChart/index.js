@@ -84,8 +84,35 @@ class ApexBarChart extends React.Component {
       };
     }
 
+    componentDidMount() {
+      const intervalId = setInterval(() => {
+        this.setState({
+          series: [{
+            name: 'Total Txn',
+            data: this.props.totalTransactionSeries
+            },
+          ],
+          options: {
+            ...this.props.options,
+            xaxis: {
+              labels: {
+                rotate: -45
+              },
+              categories: this.props.transactionSeries,
+              tickPlacement: 'on'
+            }
+          }
+      });
+      }, 2000);
   
-
+      this.setState(prevState => {
+        return {
+          ...prevState,
+          intervalId
+        }
+      })
+    }
+  
     render() {
       const { title, ...rest } = this.props;
       return (

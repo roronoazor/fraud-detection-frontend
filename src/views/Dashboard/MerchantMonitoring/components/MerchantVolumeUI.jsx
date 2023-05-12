@@ -59,7 +59,7 @@ const MerchantVolumeUI = (props) => {
             <CardHeader mb="2px" pl="22px">
             <Flex direction="row" alignItems="flex-end" mb={6} sx={{ width: '100%'}}>
               <Text fontSize="lg" color={textColor} fontWeight="bold" mr={6}>
-                {`${ type.charAt(0).toUpperCase() + type.slice(1)} Merchants (From ${startDate} - ${endDate} )`}
+                {`${ type.charAt(0).toUpperCase() + type.slice(1)} Merchants (From ${startDate} to ${endDate} )`}
               </Text>
               <Spacer />
               

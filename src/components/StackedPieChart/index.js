@@ -5,7 +5,7 @@ import { Flex, Text, } from "@chakra-ui/react";
 import numbro from 'numbro';
 
 const formatNumberWithCommas = (value) => {
-  return numbro(value).format({ thousandSeparated: true });
+  return  numbro(value).format({ thousandSeparated: true });
 };
 
 
@@ -44,6 +44,25 @@ class ApexPieChart extends React.Component {
       
       
       };
+    }
+
+    componentDidMount() {
+      const intervalId = setInterval(() => {
+        this.setState({
+          series: this.props.series,
+          options: {
+            ...this.props.options,
+            labels: this.props.labels
+          }
+      });
+      }, 2000);
+  
+      this.setState(prevState => {
+        return {
+          ...prevState,
+          intervalId
+        }
+      })
     }
 
   

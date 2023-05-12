@@ -50,7 +50,7 @@ const MerchantTrendChartUI = (props) => {
             <VStack alignItems={'flex-start'} sx={{ width: '100%'}}>
               <Flex direction="row" alignItems="flex-end" mb={6} sx={{ width: '100%'}}>
                 <Text fontSize="lg" color={textColor} fontWeight="bold" mr={6}>
-                  {`Merchant Trends`}
+                  { xSeries.length > 0 ? `Merchant Trends(From ${startDate} to ${endDate})` : `Merchant Trends`}
                 </Text>
                 <Spacer />
                   <FormControl maxW="150px" marginX={2}>

@@ -51,7 +51,7 @@ const MerchantActivityPieChartUI = (props) => {
             <VStack alignItems={'flex-start'} sx={{ width: '100%'}}>
               <Flex direction="row" alignItems="flex-end" mb={6} sx={{ width: '100%'}}>
                 <Text fontSize="lg" color={textColor} fontWeight="bold" mr={6}>
-                  {`Merchant Activity`}
+                  {`Merchant Activity (From ${startDate} to ${endDate})`}
                 </Text>
                 <Spacer />
                   <FormControl maxW="150px" marginX={2}>
@@ -86,7 +86,7 @@ const MerchantActivityPieChartUI = (props) => {
                 labels={countLabel}
               />
               <StackedPieChart
-                title={'Transaction Volume'}
+                title={'Transaction Amount'}
                 series={amountSeries}
                 labels={amountLabel}
               />
