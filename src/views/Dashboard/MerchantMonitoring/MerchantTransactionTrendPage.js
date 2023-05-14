@@ -324,6 +324,8 @@ const MerchantActivity = (props) => {
   const [filters, setFilters] = useState({
     startDate: lastSevenDays,
     endDate: today,
+    type: 'top', 
+    merchantLimit: 5,
   });
   const [urlWithFilters, setUrlWithFilters] = useState(buildQueryString(
     GET_MERCHANT_ACTIVITY_FOR_PIE_CHART, filters
@@ -390,20 +392,69 @@ const MerchantActivity = (props) => {
 
               const { activity_by_count, activity_by_amount } = responseData;
               // this is not optimal 
-              setCountLabel(activity_by_count.map((d) => {
+              activity_by_count.sort((a, b) => {
+                if (filters?.type === 'top') {
+                  return b.count - a.count; // Descending order
+                } else if (filters?.type === 'bottom') {
+                  return a.count - b.count; // Ascending order
+                }
+                return 0;
+              });
+
+              activity_by_amount.sort((a, b) => {
+                if (filters?.type === 'top') {
+                  return b.amount - a.amount; // Descending order
+                } else if (filters?.type === 'bottom') {
+                  return a.amount - b.amount; // Ascending order
+                }
+                return 0;
+              });
+
+              let cLabels = activity_by_count.map((d) => {
+                if (merchantMap[d.wallet_id]) {
+                  return merchantMap[d.wallet_id]
+                }
+                return 'N/A';
+              });
+              let cSeries = activity_by_count.map((d) => d.count);
+              let aLabels = (activity_by_amount.map((d) => {
                 if (merchantMap[d.wallet_id]) {
                   return merchantMap[d.wallet_id]
                 }
                 return 'N/A';
               }));
-              setCountSeries(activity_by_count.map((d) => d.count));
-              setAmountLabel(activity_by_amount.map((d) => {
-                if (merchantMap[d.wallet_id]) {
-                  return merchantMap[d.wallet_id]
-                }
-                return 'N/A';
-              }));
-              setAmountSeries(activity_by_amount.map((d) => d.amount));
+              let aSeries =activity_by_amount.map((d) => d.amount);
+
+             
+              let filteredCountData = cSeries.slice(0, filters?.merchantLimit);
+              let filteredCountLabels = cLabels.slice(0, filters?.merchantLimit);
+              let filteredAmountData = aSeries.slice(0, filters?.merchantLimit);
+              let filteredAmountLabels = aLabels.slice(0, filters?.merchantLimit);
+            
+              console.log('xxy: ', filteredCountData, filteredCountLabels, filteredAmountData, filteredAmountLabels)
+
+              // Calculate the sum of the remaining items
+              const remainingCount = cSeries.slice(filters.merchantLimit).reduce((sum, count) => sum + count, 0);
+              const remainingAmount = aSeries.slice(filters.merchantLimit).reduce((sum, amount) => sum + amount, 0);
+
+              // Add the remaining items as 'Others' to the filtered data
+              if (remainingCount > 0) {
+                filteredCountData.push(remainingCount);
+                filteredCountLabels.push('Others');
+              }
+
+              if (remainingAmount > 0) {
+                filteredAmountData.push(remainingAmount);
+                filteredAmountLabels.push('Others');
+              }
+
+              // Render the pie chart using filteredCountData, filteredCountLabels, filteredAmountData, filteredAmountLabels
+              // ...
+              setCountSeries(filteredCountData);
+              setCountLabel(filteredCountLabels);
+              setAmountSeries(filteredAmountData);
+              setAmountLabel(filteredAmountLabels);
+
             },
             onError: (error) => {
               handleApiError(error);
@@ -412,6 +463,11 @@ const MerchantActivity = (props) => {
           );
   const { isLoading } = fetchInfo;
 
+  
+  console.log('countSeries', countSeries);
+  console.log('amountSeries', amountSeries);
+  console.log('countLabel', countLabel);
+  console.log('amountLabel', amountLabel);
 
   return (
     <MerchantActivityPieChartUI 
@@ -424,6 +480,8 @@ const MerchantActivity = (props) => {
       amountLabel={amountLabel}
       countSeries={countSeries}
       countLabel={countLabel}
+      type={filters?.type}
+      merchantLimit={filters?.merchantLimit}
     />
   )
 }

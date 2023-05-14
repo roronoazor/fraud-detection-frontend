@@ -4,11 +4,14 @@ import {
     Box,
     Button,
     Flex,
+    Stack,
     SimpleGrid,
     FormControl,
     FormLabel,
     Spinner, 
     Center,
+    RadioGroup,
+    Radio,
     Text,
     Input,
     Divider,
@@ -16,6 +19,11 @@ import {
     Spacer,
     VStack,
     useColorModeValue,
+    NumberInput,
+    NumberInputField,
+    NumberInputStepper,
+    NumberIncrementStepper,
+    NumberDecrementStepper,
 } from "@chakra-ui/react";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
@@ -34,6 +42,8 @@ const MerchantActivityPieChartUI = (props) => {
       amountLabel,
       countSeries,
       countLabel,
+      type='top',
+      merchantLimit=5,
     } = props;
     const textColor = useColorModeValue("gray.700", "white");
     
@@ -54,6 +64,22 @@ const MerchantActivityPieChartUI = (props) => {
                   {`Merchant Activity (From ${startDate} to ${endDate})`}
                 </Text>
                 <Spacer />
+                  <RadioGroup name='type' onChange={(fValue) => { handleChange({target: { name: 'type', value: fValue }}) }} value={type}>
+                  <Stack direction='row'>
+                    <Radio value='top'>Top</Radio>
+                    <Radio value='bottom'>Bottom</Radio>
+                  </Stack>
+                </RadioGroup>
+                <FormControl  maxW="150px" marginX={2}>
+                    <FormLabel textAlign="right">Merchant Limit</FormLabel>
+                    <NumberInput name={'merchantLimit'} min={1} ml={2} value={merchantLimit} onChange={(fValue) => { handleChange({target: { name: 'merchantLimit', value: fValue }}) }}>
+                      <NumberInputField />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  </FormControl>
                   <FormControl maxW="150px" marginX={2}>
                     <FormLabel>Start Date</FormLabel>
                     <Input 
