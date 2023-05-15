@@ -71,10 +71,14 @@ const Form1 = ({ onChange, values, products=[] }) => {
           disabled
         >
           <option value="exceeded daily limit">Exceeded Daily Limit</option>
+          <option value="exceeded account daily limit">Exceeded Daily Transfer Limit on Account</option>
+          <option value="exceeded card daily limit">Exceeded Daily Withdrwal Limit on Card</option>
           <option value="flag duplicate transaction">Flag Duplicate Transaction</option>
           <option value="exceeded limit">Exceeded Limit</option>
           <option value="exceeded balance">Exceeded Balance</option>
           <option value="exceeded single transaction limit">Exceeded Single Transaction Limit</option>
+          <option value="exceeded number of daily transaction on card">Exceeded Number of Daily Transactions on Card</option>
+          <option value="exceeded number of daily transaction on account">Exceeded Number of Daily Transactions on Account</option>
           <option value="exceeded number of daily transaction">Exceeded Number of Daily Transactions</option>
           <option value="transaction time">Transaction Time</option>
         </Select>
@@ -395,7 +399,7 @@ export default function multistep() {
         handleApiError(error);
     }
 });     
-
+  
   const handleSubmit = () => {
 
     if (!values?.description || !values?.condition || !values?.product || !values?.rule_value || !values?.manageable_value || !values?.warning_value || !values?.danger_value) {
