@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Progress,
   Box,
@@ -29,10 +29,32 @@ import { useToast } from '@chakra-ui/react';
 import { EDIT_MERCHANT_MONITORING_METRIC } from 'config/serverUrls';
 
 
+// Function to store the selected users in local storage
+const storeSelectedUsers = (selectedUsers) => {
+  localStorage.setItem('selectedUsers', JSON.stringify(selectedUsers));
+};
+
+// Function to retrieve the selected users from local storage
+const getSelectedUsersFromStorage = () => {
+  const storedSelectedUsers = localStorage.getItem('selectedUsers');
+  return storedSelectedUsers ? JSON.parse(storedSelectedUsers) : [];
+};
+
 function getUnselectedItems(selectedItems, unselectedItems) {
   const selectedUserIds = selectedItems.map(item => item.id);
   return unselectedItems.filter(item => !selectedUserIds.includes(item.id));
 }
+
+// Function to store the users in local storage
+const storeUsers = (users) => {
+  localStorage.setItem('users', JSON.stringify(users));
+};
+
+// Function to retrieve the users from local storage
+const getUsersFromStorage = () => {
+  const storedUsers = localStorage.getItem('users');
+  return storedUsers ? JSON.parse(storedUsers) : [];
+};
 
 const Form1 = ({ onChange, values, users = [], selectedUsers, setSelectedUsers }) => {
   return (
@@ -80,7 +102,7 @@ const Form1 = ({ onChange, values, users = [], selectedUsers, setSelectedUsers }
             _dark={{
               color: 'gray.50',
             }}>
-            Percentage_violation
+            Percentage Violation
           </FormLabel>
           <InputGroup size="sm">
             <Input
@@ -126,13 +148,10 @@ const Form1 = ({ onChange, values, users = [], selectedUsers, setSelectedUsers }
 export default function multistep() {
   const toast = useToast();
   const token = useSelector(getAuthToken);
-  const [users, setUsers] = useState([]);
   const [values, setValues] = useState({});
-  const [selectedEmails, setSelectedEmails] = useState([]);
+  const [users, setUsers] = useState(getUsersFromStorage());
+  const [selectedEmails, setSelectedEmails] = useState(getSelectedUsersFromStorage());
   const history = useHistory();
-
-
-
 
   let payload_data = {};
 
@@ -233,7 +252,16 @@ export default function multistep() {
 
     return;
   }
+ 
+   // Store the selected users in local storage whenever the selection changes
+  useEffect(() => {
+    storeSelectedUsers(selectedEmails);
+  }, [selectedEmails]);
 
+  // Store the users in local storage whenever the users state changes
+  useEffect(() => {
+    storeUsers(users);
+  }, [users]);
 
 
   const { isLoading } = fetchMerchantMetric;
@@ -249,9 +277,6 @@ export default function multistep() {
     )
   }
 
-  console.log('users', users);
-  console.log('selected emails', selectedEmails);
-
 
   return (
     <>
@@ -265,7 +290,13 @@ export default function multistep() {
           m="10px auto"
           as="form">
 
-          <Form1 onChange={onChange} values={values} users={getUnselectedItems(selectedEmails, users)} selectedUsers={selectedEmails} setSelectedUsers={setSelectedEmails} />
+          <Form1 
+            onChange={onChange}
+            values={values}
+            users={getUnselectedItems(selectedEmails, users)}
+            selectedUsers={selectedEmails}
+            setSelectedUsers={setSelectedEmails}
+          />
 
           <ButtonGroup mt="5%" w="100%">
             <Button
