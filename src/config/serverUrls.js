@@ -57,3 +57,5 @@ export const GET_MERCHANT_ACTIVITY_FOR_PIE_CHART = BASE_URL + 'api/merchants/pie
 export const GET_MERCHANT_TREND_FOR_LINE_CHART = BASE_URL + 'api/merchants/trends/';
 
 export const GET_MERCHANTS_USERS = BASE_URL + 'api/merchants/users/';
+
+export const EDIT_MERCHANT_MONITORING_METRIC = BASE_URL + 'api/merchants/monitoring/metric';
