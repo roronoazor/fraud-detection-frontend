@@ -12,6 +12,7 @@ import TxnRulesBreakdownPage from "views/Dashboard/TxnRulesBreakdownPage";
 import RulesPage from "views/Dashboard/RulesPage";
 import RulesCreateForm from "views/Dashboard/Forms/RulesCreateForm";
 import RulesEditForm from "views/Dashboard/Forms/RulesEditForm";
+import MerchantMonitoringForm from "views/Dashboard/Forms/MerchantMonitoringForm";
 import Profile from "views/Dashboard/Profile.js";
 import SignIn from "views/Pages/SignIn.js";
 import SignUp from "views/Pages/SignUp.js";
@@ -184,6 +185,16 @@ var dashRoutes = [
         icon: <StatsIcon color="inherit" />,
         // icon: <MdOutlineSummarize color="inherit" />,
         component: MerchantTransactionTrendPage,
+        layout: "/admin",
+        isProtected: true,
+        isVisible: true
+      },
+      {
+        path: "/merchantMonitoring",
+        name: "Merchant Monitoring",
+        icon: <StatsIcon color="inherit" />,
+        // icon: <MdOutlineSummarize color="inherit" />,
+        component: MerchantMonitoringForm,
         layout: "/admin",
         isProtected: true,
         isVisible: true
