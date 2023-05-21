@@ -125,6 +125,68 @@ const Form1 = ({ onChange, values, users = [], selectedUsers, setSelectedUsers }
           </InputGroup>
         </FormControl>
 
+        <FormControl as={GridItem} colSpan={[3, 2]}>
+          <FormLabel
+            fontSize="sm"
+            fontWeight="md"
+            color="gray.700"
+            _dark={{
+              color: 'gray.50',
+            }}>
+            Minimum Amount
+          </FormLabel>
+          <InputGroup size="sm">
+            <Input
+              placeholder="Enter a value"
+              focusBorderColor="brand.400"
+              rounded="md"
+              name="minimum_amount"
+              value={values?.minimum_amount || ''}
+              onChange={onChange}
+            />
+            <InputRightAddon
+              bg="gray.50"
+              _dark={{
+                bg: 'gray.800',
+              }}
+              color="gray.500"
+              rounded="md">
+              #
+            </InputRightAddon>
+          </InputGroup>
+        </FormControl>
+
+        <FormControl as={GridItem} colSpan={[3, 2]}>
+          <FormLabel
+            fontSize="sm"
+            fontWeight="md"
+            color="gray.700"
+            _dark={{
+              color: 'gray.50',
+            }}>
+            Sending Intervals in Hours 
+          </FormLabel>
+          <InputGroup size="sm">
+            <Input
+              placeholder="Enter a value"
+              focusBorderColor="brand.400"
+              rounded="md"
+              name="sending_intervals"
+              value={values?.sending_intervals || ''}
+              onChange={onChange}
+            />
+            <InputRightAddon
+              bg="gray.50"
+              _dark={{
+                bg: 'gray.800',
+              }}
+              color="gray.500"
+              rounded="md">
+              #
+            </InputRightAddon>
+          </InputGroup>
+        </FormControl>
+        
         <FormControl id="email" mt={1}>
           <FormLabel
             fontSize="sm"
