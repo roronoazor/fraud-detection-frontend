@@ -63,13 +63,14 @@ const getMerchantName = (merchant) => {
     return merchant?.businessName;
   }
 
+  if (merchant?.username) {
+    return merchant?.username;
+  }
+
   if (merchant?.firstName) {
     return `${merchant?.firstName} ${merchant?.lastName}`
   }
 
-  if (merchant?.username) {
-    return merchant?.username;
-  }
 
   return 'N/A'
 }
