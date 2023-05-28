@@ -9,22 +9,25 @@ const MyPaginate = styled(ReactPaginate).attrs({
     margin-bottom: 2rem;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     list-style-type: none;
     padding: 0 5rem;
     li a {
-      border-radius: 7px;
-      padding: 0.1rem 1rem;
-      border: gray 1px solid;
+      border-radius: 2px;
+      padding: 0.5rem 0.7rem;
+      border: grey 1px solid;
       cursor: pointer;
+      border-color: #c7c7c7;
+      color: #2f855a;
     }
     li.previous a,
     li.next a,
     li.break a {
-      border-color: transparent;
+      border-color: #c7c7c7;
+      margin: 10px;
     }
     li.active a {
-      background-color: #0366d6;
+      background-color: #2f855a;
       border-color: transparent;
       color: white;
       min-width: 32px;
