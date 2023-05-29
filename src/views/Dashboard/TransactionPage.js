@@ -199,13 +199,18 @@ const fields = [
 const tableHeaders = [
   {
     id: 1,
-    value: 'Transaction Type',
-    range: 'all',
+    value: 'S/N',
   },
   {
     id: 11,
-    value: 'Name'
+    value: 'Merchant Name'
   },
+  {
+    id: 12,
+    value: 'Transaction Type',
+    range: 'all',
+  },
+ 
   {
     id: 2,
     value: 'Transaction Amount',
@@ -227,7 +232,7 @@ const tableHeaders = [
 
 function TransactionRow(props) {
 
-  const { transaction, display, showDetails } = props;
+  const { transaction, display, showDetails, serial_no } = props;
   const textColor = useColorModeValue("gray.700", "white");
   const transactionCreatedAt = new Date(transaction?.transaction_created_at);
   const formattedDateTime = transactionCreatedAt.toLocaleDateString("en-US", dateOptions);
@@ -235,8 +240,40 @@ function TransactionRow(props) {
   let name = transaction?.wallet_details?.businessName;
   name = name || `${transaction?.wallet_details?.lastName} ${transaction?.wallet_details?.firstName}`;
 
+  console.log(serial_no);
+
   return (
-    <Tr>
+    <Tr backgroundColor="#dbd6b8a1" borderWidth="10px" borderColor="white">
+      <Td minWidth={{ sm: "50px" }} pl="0px">
+        <Flex align="center" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
+          <Flex direction="column">
+            <Text
+              fontSize="sm"
+              color={textColor}
+              fontWeight="normal"
+              minWidth="100%"
+            // noOfLines={3}
+            >
+              {serial_no + 1}
+            </Text>
+          </Flex>
+        </Flex>
+      </Td>
+      <Td minWidth={{ sm: "200px" }} pl="0px">
+        <Flex align="center" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'left' }}>
+          <Flex direction="column">
+            <Text
+              fontSize="sm"
+              color="blue"
+              fontWeight="normal"
+              minWidth="100%"
+            // noOfLines={3}
+            >
+              {name}
+            </Text>
+          </Flex>
+        </Flex>
+      </Td>
       <Td minWidth={{ sm: "150px" }} pl="0px">
         <Flex align="center" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'left' }}>
           <Flex direction="column">
@@ -252,37 +289,37 @@ function TransactionRow(props) {
                 {'ELECTRICITY_RECHARGE' == transaction.transaction_type && (
                   <>
 
-                    <Text><Icon as={GiElectric} w={6} h={6} color='yellow.500' sx={{ verticalAlign: 'middle' }} /> Electricity</Text>
+                    <Text><Icon as={GiElectric} w={6} h={6} color='#33bb1a' sx={{ verticalAlign: 'middle' }} /> Electricity</Text>
                   </>
                 )}
                 {'WITHDRAWAL' == transaction.transaction_type && (
                   <>
 
-                    <Text><Icon as={GiTakeMyMoney} w={6} h={6} color='green.500' sx={{ verticalAlign: 'middle' }} /> Withdrawal</Text>
+                    <Text><Icon as={GiTakeMyMoney} w={6} h={6} color='#33bb1a' sx={{ verticalAlign: 'middle' }} /> Withdrawal</Text>
                   </>
                 )}
                 {'TRANSFER' == transaction.transaction_type && (
                   <>
 
-                    <Text><Icon as={FcMoneyTransfer} w={6} h={6} color='green.500' sx={{ verticalAlign: 'middle' }} /> Transfer</Text>
+                    <Text><Icon as={FcMoneyTransfer} w={6} h={6} color='#33bb1a' sx={{ verticalAlign: 'middle' }} /> Transfer</Text>
                   </>
                 )}
                 {'AIRTIME_VTU' == transaction.transaction_type && (
                   <>
 
-                    <Text><Icon as={FcCallTransfer} w={6} h={6} color='green.500' sx={{ verticalAlign: 'middle' }} /> Airtime</Text>
+                    <Text><Icon as={FcCallTransfer} w={6} h={6} color='#33bb1a' sx={{ verticalAlign: 'middle' }} /> Airtime</Text>
                   </>
                 )}
                 {'DATA_RECHARGE' == transaction.transaction_type && (
                   <>
 
-                    <Text><Icon as={CgData} w={6} h={6} color='green.500' sx={{ verticalAlign: 'middle' }} /> Data</Text>
+                    <Text><Icon as={CgData} w={6} h={6} color='#33bb1a' sx={{ verticalAlign: 'middle' }} /> Data</Text>
                   </>
                 )}
                 {'CABLE_RECHARGE' == transaction.transaction_type && (
                   <>
 
-                    <Text><Icon as={CgScreen} w={6} h={6} color='green.500' sx={{ verticalAlign: 'middle' }} /> Cable</Text>
+                    <Text><Icon as={CgScreen} w={6} h={6} color='#33bb1a' sx={{ verticalAlign: 'middle' }} /> Cable</Text>
                   </>
                 )}
               </Text>
@@ -290,21 +327,7 @@ function TransactionRow(props) {
           </Flex>
         </Flex>
       </Td>
-      <Td minWidth={{ sm: "200px" }} pl="0px">
-        <Flex align="center" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'left' }}>
-          <Flex direction="column">
-            <Text
-              fontSize="sm"
-              color={textColor}
-              fontWeight="normal"
-              minWidth="100%"
-            // noOfLines={3}
-            >
-              {name}
-            </Text>
-          </Flex>
-        </Flex>
-      </Td>
+
       <Td minWidth={{ sm: "150px" }} pl="0px">
         <Flex align="center" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'left' }}>
           <Flex direction="column">
@@ -336,7 +359,7 @@ function TransactionRow(props) {
                   (
                     <>
 
-                      <Text><CheckCircleIcon w={6} h={6} color="green.500" /> Successful</Text>
+                      <Text><CheckCircleIcon w={6} h={6} color="#33bb1a" /> Successful</Text>
                     </>
 
                   )
@@ -381,9 +404,8 @@ function TransactionRow(props) {
         <Flex minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'left' }}>
           <Button
             color="white"
-            borderRadius="0px"
-            colorScheme = {transaction?.transaction_status == 'failed' ? "red" : "green"}
-            leftIcon={<CgDetailsMore />}
+            size='sm'
+            backgroundColor="#33bb1a"
             onClick={() => { showDetails(transaction) }}
           >
             View Details
@@ -608,7 +630,7 @@ function Tables() {
         </CardHeader>
         <CardBody>
           <Box overflowX="scroll">
-            <Table size="sm" variant="striped" colorScheme='teal' borderColor="green" borderWidth="2px">
+            <Table size="sm" variant="unstyled">
               <Thead>
                 <Tr my=".8rem" pl="0px" color="gray.400">
                   {
@@ -616,13 +638,13 @@ function Tables() {
 
                       if (index == 0) {
                         return (
-                          <Th key={header.id} pl="0px" color="black" fontSize="15px">
+                          <Th key={header.id} pl="0px" color="black" fontSize="sm">
                             {header.value}
                           </Th>
                         )
                       } else {
                         return (
-                          <Th key={header.id} pl="0px" color="black" sx={{ textAlign: 'left' }} fontSize="15px">
+                          <Th key={header.id} pl="0px" color="black" sx={{ textAlign: 'left' }} fontSize="sm">
                             {header.value} {header.value == 'Transaction Amount' && (<><span>(</span><span>&#8358;</span><span>)</span></>)}
                           </Th>
                         )
@@ -636,6 +658,7 @@ function Tables() {
                   return (
                     <TransactionRow
                       key={index}
+                      serial_no={index}
                       transaction={transaction}
                       showDetails={showDetails}
                       display
