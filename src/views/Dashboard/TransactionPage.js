@@ -11,6 +11,7 @@ import {
   Td,
   useColorModeValue,
   Select,
+  Divider,
   Box,
   Button,
   Stack
@@ -240,11 +241,10 @@ function TransactionRow(props) {
   let name = transaction?.wallet_details?.businessName;
   name = name || `${transaction?.wallet_details?.lastName} ${transaction?.wallet_details?.firstName}`;
 
-  console.log(serial_no);
 
   return (
-    <Tr backgroundColor="#dbd6b8a1" borderWidth="10px" borderColor="white">
-      <Td minWidth={{ sm: "50px" }} pl="0px">
+    <Tr backgroundColor="#E1E5EF" borderWidth="10px" borderColor="white" >
+      <Td minWidth={{ sm: "50px" }} pl="0px" borderLeftRadius={'50px'}>
         <Flex align="center" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'center' }}>
           <Flex direction="column">
             <Text
@@ -259,7 +259,7 @@ function TransactionRow(props) {
           </Flex>
         </Flex>
       </Td>
-      <Td minWidth={{ sm: "200px" }} pl="0px">
+      <Td minWidth={{ sm: "250px" }} pl="0px">
         <Flex align="center" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'left' }}>
           <Flex direction="column">
             <Text
@@ -327,7 +327,6 @@ function TransactionRow(props) {
           </Flex>
         </Flex>
       </Td>
-
       <Td minWidth={{ sm: "150px" }} pl="0px">
         <Flex align="center" minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'left' }}>
           <Flex direction="column">
@@ -400,12 +399,12 @@ function TransactionRow(props) {
           </Flex>
         </Flex>
       </Td>
-      <Td minWidth={{ sm: "150px" }} pl="0px">
+      <Td minWidth={{ sm: "150px" }} pl="0px" borderRightRadius={'50px'}>
         <Flex minWidth="100%" flexWrap="nowrap" sx={{ justifyContent: 'left' }}>
           <Button
-            color="white"
+            colorScheme='teal'
             size='sm'
-            backgroundColor="#33bb1a"
+            variant='outline'
             onClick={() => { showDetails(transaction) }}
           >
             View Details
@@ -621,11 +620,11 @@ function Tables() {
       </Modal>
       <Card overflowX={{ sm: "scroll", xl: "hidden" }}>
         <CardHeader p="6px 0px 22px 0px">
-          <Stack>
+          <Stack sx={{ width: '100%' }}>
             <Text fontSize="xl" color={textColor} fontWeight="bold">
               {`Transactions Overview (${formatCurrencyNumber(transactionCount)})`}
             </Text>
-
+            <Divider />
           </Stack>
         </CardHeader>
         <CardBody>
