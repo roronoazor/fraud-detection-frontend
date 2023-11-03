@@ -38,7 +38,7 @@ const Layout = () => {
         "apps-only",
         "npc-apps-chat",
         "npc-apps-calendar",
-        "npc-apps-messages"
+        "npc-apps-messages",
       );
       document.body.classList.add("npc-default");
     }
@@ -84,14 +84,25 @@ const Layout = () => {
           <div className="nk-wrap">
             {appComponent ? (
               <React.Fragment>
-                <AppHeader fixed theme={themeState.header} app={appComponent} sidebarToggle={toggleSidebar} setVisibility={setVisibility}/>
+                <AppHeader
+                  fixed
+                  theme={themeState.header}
+                  app={appComponent}
+                  sidebarToggle={toggleSidebar}
+                  setVisibility={setVisibility}
+                />
                 {visibility && (
-                  <Sidebar sidebarToggle={toggleSidebar} theme={themeState.sidebar} mobileView={mobileView} className={sidebarClass} />
+                  <Sidebar
+                    sidebarToggle={toggleSidebar}
+                    theme={themeState.sidebar}
+                    mobileView={mobileView}
+                    className={sidebarClass}
+                  />
                 )}
               </React.Fragment>
             ) : (
               <React.Fragment>
-                 <Header fixed theme={themeState.header} sidebarToggle={toggleSidebar} setVisibility={setVisibility}/>
+                <Header fixed theme={themeState.header} sidebarToggle={toggleSidebar} setVisibility={setVisibility} />
                 <Sidebar
                   sidebarToggle={toggleSidebar}
                   theme={themeState.sidebar}

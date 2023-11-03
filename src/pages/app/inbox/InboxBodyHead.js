@@ -34,7 +34,7 @@ const InboxBodyHead = ({
           (item) =>
             item.message.meta[currentTab.toLowerCase()] === true &&
             item.message.meta.trash !== true &&
-            item.message.meta.archive !== true
+            item.message.meta.archive !== true,
         );
         setTimeout(() => setData([...defaultData]), 1);
       } else if (currentTab === "Archive") {

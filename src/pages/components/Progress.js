@@ -24,7 +24,11 @@ const ProgressPage = ({ ...props }) => {
                 Examples for using custom progress bars featuring support for stacked bars, animated backgrounds, and
                 text labels. To use it, import it such as <code>import {`{Progress}`} from "reactstrap"</code>. Visit
                 the{" "}
-                <a href={"https://deploy-preview-2356--reactstrap.netlify.app/components/progress"} target="_blank" rel="noreferrer">
+                <a
+                  href={"https://deploy-preview-2356--reactstrap.netlify.app/components/progress"}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Reactstrap
                 </a>{" "}
                 library for detailed instructions.

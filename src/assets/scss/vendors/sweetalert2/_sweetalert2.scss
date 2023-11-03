@@ -1,8 +1,8 @@
 /** SweetAlert2 | github.com/sweetalert2/sweetalert2 */
 
-@import 'scss/theming';
-@import 'scss/polyfills';
-@import 'scss/animations';
+@import "scss/theming";
+@import "scss/polyfills";
+@import "scss/animations";
 
 body {
   @include sweetalert2-body();

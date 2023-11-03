@@ -222,7 +222,7 @@ const Menu = ({ sidebarToggle, mobileView }) => {
               mobileView={mobileView}
             />
           )
-        )
+        ),
       )}
     </ul>
   );

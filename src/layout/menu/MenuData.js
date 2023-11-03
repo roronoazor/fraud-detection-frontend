@@ -1,5 +1,103 @@
 const menu = [
   {
+    heading: "Menu",
+  },
+  {
+    icon: "tile-thumb",
+    text: "Terminal Management",
+    active: false,
+    subMenu: [
+      {
+        text: "All Terminals",
+        link: "/terminals",
+      },
+      {
+        text: "All Handlers",
+        link: "/terminals/handlers",
+      },
+      {
+        text: "All Cards",
+        link: "/terminals/cards",
+      },
+      {
+        text: "Terminal Mapping",
+        link: "/terminals/map",
+      },
+    ],
+  },
+  {
+    icon: "tile-thumb",
+    text: "Service Management",
+    active: false,
+    subMenu: [
+      {
+        text: "All Services",
+        link: "/services",
+      },
+      {
+        text: "Map Agent to Service",
+        link: "/services/agent/map",
+      },
+    ],
+  },
+  {
+    icon: "tile-thumb",
+    text: "Agent Management",
+    active: false,
+    subMenu: [
+      {
+        text: "All Agents",
+        link: "/agents",
+      },
+      {
+        text: "Create Agent",
+        link: "/agents/create",
+      },
+    ],
+  },
+  {
+    icon: "tile-thumb",
+    text: "Rule Management",
+    active: false,
+    subMenu: [
+      {
+        text: "All Rules",
+        link: "/rules",
+      },
+      {
+        text: "Create Rule",
+        link: "/rules/create",
+      },
+      {
+        text: "Edit Rule",
+        link: "/rules/edit",
+      },
+      {
+        text: "Merchant Rule",
+        link: "/rules/monitorMerchant",
+      },
+    ],
+  },
+  {
+    icon: "tile-thumb",
+    text: "Fraud Monitoring",
+    active: false,
+    subMenu: [
+      {
+        text: "Transaction Categories Monitoring",
+        link: "/monitoring/transaction/categories",
+      },
+      {
+        text: "Transaction Rule Monitoring",
+        link: "/monitoring/transaction/rules",
+      },
+      {
+        text: "Merchant Monitoring",
+        link: "/monitoring/merchant",
+      },
+    ],
+  },
+  {
     heading: "Dashboards",
   },
   {

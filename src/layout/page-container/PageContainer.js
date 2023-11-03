@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 
 const PageContainer = ({ ...props }) => {
-  const [themeState] = useState(
-    {skin : "light"}
-  )
+  const [themeState] = useState({ skin: "light" });
   useEffect(() => {
-    document.body.className = `nk-body npc-default no-touch nk-nio-theme ${themeState.skin === "dark" ? "dark-mode" : ""}`;
-  },[themeState.skin])
-
+    document.body.className = `nk-body npc-default no-touch nk-nio-theme ${
+      themeState.skin === "dark" ? "dark-mode" : ""
+    }`;
+  }, [themeState.skin]);
 
   return (
     <React.Fragment>

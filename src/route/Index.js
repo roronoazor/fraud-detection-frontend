@@ -100,6 +100,24 @@ import Calender from "../pages/app/calender/Calender";
 import QuillPreview from "../pages/components/forms/rich-editor/QuillPreview";
 import TinymcePreview from "../pages/components/forms/rich-editor/TinymcePreview";
 import KnobPreview from "../pages/components/charts/KnobPreview";
+import TerminalHandlers from "../pages/terminal/handlers";
+import TerminalBulkCreate from "../pages/terminal/BulkCreateTerminal";
+import Terminals from "../pages/terminal";
+import TerminalCards from "../pages/terminal/cards";
+import TerminalCreate from "../pages/terminal/CreateTerminal";
+import TerminalMap from "../pages/terminal/TerminalMap";
+import Services from "../pages/services";
+import MapServiceToAgent from "../pages/services/MapServiceToAgent";
+import Agents from "../pages/agents";
+import CreateAgent from "../pages/agents/CreateAgent";
+import adminDashboard from "../pages/dashboard/AdminDashboard";
+import AllRules from "../pages/rules";
+import CreateRule from "../pages/rules/CreateRule";
+import EditRule from "../pages/rules/EditRule";
+import MonitorMerchant from "../pages/rules/MonitorMerchant";
+import TransactionCategoryMonitoring from "../pages/monitoring/TransactionCategoryMonitoring";
+import TransactionRuleMonitoring from "../pages/monitoring/TransactionRuleMonitoring";
+import MerchantMonitoring from "../pages/monitoring/MerchantMonitoring";
 
 const Pages = () => {
   useLayoutEffect(() => {
@@ -269,7 +287,39 @@ const Pages = () => {
         <Route exact path={`${process.env.PUBLIC_URL}/email-template`} component={EmailTemplate}></Route>
         <Route exact path={`${process.env.PUBLIC_URL}/nioicon`} component={NioIconPage}></Route>
         <Route exact path={`${process.env.PUBLIC_URL}/svg-icons`} component={SVGIconPage}></Route>
+
+        {/** Terminal Management API's */}
+        <Route exact path={`${process.env.PUBLIC_URL}/terminals`} component={Terminals}></Route>
+        <Route exact path={`${process.env.PUBLIC_URL}/terminals/map`} component={TerminalMap}></Route>
+        <Route exact path={`${process.env.PUBLIC_URL}/terminals/handlers`} component={TerminalHandlers}></Route>
+        <Route exact path={`${process.env.PUBLIC_URL}/terminals/cards`} component={TerminalCards}></Route>
+        <Route exact path={`${process.env.PUBLIC_URL}/terminals/create`} component={TerminalCreate}></Route>
+        <Route exact path={`${process.env.PUBLIC_URL}/terminals/bulk`} component={TerminalBulkCreate}></Route>
+        <Route exact path={`${process.env.PUBLIC_URL}/services`} component={Services}></Route>
+        <Route exact path={`${process.env.PUBLIC_URL}/services/agent/map`} component={MapServiceToAgent}></Route>
+        <Route exact path={`${process.env.PUBLIC_URL}/agents`} component={Agents}></Route>
+        <Route exact path={`${process.env.PUBLIC_URL}/agents/create`} component={CreateAgent}></Route>
+
         <Route exact path={`${process.env.PUBLIC_URL}/`} component={Homepage}></Route>
+        <Route exact path={`${process.env.PUBLIC_URL}/dashboard/admin`} component={adminDashboard}></Route>
+
+        <Route exact path={`${process.env.PUBLIC_URL}/rules`} component={AllRules}></Route>
+        <Route exact path={`${process.env.PUBLIC_URL}/rules/create`} component={CreateRule}></Route>
+        <Route exact path={`${process.env.PUBLIC_URL}/rules/edit`} component={EditRule}></Route>
+        <Route exact path={`${process.env.PUBLIC_URL}/rules/monitorMerchant`} component={MonitorMerchant}></Route>
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL}/monitoring/transaction/categories`}
+          component={TransactionCategoryMonitoring}
+        ></Route>
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL}/monitoring/transaction/rules`}
+          component={TransactionRuleMonitoring}
+        ></Route>
+        <Route exact path={`${process.env.PUBLIC_URL}/monitoring/merchant`} component={MerchantMonitoring}></Route>
+
         <Route component={RedirectAs404}></Route>
       </Switch>
     </Suspense>

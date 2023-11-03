@@ -44,7 +44,11 @@ function TooltipsPage({ ...props }) {
               <p className="lead">
                 Examples for adding custom reactStrap tooltips with CSS and JavaScript using CSS3 for animations. To use
                 it, import it such as <code>import {`{Tooltip}`} from "reactstrap"</code>. Visit the{" "}
-                <a href={"https://deploy-preview-2356--reactstrap.netlify.app/components/tooltips"} target="_blank" rel="noreferrer">
+                <a
+                  href={"https://deploy-preview-2356--reactstrap.netlify.app/components/tooltips"}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Reactstrap
                 </a>{" "}
                 library for detailed instructions.

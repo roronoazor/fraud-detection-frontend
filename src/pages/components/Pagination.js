@@ -25,7 +25,11 @@ const PaginationPage = ({ ...props }) => {
                 Examples for showing pagination to indicate a series of related content exists across multiple pages.To
                 use it, import it such as{" "}
                 <code>import {`{Pagination, PaginationItem, PaginationLink}`} from "reactstrap"</code>. Visit the{" "}
-                <a href={"https://deploy-preview-2356--reactstrap.netlify.app/components/pagination"} target="_blank" rel="noreferrer">
+                <a
+                  href={"https://deploy-preview-2356--reactstrap.netlify.app/components/pagination"}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Reactstrap
                 </a>{" "}
                 library for detailed instructions.

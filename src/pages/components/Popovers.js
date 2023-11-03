@@ -26,7 +26,11 @@ const PopoversPage = ({ ...props }) => {
               <p className="lead">
                 Examples for adding Bootstrap popovers, like those found in iOS, to any element on your site.To use it,
                 import it such as <code>import {`{Popover}`} from "reactstrap"</code>. Visit the{" "}
-                <a href={"https://deploy-preview-2356--reactstrap.netlify.app/components/popovers"} target="_blank" rel="noreferrer">
+                <a
+                  href={"https://deploy-preview-2356--reactstrap.netlify.app/components/popovers"}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Reactstrap
                 </a>{" "}
                 library for detailed instructions.

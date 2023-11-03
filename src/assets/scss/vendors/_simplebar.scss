@@ -70,7 +70,7 @@
 
 .simplebar-content:before,
 .simplebar-content:after {
-  content: ' ';
+  content: " ";
   display: table;
 }
 
@@ -139,14 +139,14 @@
   left: 0;
   right: 0;
   min-height: 10px;
-  .hidden-scrollbar{
+  .hidden-scrollbar {
     visibility: hidden;
   }
 }
 
 .simplebar-scrollbar:before {
   position: absolute;
-  content: '';
+  content: "";
   background: $base-light;
   border-radius: 7px;
   left: 2px;
@@ -164,11 +164,11 @@
 .simplebar-track.simplebar-vertical {
   top: 0;
   width: 8px !important;
-  transition: width .1s;
-  &.simplebar-hover{ 
+  transition: width 0.1s;
+  &.simplebar-hover {
     width: 10px !important;
   }
-  .nk-sidebar{
+  .nk-sidebar {
     visibility: hidden !important;
   }
 }
@@ -181,11 +181,13 @@
 .simplebar-track.simplebar-horizontal {
   left: 0;
   height: 8px !important;
-  transition: height .1s;
-  &.simplebar-hover{ 
+  transition: height 0.1s;
+  &.simplebar-hover {
     height: 10px !important;
   }
-  .nk-sidebar &, .nk-sidebar-fat &, .nk-apps-sidebar &{
+  .nk-sidebar &,
+  .nk-sidebar-fat &,
+  .nk-apps-sidebar & {
     visibility: hidden !important;
   }
 }
@@ -207,7 +209,7 @@
 }
 
 /* Rtl support */
-[data-simplebar-direction='rtl'] .simplebar-track.simplebar-vertical {
+[data-simplebar-direction="rtl"] .simplebar-track.simplebar-vertical {
   right: auto;
   left: 0;
 }

@@ -489,7 +489,13 @@ const ProjectCardPage = () => {
                         </Button>
                       </li>
                       <li>
-                        <Button  onClick={(ev) => {ev.preventDefault(); onFormCancel()}} className="link link-light">
+                        <Button
+                          onClick={(ev) => {
+                            ev.preventDefault();
+                            onFormCancel();
+                          }}
+                          className="link link-light"
+                        >
                           Cancel
                         </Button>
                       </li>
@@ -628,7 +634,13 @@ const ProjectCardPage = () => {
                         </Button>
                       </li>
                       <li>
-                        <Button  onClick={(ev) => {ev.preventDefault(); onFormCancel()}} className="link link-light">
+                        <Button
+                          onClick={(ev) => {
+                            ev.preventDefault();
+                            onFormCancel();
+                          }}
+                          className="link link-light"
+                        >
                           Cancel
                         </Button>
                       </li>

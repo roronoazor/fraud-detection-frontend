@@ -21,7 +21,7 @@ const ChatSideBar = ({ sidebar, chat }) => {
       <div className="user-card user-card-s2 my-4">
         {chat.group ? (
           <div className="user-avatar-group">
-            {chat.user.slice(0, 3).map((user,index) => {
+            {chat.user.slice(0, 3).map((user, index) => {
               return (
                 <UserAvatar
                   theme={user.theme}

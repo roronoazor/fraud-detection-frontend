@@ -1,18 +1,23 @@
 @mixin bg-class($class, $color) {
-    #{$class} {
-      background-color: $color !important;
+  #{$class} {
+    background-color: $color !important;
+  }
+  a#{$class},
+  button#{$class} {
+    &:hover,
+    &:focus {
+      background-color: darken($color, 10%) !important;
     }
-    a#{$class},
-    button#{$class} {
-      &:hover,&:focus{
-        background-color: darken($color, 10%) !important;
-      }
-    }
+  }
 }
 
-@each $name, $color in $extend-colors{
-  .bg-#{$name} {background-color: $color !important;}
-  .text-#{$name} {color: $color !important;}
+@each $name, $color in $extend-colors {
+  .bg-#{$name} {
+    background-color: $color !important;
+  }
+  .text-#{$name} {
+    color: $color !important;
+  }
 }
 
 @each $color, $value in $grays {
@@ -21,11 +26,20 @@
   }
 }
 
-$bg-abstract: linear-gradient(to right, #2c3782 calc(60% - 150px), #39469f calc(60% - 150px), #39469f 60%, #4856b5 60%, #4856b5 calc(60% + 150px),#5b6ac6 calc(60% + 150px),#5b6ac6 100%);
-.bg{
-    &-abstract{
-      background-image: $bg-abstract;
-    }
+$bg-abstract: linear-gradient(
+  to right,
+  #2c3782 calc(60% - 150px),
+  #39469f calc(60% - 150px),
+  #39469f 60%,
+  #4856b5 60%,
+  #4856b5 calc(60% + 150px),
+  #5b6ac6 calc(60% + 150px),
+  #5b6ac6 100%
+);
+.bg {
+  &-abstract {
+    background-image: $bg-abstract;
+  }
 }
 
 .bg-white-1 {

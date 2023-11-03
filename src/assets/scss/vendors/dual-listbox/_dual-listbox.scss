@@ -12,7 +12,7 @@
   .dual-listbox__search {
     @extend .form-control;
     max-width: 300px;
-    &--hidden{
+    &--hidden {
       display: none;
     }
   }
@@ -28,24 +28,26 @@
     border-radius: 0 0 $input-border-radius $input-border-radius;
   }
 
-  .dual-listbox__buttons, .rdl-actions-right, .rdl-actions-left {
-      display: flex;
-      flex-direction: column;
-      margin: 3px 10px;
+  .dual-listbox__buttons,
+  .rdl-actions-right,
+  .rdl-actions-left {
+    display: flex;
+    flex-direction: column;
+    margin: 3px 10px;
   }
 
   .dual-listbox__button {
-      justify-content: center;
-      text-transform: capitalize;
-      display: block;
-      @extend .btn;
-      @extend .btn-light;
+    justify-content: center;
+    text-transform: capitalize;
+    display: block;
+    @extend .btn;
+    @extend .btn-light;
   }
 
   .dual-listbox__title {
     font-size: 1rem;
     font-weight: $fw-medium;
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
     border-left: 1px solid $border-light;
     border-right: 1px solid $border-light;
     border-top: 1px solid $border-light;
@@ -56,7 +58,7 @@
 
   .dual-listbox__item {
     display: block;
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
     cursor: pointer;
     user-select: none;
     -moz-user-select: none;
@@ -64,7 +66,7 @@
     -ms-user-select: none;
     border-bottom: 1px solid $border-light;
     transition: background-color 0.2s ease;
-    &:hover{
+    &:hover {
       @extend .bg-light;
     }
     &:active,
@@ -76,18 +78,18 @@
 
 .react-dual-listbox {
   -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   flex-wrap: wrap;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 .react-dual-listbox * {
   -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 .react-dual-listbox input:disabled,
 .react-dual-listbox select:disabled {
@@ -119,7 +121,7 @@
   @extend .form-control;
   max-width: 300px;
   margin-bottom: 10px !important;
-  &--hidden{
+  &--hidden {
     display: none;
   }
 }
@@ -129,18 +131,18 @@
   display: -ms-flexbox;
   display: flex;
   -webkit-box-flex: 1;
-      -ms-flex: 1 0 auto;
-          flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 
 .rdl-control-label {
   font-size: 1rem;
   font-weight: $fw-medium;
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   border-left: 1px solid $border-light;
   border-right: 1px solid $border-light;
   border-top: 1px solid $border-light;
@@ -172,7 +174,7 @@
 }
 .rdl-control > option {
   display: block;
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   cursor: pointer;
   user-select: none;
   -moz-user-select: none;
@@ -180,7 +182,7 @@
   -ms-user-select: none;
   border-bottom: 1px solid $border-light;
   transition: background-color 0.2s ease;
-  &:hover{
+  &:hover {
     @extend .bg-lighter;
   }
   &:active,
@@ -245,7 +247,7 @@
   border: none;
   background: transparent;
 }
-.rdl-move:focus{
+.rdl-move:focus {
   border: none;
   outline: none !important;
 }
@@ -259,7 +261,6 @@
 .rdl-move i {
   margin: 0 -1px;
 }
-
 
 .rdl-align-top .rdl-available {
   margin-right: 10px;
@@ -275,14 +276,14 @@
 .rdl-align-top .rdl-actions-right {
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
   margin: 0;
 }
 .rdl-align-top .rdl-list-box .rdl-move {
   -webkit-box-flex: 0;
-      -ms-flex: 0 1 50%;
-          flex: 0 1 50%;
+  -ms-flex: 0 1 50%;
+  flex: 0 1 50%;
 }
 .rdl-align-top .rdl-list-box .rdl-move:first-child {
   margin-bottom: 0;

@@ -28,7 +28,11 @@ const ToastPage = ({ ...props }) => {
                 Push notifications to your visitors with a toast, a lightweight and easily customizable alert message.
                 It's built with flexbox, so they’re easy to align and position. To use it, import it such as{" "}
                 <code>import {`{Toast,ToastHeader,ToastBody}`} from "reactstrap"</code>. Visit the{" "}
-                <a href={"https://deploy-preview-2356--reactstrap.netlify.app/components/toasts"} target="_blank" rel="noreferrer">
+                <a
+                  href={"https://deploy-preview-2356--reactstrap.netlify.app/components/toasts"}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Reactstrap
                 </a>{" "}
                 library for detailed instructions.

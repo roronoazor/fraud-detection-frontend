@@ -140,7 +140,7 @@ export const PieChartExample = ({ data }) => {
       data={data}
       options={{
         legend: {
-          display: false,
+          display: true,
         },
         rotation: -0.2,
         maintainAspectRatio: false,
@@ -157,6 +157,17 @@ export const PieChartExample = ({ data }) => {
           xPadding: 10,
           footerMarginTop: 0,
           displayColors: false,
+          callbacks: {
+            label: function (context, data) {
+              const selectedIndex = context.index;
+              const label = data.labels[selectedIndex];
+              const value = data.datasets[0].data[selectedIndex];
+              const formattedValue = value.toLocaleString("en-US", {
+                maximumFractionDigits: 2,
+              });
+              return `${label}: ${formattedValue}`;
+            },
+          },
         },
       }}
     />

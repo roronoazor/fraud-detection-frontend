@@ -7,10 +7,8 @@ import ControlsCarousel from "../../components/partials/carousel/Controls";
 import CaptionsCarousel from "../../components/partials/carousel/Captions";
 import FadeCarousel from "../../components/partials/carousel/Fade";
 
-
 import { Block, BlockHead, BlockHeadContent, BlockTitle, BlockDes, BackTo } from "../../components/block/Block";
 import { PreviewCard, CodeBlock } from "../../components/preview/Preview";
-
 
 const CarouselPage = ({ ...props }) => {
   return (
@@ -34,7 +32,11 @@ const CarouselPage = ({ ...props }) => {
                   from "reactstrap"
                 </code>
                 . Visit the{" "}
-                <a href={"https://deploy-preview-2356--reactstrap.netlify.app/components/carousel"} target="_blank" rel="noreferrer">
+                <a
+                  href={"https://deploy-preview-2356--reactstrap.netlify.app/components/carousel"}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Reactstrap
                 </a>{" "}
                 library for detailed instructions.

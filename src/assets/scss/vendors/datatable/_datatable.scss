@@ -1,5 +1,5 @@
-$datatable-collapsed-unfold : $ni-plus-sm !default;
-$datatable-collapsed-fold : $ni-minus-sm !default;
+$datatable-collapsed-unfold: $ni-plus-sm !default;
+$datatable-collapsed-fold: $ni-minus-sm !default;
 
 table.dataTable {
   clear: both;
@@ -18,10 +18,10 @@ table.dataTable.nowrap td {
 
 div.dataTables_wrapper div.dataTables_length label {
   font-weight: normal;
-  @if($rtl==false){
+  @if ($rtl==false) {
     text-align: left;
   }
-  @if($rtl==true){
+  @if ($rtl==true) {
     text-align: right;
   }
   white-space: nowrap;
@@ -31,16 +31,15 @@ div.dataTables_wrapper div.dataTables_length select {
   display: inline-block;
   @extend .custom-select;
 }
-div.dataTables_wrapper div.dataTables_length label{
+div.dataTables_wrapper div.dataTables_length label {
   display: inline-flex;
   align-items: center;
 }
-div.dataTables_wrapper div.dataTables_length span{
-  margin-left: .5rem;
-  margin-right: .5rem;
+div.dataTables_wrapper div.dataTables_length span {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 }
 div.dataTables_wrapper div.dataTables_filter {
-
 }
 div.dataTables_wrapper div.dataTables_filter label {
   font-weight: normal;
@@ -51,9 +50,9 @@ div.dataTables_wrapper div.dataTables_filter input {
   @extend .form-control;
 }
 div.dataTables_wrapper div.dataTables_info {
-  padding: .5rem 0;
+  padding: 0.5rem 0;
   white-space: nowrap;
-  font-size: .75rem;
+  font-size: 0.75rem;
 }
 div.dataTables_wrapper div.dataTables_paginate {
   margin: 0;
@@ -78,14 +77,16 @@ div.dataTables_wrapper label {
   margin-bottom: 0;
 }
 
-table.dataTable thead > tr > th.sorting_asc, table.dataTable thead > tr > th.sorting_desc, table.dataTable thead > tr > th.sorting,
+table.dataTable thead > tr > th.sorting_asc,
+table.dataTable thead > tr > th.sorting_desc,
+table.dataTable thead > tr > th.sorting,
 table.dataTable thead > tr > td.sorting_asc,
 table.dataTable thead > tr > td.sorting_desc,
 table.dataTable thead > tr > td.sorting {
-  @if($rtl==false){
+  @if ($rtl==false) {
     padding-right: 30px;
   }
-  @if($rtl==true){
+  @if ($rtl==true) {
     padding-left: 30px;
   }
 }
@@ -101,7 +102,8 @@ table.dataTable thead .sorting_desc_disabled {
   cursor: pointer;
   position: relative;
 }
-table.dataTable thead .sorting:before, table.dataTable thead .sorting:after,
+table.dataTable thead .sorting:before,
+table.dataTable thead .sorting:after,
 table.dataTable thead .sorting_asc:before,
 table.dataTable thead .sorting_asc:after,
 table.dataTable thead .sorting_desc:before,
@@ -121,10 +123,10 @@ table.dataTable thead .sorting_asc:before,
 table.dataTable thead .sorting_desc:before,
 table.dataTable thead .sorting_asc_disabled:before,
 table.dataTable thead .sorting_desc_disabled:before {
-  @if($rtl==false){
+  @if ($rtl==false) {
     right: 1em;
   }
-  @if($rtl==true){
+  @if ($rtl==true) {
     left: 1em;
   }
   content: "\2191";
@@ -134,10 +136,10 @@ table.dataTable thead .sorting_asc:after,
 table.dataTable thead .sorting_desc:after,
 table.dataTable thead .sorting_asc_disabled:after,
 table.dataTable thead .sorting_desc_disabled:after {
-  @if($rtl==false){
+  @if ($rtl==false) {
     right: 0.5em;
   }
-  @if($rtl==true){
+  @if ($rtl==true) {
     left: 0.5em;
   }
   content: "\2193";
@@ -188,10 +190,10 @@ div.dataTables_scrollFoot > .dataTables_scrollFootInner > table {
   }
 }
 table.dataTable.table-sm > thead > tr > th {
-  @if($rtl==false){
+  @if ($rtl==false) {
     padding-right: 20px;
   }
-  @if($rtl==true){
+  @if ($rtl==true) {
     padding-left: 20px;
   }
 }
@@ -199,10 +201,10 @@ table.dataTable.table-sm .sorting:before,
 table.dataTable.table-sm .sorting_asc:before,
 table.dataTable.table-sm .sorting_desc:before {
   top: 5px;
-  @if($rtl==false){
+  @if ($rtl==false) {
     right: 0.85em;
   }
-  @if($rtl==true){
+  @if ($rtl==true) {
     left: 0.85em;
   }
 }
@@ -214,20 +216,21 @@ table.dataTable.table-sm .sorting_desc:after {
 
 table.table-bordered.dataTable th,
 table.table-bordered.dataTable td {
-  @if($rtl==false){
+  @if ($rtl==false) {
     border-left-width: 0;
   }
-  @if($rtl==true){
+  @if ($rtl==true) {
     border-right-width: 0;
   }
 }
-table.table-bordered.dataTable th:last-child, table.table-bordered.dataTable th:last-child,
+table.table-bordered.dataTable th:last-child,
+table.table-bordered.dataTable th:last-child,
 table.table-bordered.dataTable td:last-child,
 table.table-bordered.dataTable td:last-child {
-  @if($rtl==false){
+  @if ($rtl==false) {
     border-right-width: 0;
   }
-  @if($rtl==true){
+  @if ($rtl==true) {
     border-left-width: 0;
   }
 }
@@ -244,128 +247,127 @@ div.table-responsive > div.dataTables_wrapper > div.row {
   margin: 0;
 }
 div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:first-child {
-  @if($rtl==false){
+  @if ($rtl==false) {
     padding-left: 0;
   }
-  @if($rtl==true){
+  @if ($rtl==true) {
     padding-right: 0;
   }
 }
 div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:last-child {
-  @if($rtl==false){
+  @if ($rtl==false) {
     padding-right: 0;
   }
-  @if($rtl==true){
+  @if ($rtl==true) {
     padding-left: 0;
   }
 }
-@media (min-width:768px){
+@media (min-width: 768px) {
   div.dataTables_wrapper div.dataTables_paginate ul.pagination {
     justify-content: flex-start;
   }
 }
 
-
-table.dataTable.dtr-inline.collapsed>tbody>tr:not(.child)>td:first-child,
-table.dataTable.dtr-inline.collapsed>tbody>tr:not(.child)>th:first-child{
+table.dataTable.dtr-inline.collapsed > tbody > tr:not(.child) > td:first-child,
+table.dataTable.dtr-inline.collapsed > tbody > tr:not(.child) > th:first-child {
   cursor: pointer;
-  &:before{
+  &:before {
     content: $datatable-collapsed-unfold;
     font-family: $nk-dashlite-font;
-    @if($rtl==false){
+    @if ($rtl==false) {
       margin-right: 0.4rem;
     }
-    @if($rtl==true){
+    @if ($rtl==true) {
       margin-left: 0.4rem;
     }
   }
 }
 
-table.dataTable.dtr-inline.collapsed>tbody>tr.parent>td:first-child,
-table.dataTable.dtr-inline.collapsed>tbody>tr.parent>th:first-child{
-  &:before{
+table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child,
+table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th:first-child {
+  &:before {
     content: $datatable-collapsed-fold;
   }
 }
 
-
-@media (max-width:575px){
-  div.dataTables_wrapper div.dataTables_paginate{
-    ul.pagination{
+@media (max-width: 575px) {
+  div.dataTables_wrapper div.dataTables_paginate {
+    ul.pagination {
       justify-content: flex-start;
-      li:not(.previous):not(.next){
+      li:not(.previous):not(.next) {
         display: none;
       }
-      .page-link{
+      .page-link {
         padding-left: 1rem;
         padding-right: 1rem;
       }
     }
   }
-  div.dataTables_wrapper div.dataTables_info{
-    @if($rtl==false){
+  div.dataTables_wrapper div.dataTables_info {
+    @if ($rtl==false) {
       text-align: right !important;
     }
-    @if($rtl==true){
+    @if ($rtl==true) {
       text-align: left !important;
     }
   }
 }
 
-.dataTable{
+.dataTable {
   // tr{
   //   white-space: nowrap;
   // }
-  td{
+  td {
     // white-space: nowrap;
-    &:focus{
+    &:focus {
       outline: none;
     }
   }
 }
-.datatable{
-  &-wrap{
+.datatable {
+  &-wrap {
     border: 1px solid $border-light;
     border-radius: $border-radius;
   }
 }
 
-.dtr-details{
-  @if($rtl==false){
+.dtr-details {
+  @if ($rtl==false) {
     padding-left: 0.25rem;
   }
-  @if($rtl==true){
+  @if ($rtl==true) {
     padding-right: 0.25rem;
   }
-  .dtr-title{
+  .dtr-title {
     font-weight: $fw-bold;
-    @if($rtl==false){
+    @if ($rtl==false) {
       margin-right: 0.25rem;
     }
-    @if($rtl==true){
+    @if ($rtl==true) {
       margin-left: 0.25rem;
     }
   }
 }
 
-
 //////
 
-.nk-tb-col-check,.nk-tb-col-tools{
+.nk-tb-col-check,
+.nk-tb-col-tools {
   pointer-events: none;
-  > *{
+  > * {
     pointer-events: auto;
   }
-  &:before,&:after{
+  &:before,
+  &:after {
     display: none !important;
   }
 }
-.nk-tb-col-check{
-  @if($rtl==false){
-    padding-right: .5rem !important;
+.nk-tb-col-check {
+  @if ($rtl==false) {
+    padding-right: 0.5rem !important;
   }
-  @if($rtl==true){
-    padding-left: .5rem !important;
+  @if ($rtl==true) {
+    padding-left: 0.5rem !important;
   }
 }
 

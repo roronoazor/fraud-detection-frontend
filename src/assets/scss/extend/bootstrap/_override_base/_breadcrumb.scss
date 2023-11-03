@@ -14,18 +14,18 @@
 
   // The separator between breadcrumbs (by default, a forward-slash: "/")
   + .breadcrumb-item {
-    @if($rtl==false){
+    @if ($rtl==false) {
       padding-left: $breadcrumb-item-padding;
     }
-    @if($rtl==true){
+    @if ($rtl==true) {
       padding-right: $breadcrumb-item-padding;
     }
     &::before {
       display: inline-block; // Suppress underlining of the separator in modern browsers
-      @if($rtl==false){
+      @if ($rtl==false) {
         padding-right: $breadcrumb-item-padding;
       }
-      @if($rtl==true){
+      @if ($rtl==true) {
         padding-left: $breadcrumb-item-padding;
       }
       color: $breadcrumb-divider-color;

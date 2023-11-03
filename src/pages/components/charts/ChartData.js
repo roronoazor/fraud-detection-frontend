@@ -7,24 +7,26 @@ export const solidLineChart = {
   barPercentage: 0.6,
   datasets: [
     {
-      label: "Total Received",
-      borderColor: "#5ce0aa",
-      backgroundColor: "white",
+      label: "Suspected Transactions",
+      lineTension: 0.4,
+      borderColor: "#ff0000",
+      backgroundColor: "rgba(255, 0, 0, 0.5)",
       pointBorderWidth: 2,
-      fill: false,
+      pointBackgroundColor: "white",
+      pointRadius: 4,
+      fill: true,
+      data: [1, 8, 5, 5, 5, 5, 0, 10, 0, 15, 7, 9],
+    },
+    {
+      label: "Total Transactions",
+      borderColor: "#5ce0aa",
+      backgroundColor: "rgba(92, 224, 170, 0.5)",
+      pointBorderWidth: 2,
+      fill: true,
+      pointBackgroundColor: "white",
       categoryPercentage: 0.9,
       barPercentage: 0.6,
       data: [110, 80, 125, 55, 95, 75, 90, 110, 80, 125, 55, 95],
-    },
-    {
-      label: "Total Send",
-      backgroundColor: "white",
-      pointBorderWidth: 2,
-      borderColor: "#798bff",
-      fill: false,
-      categoryPercentage: 0.9,
-      barPercentage: 0.6,
-      data: [80, 54, 105, 120, 82, 85, 60, 80, 54, 105, 120, 82],
     },
   ],
 };
@@ -166,7 +168,7 @@ export const doughnutChartData = {
     {
       borderColor: "#fff",
       backgroundColor: ["rgba(156, 171, 255, 0.8)", "rgba(244, 170, 164, 0.8)", "rgba(143, 234, 197, 0.8)"],
-      data: [110, 80, 125],
+      data: [110, 80, 1225],
     },
   ],
 };
@@ -209,4 +211,3 @@ export const overviewKnob = {
     },
   ],
 };
-

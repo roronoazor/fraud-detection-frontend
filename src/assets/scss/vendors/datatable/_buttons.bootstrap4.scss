@@ -35,7 +35,7 @@ div.dt-button-info {
   margin-top: -100px;
   margin-left: -200px;
   background-color: $lighter;
-  box-shadow: 0 0 0 200vh rgba($dark,.3);
+  box-shadow: 0 0 0 200vh rgba($dark, 0.3);
   border-radius: $border-radius;
   text-align: center;
   z-index: 2020;
@@ -74,7 +74,7 @@ div.dt-button-collection div.dropdown-menu {
   z-index: $zindex-dropdown + 1;
   min-width: 100px;
   top: 10px;
-  .dropdown-position-right &{
+  .dropdown-position-right & {
     right: 0;
     left: auto;
   }
@@ -150,7 +150,8 @@ div.dt-button-collection .dt-button {
 div.dt-button-collection.fixed {
   max-width: none;
 }
-div.dt-button-collection.fixed:before, div.dt-button-collection.fixed:after {
+div.dt-button-collection.fixed:before,
+div.dt-button-collection.fixed:after {
   display: none;
 }
 
@@ -161,7 +162,7 @@ div.dt-button-background {
   width: 100%;
   height: 100%;
   z-index: $zindex-dropdown;
-  background-color: rgba($dark,.3);
+  background-color: rgba($dark, 0.3);
   display: none !important;
 }
 
@@ -204,59 +205,59 @@ div.dt-buttons a.btn.processing:after {
   -moz-animation: dtb-spinner 1500ms infinite linear;
 }
 
-.dt-buttons .btn-secondary{
+.dt-buttons .btn-secondary {
   @extend .btn-outline-light;
   @extend .btn-white;
   @extend .btn-icon;
-  span{
+  span {
     display: none;
   }
-  &:before{
+  &:before {
     font-size: 1.125rem;
     font-weight: normal;
     font-style: normal;
-    width: $btn-line-height + $btn-padding-y*2;
+    width: $btn-line-height + $btn-padding-y * 2;
     font-family: $nk-dashlite-font;
   }
 }
-.dt-export{
-  &-title{
+.dt-export {
+  &-title {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
   }
 }
-.buttons{
-  &-copy:before{
+.buttons {
+  &-copy:before {
     content: $ni-copy;
   }
-  &-pdf:before{
+  &-pdf:before {
     content: $ni-file-pdf;
   }
-  &-excel:before{
+  &-excel:before {
     content: $ni-file-xls;
   }
-  &-csv:before{
+  &-csv:before {
     content: $ni-file-text;
   }
-  &-print:before{
+  &-print:before {
     content: $ni-printer;
   }
-  &-colvis:before{
+  &-colvis:before {
     content: $ni-view-col-sq;
   }
-  &-columnVisibility{
+  &-columnVisibility {
     position: relative;
-    padding-right: $dropdown-item-padding-x*3;
+    padding-right: $dropdown-item-padding-x * 3;
     font-size: $fx-sz-12;
     font-weight: $fw-medium;
     color: $base-text;
-    transition: all .4s;
-    &.active{
-      &:not(:hover){
+    transition: all 0.4s;
+    &.active {
+      &:not(:hover) {
         color: $base-text;
         background-color: transparent;
       }
-      &:after{
+      &:after {
         content: $ni-check;
         position: absolute;
         top: 50%;
@@ -270,7 +271,10 @@ div.dt-buttons a.btn.processing:after {
 
 @media (max-width: 600px) {
   .with-export {
-    > .col-5, > .col-7, > .col-sm-4, > .col-sm-8 {
+    > .col-5,
+    > .col-7,
+    > .col-sm-4,
+    > .col-sm-8 {
       width: 100% !important;
       flex: 0 0 100%;
       max-width: 100%;

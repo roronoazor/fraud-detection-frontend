@@ -24,10 +24,10 @@
     + .form-control,
     + .custom-select,
     + .custom-file {
-      @if($rtl==false){
+      @if ($rtl==false) {
         margin-left: -$input-border-width;
       }
-      @if($rtl==true){
+      @if ($rtl==true) {
         margin-right: -$input-border-width;
       }
     }
@@ -47,20 +47,20 @@
 
   > .form-control,
   > .custom-select {
-    &:not(:last-child) { 
-      @if($rtl==false){
-        @include border-right-radius(0); 
+    &:not(:last-child) {
+      @if ($rtl==false) {
+        @include border-right-radius(0);
       }
-      @if($rtl==true){
-        @include border-left-radius(0); 
+      @if ($rtl==true) {
+        @include border-left-radius(0);
       }
     }
-    &:not(:first-child) { 
-      @if($rtl==false){
-        @include border-left-radius(0); 
+    &:not(:first-child) {
+      @if ($rtl==false) {
+        @include border-left-radius(0);
       }
-      @if($rtl==true){
-        @include border-right-radius(0); 
+      @if ($rtl==true) {
+        @include border-right-radius(0);
       }
     }
   }
@@ -72,25 +72,24 @@
     align-items: center;
 
     &:not(:last-child) .custom-file-label,
-    &:not(:last-child) .custom-file-label::after { 
-      @if($rtl==false){
-        @include border-right-radius(0); 
+    &:not(:last-child) .custom-file-label::after {
+      @if ($rtl==false) {
+        @include border-right-radius(0);
       }
-      @if($rtl==true){
-        @include border-left-radius(0); 
+      @if ($rtl==true) {
+        @include border-left-radius(0);
       }
     }
-    &:not(:first-child) .custom-file-label { 
-      @if($rtl==false){
-        @include border-left-radius(0); 
+    &:not(:first-child) .custom-file-label {
+      @if ($rtl==false) {
+        @include border-left-radius(0);
       }
-      @if($rtl==true){
-        @include border-right-radius(0); 
+      @if ($rtl==true) {
+        @include border-right-radius(0);
       }
     }
   }
 }
-
 
 // Prepend and append
 //
@@ -118,32 +117,31 @@
   .btn + .input-group-text,
   .input-group-text + .input-group-text,
   .input-group-text + .btn {
-    @if($rtl==false){
+    @if ($rtl==false) {
       margin-left: -$input-border-width;
     }
-    @if($rtl==true){
+    @if ($rtl==true) {
       margin-right: -$input-border-width;
     }
   }
 }
 
 .input-group-prepend {
-  @if($rtl==false){
-    margin-right: -$input-border-width; 
+  @if ($rtl==false) {
+    margin-right: -$input-border-width;
   }
-  @if($rtl==true){
-    margin-left: -$input-border-width; 
-  }
-}
-.input-group-append { 
-  @if($rtl==false){
-    margin-left: -$input-border-width; 
-  }
-  @if($rtl==true){
-    margin-right: -$input-border-width; 
+  @if ($rtl==true) {
+    margin-left: -$input-border-width;
   }
 }
-
+.input-group-append {
+  @if ($rtl==false) {
+    margin-left: -$input-border-width;
+  }
+  @if ($rtl==true) {
+    margin-right: -$input-border-width;
+  }
+}
 
 // Textual addons
 //
@@ -171,7 +169,6 @@
     margin-top: 0;
   }
 }
-
 
 // Sizing
 //
@@ -214,14 +211,13 @@
 
 .input-group-lg > .custom-select,
 .input-group-sm > .custom-select {
-  @if($rtl==false){
+  @if ($rtl==false) {
     padding-right: $custom-select-padding-x + $custom-select-indicator-padding;
   }
-  @if($rtl==true){
+  @if ($rtl==true) {
     padding-left: $custom-select-padding-x + $custom-select-indicator-padding;
   }
 }
-
 
 // Prepend and append rounded corners
 //
@@ -229,17 +225,16 @@
 // border-radius values when extending. They're more specific than we'd like
 // with the `.input-group >` part, but without it, we cannot override the sizing.
 
-
 .input-group > .input-group-prepend > .btn,
 .input-group > .input-group-prepend > .input-group-text,
 .input-group > .input-group-append:not(:last-child) > .btn,
 .input-group > .input-group-append:not(:last-child) > .input-group-text,
 .input-group > .input-group-append:last-child > .btn:not(:last-child):not(.dropdown-toggle),
 .input-group > .input-group-append:last-child > .input-group-text:not(:last-child) {
-  @if($rtl==false){
+  @if ($rtl==false) {
     @include border-right-radius(0);
   }
-  @if($rtl==true){
+  @if ($rtl==true) {
     @include border-left-radius(0);
   }
 }
@@ -250,10 +245,10 @@
 .input-group > .input-group-prepend:not(:first-child) > .input-group-text,
 .input-group > .input-group-prepend:first-child > .btn:not(:first-child),
 .input-group > .input-group-prepend:first-child > .input-group-text:not(:first-child) {
-  @if($rtl==false){
+  @if ($rtl==false) {
     @include border-left-radius(0);
   }
-  @if($rtl==true){
+  @if ($rtl==true) {
     @include border-right-radius(0);
   }
 }

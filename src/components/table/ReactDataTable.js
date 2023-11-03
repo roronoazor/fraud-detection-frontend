@@ -99,6 +99,8 @@ const ReactDataTable = ({ data, columns, pagination, actions, className, selecta
   const [rowsPerPageS, setRowsPerPage] = useState(10);
   const [mobileView, setMobileView] = useState();
 
+  console.log("inside data table ", data, columns);
+
   useEffect(() => {
     let defaultData = tableData;
     if (searchText !== "") {
@@ -109,7 +111,8 @@ const ReactDataTable = ({ data, columns, pagination, actions, className, selecta
     } else {
       setTableData(data);
     }
-  }, [searchText]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [searchText, data]); // eslint-disable-line react-hooks/exhaustive-deps
+  // i added the data variable to this useEffect hook
 
   // function to change the design view under 1200 px
   const viewChange = () => {
