@@ -73,12 +73,7 @@ export const BarChartExample = ({ data, stacked }) => {
       data={data}
       options={{
         legend: {
-          display: false,
-          labels: {
-            boxWidth: 30,
-            padding: 20,
-            fontColor: "#6783b8",
-          },
+          display: true,
         },
         maintainAspectRatio: false,
         tooltips: {
@@ -94,6 +89,15 @@ export const BarChartExample = ({ data, stacked }) => {
           xPadding: 10,
           footerMarginTop: 0,
           displayColors: false,
+          callbacks: {
+            label: function (context, data) {
+              const selectedDatasets = data.datasets[context.datasetIndex];
+              const label = selectedDatasets.label || "";
+              const value = selectedDatasets.data[context.index] || 0;
+              const formattedValue = value.toLocaleString("en-US");
+              return `${label}: ${formattedValue}`;
+            },
+          },
         },
         scales: {
           yAxes: [

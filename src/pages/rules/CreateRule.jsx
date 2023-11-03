@@ -334,7 +334,7 @@ const CreateRule = () => {
             {" "}
             Warning Setup{" "}
           </OverlineTitle>
-          <Row className="gy-4">
+          <Row>
             <Col sm="6">
               <FormGroup>
                 <Label htmlFor="default-0" className="form-label">

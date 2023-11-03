@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Content from "../../layout/content/Content";
 import Head from "../../layout/head/Head";
 import {
@@ -8,45 +8,13 @@ import {
   BlockTitle,
   BackTo,
   PreviewCard,
-  Icon,
-  ReactDataTable,
   Button,
   Col,
   BlockBetween,
-  RSelect,
 } from "../../components/Component";
-import {
-  DropdownMenu,
-  DropdownToggle,
-  FormGroup,
-  Label,
-  UncontrolledDropdown,
-  Dropdown,
-  Modal,
-  ModalBody,
-  DropdownItem,
-  Form,
-  Row,
-} from "reactstrap";
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import {
-  barChartData,
-  barChartMultiple,
-  barChartStacked,
-  filledLineChart,
-  solidLineChart,
-  straightLineChart,
-  doughnutChartData,
-  polarChartData,
-} from "../../pages/components/charts/ChartData";
-import {
-  BarChartExample,
-  LineChartExample,
-  PieChartExample,
-  DoughnutExample,
-  PolarExample,
-} from "../../components/charts/Chart";
+import { FormGroup, Label, Row } from "reactstrap";
+import { doughnutChartData } from "../../pages/components/charts/ChartData";
+import { PieChartExample } from "../../components/charts/Chart";
 
 const TransactionCategoryMonitoring = (props) => {
   const [sm, updateSm] = useState(false);
@@ -120,7 +88,7 @@ const TransactionCategoryMonitoring = (props) => {
             </BlockBetween>
             <hr className="preview-hr"></hr>
             <Row className="gy-4">
-              <Col md="6">
+              <Col className={"my-1"} md="6">
                 <PreviewCard>
                   <div className="card-head text-center">
                     <h6 className="title">Withdrawals</h6>
@@ -130,7 +98,7 @@ const TransactionCategoryMonitoring = (props) => {
                   </div>
                 </PreviewCard>
               </Col>
-              <Col md="6">
+              <Col className={"my-1"} md="6">
                 <PreviewCard>
                   <div className="card-head text-center">
                     <h6 className="title">Transfers</h6>
@@ -140,7 +108,7 @@ const TransactionCategoryMonitoring = (props) => {
                   </div>
                 </PreviewCard>
               </Col>
-              <Col md="6">
+              <Col className={"my-1"} md="6">
                 <PreviewCard>
                   <div className="card-head text-center">
                     <h6 className="title">Airtime V.T.U</h6>
@@ -150,7 +118,7 @@ const TransactionCategoryMonitoring = (props) => {
                   </div>
                 </PreviewCard>
               </Col>
-              <Col md="6">
+              <Col className={"my-1"} md="6">
                 <PreviewCard>
                   <div className="card-head text-center">
                     <h6 className="title">Cable Recharge</h6>
@@ -160,7 +128,7 @@ const TransactionCategoryMonitoring = (props) => {
                   </div>
                 </PreviewCard>
               </Col>
-              <Col md="6">
+              <Col className={"my-1"} md="6">
                 <PreviewCard>
                   <div className="card-head text-center">
                     <h6 className="title">Data Recharge</h6>
@@ -170,7 +138,7 @@ const TransactionCategoryMonitoring = (props) => {
                   </div>
                 </PreviewCard>
               </Col>
-              <Col md="6">
+              <Col className={"my-1"} md="6">
                 <PreviewCard>
                   <div className="card-head text-center">
                     <h6 className="title">Electricity Recharge</h6>

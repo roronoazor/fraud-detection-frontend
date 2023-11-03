@@ -149,12 +149,12 @@ export const barChartStacked = {
   datasets: [
     {
       label: "Income",
-      backgroundColor: "#9cabff",
-      data: [110, 80, 125, 55, 95, 75, 90, 110, 80, 125, 55, 95],
+      backgroundColor: "rgba(92, 224, 170, 0.5)",
+      data: [110, 80, 125, 55, 95, 75, 90, 110, 80, 1225, 55, 95],
     },
     {
       label: "Expense",
-      backgroundColor: "#f4aaa4",
+      backgroundColor: "rgba(255, 0, 0, 0.5)",
       data: [75, 90, 110, 80, 125, 55, 95, 75, 90, 110, 80, 125],
     },
   ],
