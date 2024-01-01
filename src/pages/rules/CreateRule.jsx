@@ -32,23 +32,6 @@ import {
 } from "reactstrap";
 import { useForm } from "react-hook-form";
 
-const dataTableData = [
-  {
-    id: "1",
-    description: "Rule 1",
-    status: "active",
-  },
-  {
-    id: "2",
-    description: "Rule 2",
-    status: "active",
-  },
-  {
-    id: "3",
-    description: "Rule 3",
-    status: "active",
-  },
-];
 
 const options = [
   { value: "Staff A", label: "Staff A" },
@@ -75,71 +58,11 @@ const CreateRule = () => {
     status: "ACTIVE",
   });
   const [actionText, setActionText] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemPerPage, setItemPerPage] = useState(10);
   const [sort, setSortState] = useState("");
   const { errors, register, handleSubmit } = useForm();
   const [passState, setPassState] = useState(false);
 
-  const onEditSubmit = () => {};
-
-  // function to reset the form
-  const resetForm = () => {
-    setFormData({
-      terminal_id: "",
-    });
-  };
-
-  // function to close the form modal
-  const onFormCancel = () => {
-    setModal({ edit: false, add: false, delete: false });
-    resetForm();
-  };
-
-  const toggleDropdown = (e, row) => {
-    setEditId(row?.id);
-    setDropdownOpen(!dropdownOpen);
-  };
-
-  const handleEdit = () => {
-    setModal({ ...modal, edit: true });
-  };
-  const handleDelete = () => {
-    setModal({ ...modal, delete: true });
-  };
-
-  const dataTableColumns = [
-    {
-      name: "ID",
-      selector: (row) => row.id,
-      sortable: true,
-    },
-    {
-      name: "Description",
-      selector: (row) => row.description,
-      sortable: true,
-    },
-    {
-      name: "Status",
-      selector: (row) => row.status,
-      sortable: true,
-    },
-    {
-      name: "Actions",
-      cell: (row) => (
-        <Dropdown isOpen={dropdownOpen && editId == row?.id} toggle={(e) => toggleDropdown(e, row)}>
-          <DropdownToggle tag="span" data-toggle="dropdown" aria-expanded={dropdownOpen}>
-            <Icon name="plus" />
-          </DropdownToggle>
-          <DropdownMenu right>
-            <DropdownItem onClick={() => handleEdit(row)}>View Details</DropdownItem>
-            <DropdownItem onClick={() => handleEdit(row)}>Delete Rule</DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
-      ),
-      button: true,
-    },
-  ];
+ 
 
   return (
     <>

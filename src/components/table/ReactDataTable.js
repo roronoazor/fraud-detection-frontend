@@ -99,17 +99,30 @@ const ReactDataTable = ({ data, columns, pagination, actions, className, selecta
   const [rowsPerPageS, setRowsPerPage] = useState(10);
   const [mobileView, setMobileView] = useState();
 
+  // useEffect(() => {
+  //   let defaultData = tableData;
+  //   if (searchText !== "") {
+  //     defaultData = data.filter((item) => {
+  //       return item.name.toLowerCase().includes(searchText.toLowerCase());
+  //     });
+  //     setTableData(defaultData);
+  //   } else {
+  //     setTableData(data);
+  //   }
+  // }, [searchText, data]);
+
   useEffect(() => {
-    let defaultData = tableData;
     if (searchText !== "") {
-      defaultData = data.filter((item) => {
-        return item.name.toLowerCase().includes(searchText.toLowerCase());
+      const searchQuery = searchText.toLowerCase();
+      const filteredData = data.filter((item) => {
+        return Object.values(item).some((value) => String(value).toLowerCase().includes(searchQuery));
       });
-      setTableData(defaultData);
+      setTableData(filteredData);
     } else {
       setTableData(data);
     }
-  }, [searchText, data]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [searchText, data]);
+
   // i added the data variable to this useEffect hook
 
   // function to change the design view under 1200 px

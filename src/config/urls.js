@@ -37,8 +37,6 @@ export const GET_TRANSACTIONS_TYPE_BREAKDOWN = BASE_URL + "api/transactions/type
 
 export const GET_FRAUD_DASHBOARD = BASE_URL + "api/transactions/fraud/dashboard/";
 
-export const GET_CREATE_RULES = BASE_URL + "api/rules/";
-
 export const GET_RULE_PREREQUISITE = BASE_URL + "api/rules/prerequisites/";
 
 export const CREATE_RULE = BASE_URL + "api/rules/create/";
@@ -66,3 +64,4 @@ export const GET_TXN_STATS = `${BASE_URL}api/txn/stats/`;
 export const GET_PERCENTAGE_FLAGGED_STATS = `${BASE_URL}api/flagged_txn/percentage/stats/`;
 export const GET_TRANSACTION_TYPE_BREAKDOWN = `${BASE_URL}api/transaction/type/breakdown/`;
 export const GET_PRODUCT_OVERVIEW_BREAKDOWN = `${BASE_URL}api/transaction/product/overview/`;
+export const GET_CREATE_RULES = `${BASE_URL}api/rules/`;

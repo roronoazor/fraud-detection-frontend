@@ -18,34 +18,21 @@ import {
 import {
   DropdownMenu,
   DropdownToggle,
-  FormGroup,
-  UncontrolledDropdown,
   Dropdown,
-  Modal,
-  ModalBody,
   DropdownItem,
-  Form,
+  Badge,
 } from "reactstrap";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { handleApiError } from "../../modules/utilities/responseHandlers";
+import { useSelector } from "react-redux";
+import { getAuthToken } from "../../modules/auth/redux/authSelector";
+import { useQuery } from "react-query";
+import { fetchData } from "../../modules/utilities/util_query";
+import LoadingSpinner from "../components/common/ui-view/SpinnerUI";
+import ToastUI from "../components/common/ui-view/ToastUI";
+import { GET_CREATE_RULES } from "../../config/urls";
 
-const dataTableData = [
-  {
-    id: "1",
-    description: "Rule 1",
-    status: "active",
-  },
-  {
-    id: "2",
-    description: "Rule 2",
-    status: "active",
-  },
-  {
-    id: "3",
-    description: "Rule 3",
-    status: "active",
-  },
-];
 
 const AllRules = () => {
   const [smOption, setSmOption] = useState(false);
@@ -53,6 +40,7 @@ const AllRules = () => {
   const [tablesm, updateTableSm] = useState(false);
   const [onSearch, setonSearch] = useState(true);
   const [onSearchText, setSearchText] = useState("");
+  const [dataTableData, setDataTableData] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [modal, setModal] = useState({
     edit: false,
@@ -82,11 +70,7 @@ const AllRules = () => {
     });
   };
 
-  // function to close the form modal
-  const onFormCancel = () => {
-    setModal({ edit: false, add: false, delete: false });
-    resetForm();
-  };
+ 
 
   const toggleDropdown = (e, row) => {
     setEditId(row?.id);
@@ -96,10 +80,10 @@ const AllRules = () => {
   const handleEdit = () => {
     setModal({ ...modal, edit: true });
   };
-  const handleDelete = () => {
-    setModal({ ...modal, delete: true });
-  };
-
+  let payload_data = {};
+  
+  const token = useSelector(getAuthToken);
+  const [data, setData] = React.useState({});
   const dataTableColumns = [
     {
       name: "ID",
@@ -112,8 +96,18 @@ const AllRules = () => {
       sortable: true,
     },
     {
+      name: "Product",
+      selector: (row) => row.product,
+      sortable: true,
+    },
+    {
+      name: "Action If Rule is Violated",
+      selector: (row) => row.action ? row.action : "N/A",
+      sortable: true,
+    },
+    {
       name: "Status",
-      selector: (row) => row.status,
+      selector: (row) => row.active ? <Badge pill color="success">Active</Badge> : <Badge pill color="gray">In-Active</Badge>,
       sortable: true,
     },
     {
@@ -132,6 +126,33 @@ const AllRules = () => {
       button: true,
     },
   ];
+
+  const result = useQuery(
+    [
+      GET_CREATE_RULES,
+      {
+        url: GET_CREATE_RULES,
+        payload_data,
+        authenticate: true,
+        token,
+      },
+    ],
+    fetchData,
+    {
+      retry: false,
+      onSuccess: (response) => {
+        let data = response?.data?.data;
+        setDataTableData(data);
+      },
+      onError: (error) => {
+        handleApiError(error, <ToastUI error />);
+      },
+    },
+  );
+
+  if (result?.isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <>
@@ -163,26 +184,6 @@ const AllRules = () => {
           </PreviewCard>
         </Block>
 
-        <Modal isOpen={modal.add} toggle={() => setModal({ add: false })} className="modal-dialog-centered" size="xl">
-          <ModalBody>
-            <a
-              href="#close"
-              onClick={(ev) => {
-                ev.preventDefault();
-                onFormCancel();
-              }}
-              className="close"
-            >
-              <Icon name="cross-sm"></Icon>
-            </a>
-            <div className="p-2">
-              <h5 className="title">Add Terminal</h5>
-              <div className="mt-4">
-                <Form className="row gy-4" noValidate onSubmit={() => {}}></Form>
-              </div>
-            </div>
-          </ModalBody>
-        </Modal>
       </Content>
     </>
   );
