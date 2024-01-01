@@ -15,9 +15,35 @@ import {
 import { FormGroup, Label, Row } from "reactstrap";
 import { doughnutChartData } from "../../pages/components/charts/ChartData";
 import { PieChartExample } from "../../components/charts/Chart";
+import PieChartContainer from "../components/common/container/PieChartContainer";
+import { GET_PRODUCT_OVERVIEW_BREAKDOWN } from "../../config/urls";
 
 const TransactionCategoryMonitoring = (props) => {
   const [sm, updateSm] = useState(false);
+
+  // Default startDate to 7 days before today
+  const defaultStartDate = new Date();
+  defaultStartDate.setDate(defaultStartDate.getDate() - 7);
+  const [startDate, setStartDate] = useState(defaultStartDate.toISOString().split("T")[0]);
+
+  // Default endDate to today
+  const defaultEndDate = new Date().toISOString().split("T")[0];
+  const [endDate, setEndDate] = useState(defaultEndDate);
+
+  const [queryStartDate, setQueryStartDate] = useState("");
+  const [queryEndDate, setQueryEndDate] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setQueryStartDate(startDate);
+    setQueryEndDate(endDate);
+  };
+
+  React.useEffect(() => {
+    setQueryStartDate(startDate);
+    setQueryEndDate(endDate);
+  }, []);
+
   return (
     <>
       <Head title="Transaction Category Monitoring" />
@@ -54,6 +80,8 @@ const TransactionCategoryMonitoring = (props) => {
                               type="date"
                               id="default-0"
                               placeholder="Start Date"
+                              onChange={(e) => setStartDate(e.target.value)}
+                              value={startDate}
                             />
                           </div>
                         </FormGroup>
@@ -70,13 +98,15 @@ const TransactionCategoryMonitoring = (props) => {
                               type="date"
                               id="default-0"
                               placeholder="End Date"
+                              onChange={(e) => setEndDate(e.target.value)}
+                              value={endDate}
                             />
                           </div>
                         </FormGroup>
                       </li>
                       <li className="nk-block-tools-opt">
                         <FormGroup>
-                          <Button color="primary" size="lg">
+                          <Button color="primary" size="lg" onClick={handleSubmit}>
                             Submit
                           </Button>
                         </FormGroup>
@@ -89,64 +119,58 @@ const TransactionCategoryMonitoring = (props) => {
             <hr className="preview-hr"></hr>
             <Row className="gy-4">
               <Col className={"my-1"} md="6">
-                <PreviewCard>
-                  <div className="card-head text-center">
-                    <h6 className="title">Withdrawals</h6>
-                  </div>
-                  <div className="nk-ck-sm">
-                    <PieChartExample data={doughnutChartData} />
-                  </div>
-                </PreviewCard>
+                <PieChartContainer
+                  title="Withdrawals"
+                  url={GET_PRODUCT_OVERVIEW_BREAKDOWN}
+                  type={"withdrawal"}
+                  startDate={queryStartDate}
+                  endDate={queryEndDate}
+                />
               </Col>
               <Col className={"my-1"} md="6">
-                <PreviewCard>
-                  <div className="card-head text-center">
-                    <h6 className="title">Transfers</h6>
-                  </div>
-                  <div className="nk-ck-sm">
-                    <PieChartExample data={doughnutChartData} />
-                  </div>
-                </PreviewCard>
+                <PieChartContainer
+                  title="Transfers"
+                  url={GET_PRODUCT_OVERVIEW_BREAKDOWN}
+                  type={"transfer"}
+                  startDate={queryStartDate}
+                  endDate={queryEndDate}
+                />
               </Col>
               <Col className={"my-1"} md="6">
-                <PreviewCard>
-                  <div className="card-head text-center">
-                    <h6 className="title">Airtime V.T.U</h6>
-                  </div>
-                  <div className="nk-ck-sm">
-                    <PieChartExample data={doughnutChartData} />
-                  </div>
-                </PreviewCard>
+                <PieChartContainer
+                  title="Airtime V.T.U"
+                  url={GET_PRODUCT_OVERVIEW_BREAKDOWN}
+                  type={"airtime_vtu"}
+                  startDate={queryStartDate}
+                  endDate={queryEndDate}
+                />
               </Col>
               <Col className={"my-1"} md="6">
-                <PreviewCard>
-                  <div className="card-head text-center">
-                    <h6 className="title">Cable Recharge</h6>
-                  </div>
-                  <div className="nk-ck-sm">
-                    <PieChartExample data={doughnutChartData} />
-                  </div>
-                </PreviewCard>
+                <PieChartContainer
+                  title="Cable Recharge"
+                  url={GET_PRODUCT_OVERVIEW_BREAKDOWN}
+                  type={"cable_recharge"}
+                  startDate={queryStartDate}
+                  endDate={queryEndDate}
+                />
               </Col>
               <Col className={"my-1"} md="6">
-                <PreviewCard>
-                  <div className="card-head text-center">
-                    <h6 className="title">Data Recharge</h6>
-                  </div>
-                  <div className="nk-ck-sm">
-                    <PieChartExample data={doughnutChartData} />
-                  </div>
-                </PreviewCard>
+                <PieChartContainer
+                  title="Data Recharge"
+                  url={GET_PRODUCT_OVERVIEW_BREAKDOWN}
+                  type={"data_recharge"}
+                  startDate={queryStartDate}
+                  endDate={queryEndDate}
+                />
               </Col>
               <Col className={"my-1"} md="6">
-                <PreviewCard>
-                  <div className="card-head text-center">
-                    <h6 className="title">Electricity Recharge</h6>
-                  </div>
-                  <div className="nk-ck-sm">
-                    <PieChartExample data={doughnutChartData} />
-                  </div>
-                </PreviewCard>
+                <PieChartContainer
+                  title="Electricity Recharge"
+                  url={GET_PRODUCT_OVERVIEW_BREAKDOWN}
+                  type={"electricity_recharge"}
+                  startDate={queryStartDate}
+                  endDate={queryEndDate}
+                />
               </Col>
             </Row>
           </PreviewCard>

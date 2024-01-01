@@ -274,7 +274,8 @@ const AllTerminals = () => {
             <Icon name="plus" />
           </DropdownToggle>
           <DropdownMenu right>
-            <DropdownItem onClick={() => handleEdit(row)}>View Details</DropdownItem>
+            <DropdownItem onClick={() => handleEdit()}>Terminal Metrics</DropdownItem>
+            <DropdownItem onClick={() => handleEdit(row)}>Terminal Details</DropdownItem>
             <DropdownItem onClick={() => handleEdit(row)}>Delete Terminal</DropdownItem>
           </DropdownMenu>
         </Dropdown>
@@ -285,7 +286,6 @@ const AllTerminals = () => {
 
   useEffect(() => {
     const terminalData = generateRandomTerminalData();
-    console.log("terminal Data: ", terminalData);
     const mappedData = terminalData.map((terminal) => ({
       id: terminal.id,
       terminal_id: terminal.terminal_id,
@@ -294,7 +294,6 @@ const AllTerminals = () => {
       profile: terminal.profile,
       blocked: terminal.blocked,
     }));
-    console.log("mappedData: ", mappedData);
     setDataTableData(mappedData);
   }, []);
 

@@ -5,16 +5,25 @@ import "./assets/scss/style-email.scss";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import createReduxStore from "./store";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+
+const { store, persistor } = createReduxStore();
 
 const Error404Modern = lazy(() => import("./pages/error/404-modern"));
 
 ReactDOM.render(
   <React.Fragment>
-    <Suspense fallback={<div />}>
-      <Router basename={`/`}>
-        <Route render={({ location }) => (location.state && location.state.is404 ? <Error404Modern /> : <App />)} />
-      </Router>
-    </Suspense>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <Suspense fallback={<div />}>
+          <Router basename={`/`}>
+            <Route render={({ location }) => (location.state && location.state.is404 ? <Error404Modern /> : <App />)} />
+          </Router>
+        </Suspense>
+      </PersistGate>
+    </Provider>
   </React.Fragment>,
   document.getElementById("root"),
 );

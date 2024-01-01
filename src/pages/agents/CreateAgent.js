@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Content from "../../layout/content/Content";
 import Head from "../../layout/head/Head";
 import {
@@ -9,10 +9,10 @@ import {
   BackTo,
   PreviewCard,
   Icon,
-  ReactDataTable,
   Button,
   Col,
   BlockBetween,
+  OverlineTitle,
   RSelect,
 } from "../../components/Component";
 import {
@@ -25,30 +25,33 @@ import {
   ModalBody,
   DropdownItem,
   Form,
+  Label,
+  Input,
+  Row,
 } from "reactstrap";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
 
-const DataTableData = [
+const dataTableData = [
   {
-    id: 0,
-    name: "3LINE",
-    created_by: "Jack Grimoire",
-    created_on: "2017-02-17",
-    status: "ACTIVE",
+    id: "1",
+    description: "Rule 1",
+    status: "active",
   },
   {
-    id: 1,
-    name: "ISW",
-    created_by: "Jack Grimoire",
-    created_on: "2017-02-17",
-    status: "ACTIVE",
+    id: "2",
+    description: "Rule 2",
+    status: "active",
+  },
+  {
+    id: "3",
+    description: "Rule 3",
+    status: "active",
   },
 ];
 
-const filterStatus = [
-  { value: "Active", label: "Active" },
-  { value: "Inactive", label: "Inactive" },
+const options = [
+  { value: "Staff A", label: "Staff A" },
+  { value: "Staff B", label: "Staff B" },
 ];
 
 const CreateAgent = () => {
@@ -75,14 +78,14 @@ const CreateAgent = () => {
   const [itemPerPage, setItemPerPage] = useState(10);
   const [sort, setSortState] = useState("");
   const { errors, register, handleSubmit } = useForm();
+  const [passState, setPassState] = useState(false);
 
   const onEditSubmit = () => {};
 
   // function to reset the form
   const resetForm = () => {
     setFormData({
-      name: "",
-      status: "Active",
+      terminal_id: "",
     });
   };
 
@@ -97,44 +100,6 @@ const CreateAgent = () => {
     setDropdownOpen(!dropdownOpen);
   };
 
-  const dataTableColumns = [
-    {
-      name: "Name",
-      selector: (row) => row.name,
-      sortable: true,
-    },
-    {
-      name: "Created By",
-      selector: (row) => row.created_by,
-      sortable: true,
-    },
-    {
-      name: "Created On",
-      selector: (row) => row.created_on,
-      sortable: true,
-    },
-    {
-      name: "Status",
-      selector: (row) => row.status,
-      sortable: true,
-    },
-    {
-      name: "Actions",
-      cell: (row) => (
-        <Dropdown isOpen={dropdownOpen && editId == row?.id} toggle={(e) => toggleDropdown(e, row)}>
-          <DropdownToggle tag="span" data-toggle="dropdown" aria-expanded={dropdownOpen}>
-            <Icon name="plus" />
-          </DropdownToggle>
-          <DropdownMenu right>
-            <DropdownItem onClick={() => handleEdit(row)}>Edit Handler</DropdownItem>
-            <DropdownItem onClick={() => handleDelete(row)}>Delete Handler</DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
-      ),
-      button: true,
-    },
-  ];
-
   const handleEdit = () => {
     setModal({ ...modal, edit: true });
   };
@@ -144,7 +109,7 @@ const CreateAgent = () => {
 
   return (
     <>
-      <Head title="Basic Tables" />
+      <Head title="Rules" />
       <Content>
         <BlockHead>
           <BlockHeadContent>
@@ -153,256 +118,394 @@ const CreateAgent = () => {
             </BackTo>
             <BlockBetween>
               <BlockTitle tag="h2" className="fw-normal">
-                Services
+                Create Agent
               </BlockTitle>
-              <Block>
-                <Button
-                  className="toggle d-none d-md-inline-flex"
-                  color="primary"
-                  onClick={() => {
-                    setModal({ ...modal, add: true });
-                  }}
-                >
-                  <Icon name="plus"></Icon>
-                  <span>Add Service</span>
-                </Button>
-              </Block>
             </BlockBetween>
           </BlockHeadContent>
         </BlockHead>
-        <Block size="lg">
-          <PreviewCard>
-            <ReactDataTable data={DataTableData} columns={dataTableColumns} pagination />
-          </PreviewCard>
-        </Block>
-        <Modal isOpen={modal.add} toggle={() => setModal({ add: false })} className="modal-dialog-centered" size="lg">
-          <ModalBody>
-            <a
-              href="#close"
-              onClick={(ev) => {
-                ev.preventDefault();
-                onFormCancel();
-              }}
-              className="close"
-            >
-              <Icon name="cross-sm"></Icon>
-            </a>
-            <div className="p-2">
-              <h5 className="title">Add Handler</h5>
-              <div className="mt-4">
-                <Form className="row gy-4" noValidate onSubmit={() => {}}>
-                  <Col md="12">
-                    <FormGroup>
-                      <label className="form-label">Name</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="name"
-                        defaultValue={formData.name}
-                        placeholder="Enter name of handler"
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.name && <span className="invalid">{errors.name.message}</span>}
-                    </FormGroup>
-                  </Col>
-                  <Col size="12">
-                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                      <li>
-                        <Button color="primary" size="md" type="submit">
-                          Add Handler
-                        </Button>
-                      </li>
-                      <li>
-                        <a
-                          href="#cancel"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                            onFormCancel();
-                          }}
-                          className="link link-light"
-                        >
-                          Cancel
-                        </a>
-                      </li>
-                    </ul>
-                  </Col>
-                </Form>
-              </div>
-            </div>
-          </ModalBody>
-        </Modal>
 
-        <Modal isOpen={modal.edit} toggle={() => setModal({ edit: false })} className="modal-dialog-centered" size="lg">
-          <ModalBody>
-            <a
-              href="#cancel"
-              onClick={(ev) => {
-                ev.preventDefault();
-                onFormCancel();
-              }}
-              className="close"
-            >
-              <Icon name="cross-sm"></Icon>
-            </a>
-            <div className="p-2">
-              <h5 className="title">Edit Handler</h5>
-              <div className="mt-4">
-                <Form className="row gy-4" onSubmit={handleSubmit(onEditSubmit)}>
-                  <Col md="6">
-                    <FormGroup>
-                      <label className="form-label">Name</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="name"
-                        defaultValue={formData.name}
-                        placeholder="Enter name"
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.name && <span className="invalid">{errors.name.message}</span>}
-                    </FormGroup>
-                  </Col>
-                  <Col md="6">
-                    <FormGroup>
-                      <label className="form-label">Email</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="email"
-                        defaultValue={formData.email}
-                        placeholder="Enter email"
-                        ref={register({
-                          required: "This field is required",
-                          pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                            message: "invalid email address",
-                          },
-                        })}
-                      />
-                      {errors.email && <span className="invalid">{errors.email.message}</span>}
-                    </FormGroup>
-                  </Col>
-                  <Col md="6">
-                    <FormGroup>
-                      <label className="form-label">Balance</label>
-                      <input
-                        className="form-control"
-                        type="number"
-                        name="balance"
-                        disabled
-                        placeholder="Balance"
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.balance && <span className="invalid">{errors.balance.message}</span>}
-                    </FormGroup>
-                  </Col>
-                  <Col md="6">
-                    <FormGroup>
-                      <label className="form-label">Phone</label>
-                      <input
-                        className="form-control"
-                        type="number"
-                        name="phone"
-                        defaultValue={Number(formData.phone)}
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.phone && <span className="invalid">{errors.phone.message}</span>}
-                    </FormGroup>
-                  </Col>
-                  <Col md="12">
-                    <FormGroup>
-                      <label className="form-label">Status</label>
-                      <div className="form-control-wrap">
-                        <RSelect
-                          options={filterStatus}
-                          defaultValue={{
-                            value: formData.status,
-                            label: formData.status,
-                          }}
-                          onChange={(e) => setFormData({ ...formData, status: e.value })}
-                        />
-                      </div>
-                    </FormGroup>
-                  </Col>
-                  <Col size="12">
-                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                      <li>
-                        <Button color="primary" size="md" type="submit">
-                          Update User
-                        </Button>
-                      </li>
-                      <li>
-                        <a
-                          href="#cancel"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                            onFormCancel();
-                          }}
-                          className="link link-light"
-                        >
-                          Cancel
-                        </a>
-                      </li>
-                    </ul>
-                  </Col>
-                </Form>
-              </div>
-            </div>
-          </ModalBody>
-        </Modal>
+        {/** Rules Form */}
+        <PreviewCard>
+          <OverlineTitle tag="span" className="preview-title-lg">
+            {" "}
+            Please fill the form below{" "}
+          </OverlineTitle>
+          <Row className="gy-4">
+            <Col sm="6">
+              <FormGroup>
+                <Label htmlFor="default-0" className="form-label">
+                  First Name
+                </Label>
+                <div className="form-control-wrap">
+                  <input
+                    className="form-control"
+                    name="first_name"
+                    type="text"
+                    id="default-0"
+                    placeholder="First Name"
+                  />
+                </div>
+              </FormGroup>
+            </Col>
+            <Col sm="6">
+              <FormGroup>
+                <Label htmlFor="default-0" className="form-label">
+                  Last Name
+                </Label>
+                <div className="form-control-wrap">
+                  <input
+                    className="form-control"
+                    name="last_name"
+                    type="number"
+                    id="default-0"
+                    placeholder="Last Name"
+                  />
+                </div>
+              </FormGroup>
+            </Col>
+            <Col sm="6">
+              <FormGroup>
+                <Label htmlFor="default-0" className="form-label">
+                  User Name
+                </Label>
+                <div className="form-control-wrap">
+                  <input className="form-control" name="username" type="text" id="default-0" placeholder="User Name" />
+                </div>
+              </FormGroup>
+            </Col>
+            <Col sm="6">
+              <FormGroup>
+                <Label htmlFor="default-0" className="form-label">
+                  Email
+                </Label>
+                <div className="form-control-wrap">
+                  <input className="form-control" name="email" type="text" id="default-0" placeholder="Email" />
+                </div>
+              </FormGroup>
+            </Col>
+            <Col sm="6">
+              <FormGroup>
+                <Label htmlFor="default-0" className="form-label">
+                  Password
+                </Label>
+                <div className="form-control-wrap">
+                  <input
+                    className="form-control"
+                    name="password"
+                    type="password"
+                    id="default-0"
+                    placeholder="Password"
+                  />
+                </div>
+              </FormGroup>
+            </Col>
+            <Col sm="6">
+              <FormGroup>
+                <Label htmlFor="default-0" className="form-label">
+                  Confirm Password
+                </Label>
+                <div className="form-control-wrap">
+                  <input
+                    className="form-control"
+                    name="confirm_password"
+                    type="password"
+                    id="default-0"
+                    placeholder="Confirm Password"
+                  />
+                </div>
+              </FormGroup>
+            </Col>
+            <Col sm="6">
+              <FormGroup>
+                <Label htmlFor="default-4" name="product" className="form-label">
+                  Gender
+                </Label>
+                <div className="form-control-wrap">
+                  <div className="form-control-select">
+                    <Input type="select" name="monitoring_action" id="default-4">
+                      <option value="">Choose Option</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                    </Input>
+                  </div>
+                </div>
+              </FormGroup>
+            </Col>
+            <Col sm="6">
+              <FormGroup>
+                <Label htmlFor="default-0" className="form-label">
+                  Phone Number
+                </Label>
+                <div className="form-control-wrap">
+                  <input
+                    className="form-control"
+                    name="phone_number"
+                    type="text"
+                    id="default-0"
+                    placeholder="Phone Number"
+                  />
+                </div>
+              </FormGroup>
+            </Col>
+            <Col sm="6">
+              <FormGroup>
+                <Label htmlFor="default-0" className="form-label">
+                  Date of Birth
+                </Label>
+                <div className="form-control-wrap">
+                  <input
+                    className="form-control"
+                    name="date_of_birth"
+                    type="date"
+                    id="default-0"
+                    placeholder="Date of Birth"
+                  />
+                </div>
+              </FormGroup>
+            </Col>
+            <Col md="6">
+              <FormGroup>
+                <label className="form-label">Address</label>
+                <textarea
+                  name="address"
+                  placeholder="Address"
+                  onChange={(e) => {}}
+                  className="form-control-xl form-control no-resize"
+                />
+              </FormGroup>
+            </Col>
+            <Col sm="6">
+              <FormGroup>
+                <Label htmlFor="default-4" name="role" className="form-label">
+                  Role
+                </Label>
+                <div className="form-control-wrap">
+                  <div className="form-control-select">
+                    <Input type="select" name="role" id="default-4">
+                      <option value="">Choose Option</option>
+                      <option value="aggregator">Aggregator</option>
+                    </Input>
+                  </div>
+                </div>
+              </FormGroup>
+            </Col>
+            <Col sm="6">
+              <FormGroup>
+                <Label htmlFor="default-4" className="form-label">
+                  Agent Type
+                </Label>
+                <div className="form-control-wrap">
+                  <div className="form-control-select">
+                    <Input type="select" name="agentType" id="default-4">
+                      <option value="">Choose Option</option>
+                      <option value="settleMerchant">Settle Merchant</option>
+                    </Input>
+                  </div>
+                </div>
+              </FormGroup>
+            </Col>
+            <Col md="6">
+              <FormGroup>
+                <div className="form-label-group">
+                  <label className="form-label" htmlFor="pin">
+                    Pin
+                  </label>
+                </div>
+                <div className="form-control-wrap">
+                  <a
+                    href="#pin"
+                    onClick={(ev) => {}}
+                    className={`form-icon lg form-icon-right passcode-switch ${passState ? "is-hidden" : "is-shown"}`}
+                  >
+                    <Icon name="eye" className="passcode-icon icon-show"></Icon>
 
-        <Modal
-          isOpen={modal.delete}
-          toggle={() => setModal({ edit: false })}
-          className="modal-dialog-centered"
-          size="lg"
-        >
-          <ModalBody>
-            <a
-              href="#cancel"
-              onClick={(ev) => {
-                ev.preventDefault();
-                onFormCancel();
-              }}
-              className="close"
-            >
-              <Icon name="cross-sm"></Icon>
-            </a>
-            <div className="p-2">
-              <h5 className="title">Delete</h5>
-              <div className="mt-4">
-                <Form className="row gy-4" onSubmit={handleSubmit(onEditSubmit)}>
-                  <Col md="6">
-                    <FormGroup>
-                      <p>Are you sure want to delete ?</p>
-                    </FormGroup>
-                  </Col>
-                  <Col size="12">
-                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                      <li>
-                        <Button color="primary" size="md" type="submit">
-                          Delete
-                        </Button>
-                      </li>
-                      <li>
-                        <a
-                          href="#cancel"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                            onFormCancel();
-                          }}
-                          className="link link-light"
-                        >
-                          Cancel
-                        </a>
-                      </li>
-                    </ul>
-                  </Col>
-                </Form>
-              </div>
-            </div>
-          </ModalBody>
-        </Modal>
+                    <Icon name="eye-off" className="passcode-icon icon-hide"></Icon>
+                  </a>
+                  <input
+                    className={`form-control ${passState ? "is-hidden" : "is-shown"}`}
+                    type={passState ? "text" : "password"}
+                    name="pin"
+                    placeholder="PIN"
+                  />
+                </div>
+              </FormGroup>
+            </Col>
+            <Col md="6">
+              <FormGroup>
+                <div className="form-label-group">
+                  <label className="form-label" htmlFor="pin">
+                    Activation Pin
+                  </label>
+                </div>
+                <div className="form-control-wrap">
+                  <a
+                    href="#pin"
+                    onClick={(ev) => {}}
+                    className={`form-icon lg form-icon-right passcode-switch ${passState ? "is-hidden" : "is-shown"}`}
+                  >
+                    <Icon name="eye" className="passcode-icon icon-show"></Icon>
+
+                    <Icon name="eye-off" className="passcode-icon icon-hide"></Icon>
+                  </a>
+                  <input
+                    className={`form-control ${passState ? "is-hidden" : "is-shown"}`}
+                    type={passState ? "text" : "password"}
+                    name="activation_pin"
+                    placeholder="Activation PIN"
+                  />
+                </div>
+              </FormGroup>
+            </Col>
+            <Col sm="6">
+              <FormGroup>
+                <Label htmlFor="default-0" className="form-label">
+                  Wallet I.D
+                </Label>
+                <div className="form-control-wrap">
+                  <input className="form-control" name="walletId" type="text" id="default-0" placeholder="Wallet I.D" />
+                </div>
+              </FormGroup>
+            </Col>
+            <Col md="6">
+              <FormGroup>
+                <label className="form-label">Permissions</label>
+                <RSelect options={[{ label: "transacting", value: "transacting" }]} isMulti onChange={(e) => {}} />
+              </FormGroup>
+            </Col>
+          </Row>
+          <hr className="preview-hr"></hr>
+          <OverlineTitle tag="span" className="preview-title-lg">
+            {" "}
+            Upload Documents{" "}
+          </OverlineTitle>
+          <Row>
+            <Col sm="6">
+              <FormGroup>
+                <Label htmlFor="default-4" className="form-label">
+                  C.A.C Document
+                </Label>
+                <div className="form-control-wrap">
+                  <div className="custom-file">
+                    <input
+                      type="file"
+                      multiple
+                      className="custom-file-input form-control"
+                      id="cacDocument"
+                      onChange={(e) => {}}
+                    />
+                    <Label className="custom-file-label" htmlFor="cacDocument">
+                      {/* {file === "" ? "Choose file" : file} */}
+                      Choose file
+                    </Label>
+                  </div>
+                </div>
+              </FormGroup>
+            </Col>
+            <Col sm="6">
+              <FormGroup>
+                <Label htmlFor="default-4" className="form-label">
+                  Guarantor I.D
+                </Label>
+                <div className="form-control-wrap">
+                  <div className="custom-file">
+                    <input
+                      type="file"
+                      className="custom-file-input form-control"
+                      id="guarantorId"
+                      onChange={(e) => {}}
+                    />
+                    <Label className="custom-file-label" htmlFor="guarantorId">
+                      {/* {file === "" ? "Choose file" : file} */}
+                      Choose file
+                    </Label>
+                  </div>
+                </div>
+              </FormGroup>
+            </Col>
+            <Col sm="6">
+              <FormGroup>
+                <Label htmlFor="default-4" className="form-label">
+                  Guarantor Passport
+                </Label>
+                <div className="form-control-wrap">
+                  <div className="custom-file">
+                    <input
+                      type="file"
+                      className="custom-file-input form-control"
+                      id="guarantorPassport"
+                      onChange={(e) => {}}
+                    />
+                    <Label className="custom-file-label" htmlFor="guarantorPassport">
+                      {/* {file === "" ? "Choose file" : file} */}
+                      Choose file
+                    </Label>
+                  </div>
+                </div>
+              </FormGroup>
+            </Col>
+            <Col sm="6">
+              <FormGroup>
+                <Label htmlFor="default-4" className="form-label">
+                  I.D Card
+                </Label>
+                <div className="form-control-wrap">
+                  <div className="custom-file">
+                    <input type="file" className="custom-file-input form-control" id="idCard" onChange={(e) => {}} />
+                    <Label className="custom-file-label" htmlFor="idCard">
+                      {/* {file === "" ? "Choose file" : file} */}
+                      Choose file
+                    </Label>
+                  </div>
+                </div>
+              </FormGroup>
+            </Col>
+            <Col sm="6">
+              <FormGroup>
+                <Label htmlFor="default-4" className="form-label">
+                  Passport
+                </Label>
+                <div className="form-control-wrap">
+                  <div className="custom-file">
+                    <input type="file" className="custom-file-input form-control" id="passport" onChange={(e) => {}} />
+                    <Label className="custom-file-label" htmlFor="passport">
+                      {/* {file === "" ? "Choose file" : file} */}
+                      Choose file
+                    </Label>
+                  </div>
+                </div>
+              </FormGroup>
+            </Col>
+            <Col sm="6">
+              <FormGroup>
+                <Label htmlFor="default-4" className="form-label">
+                  Utility Bill
+                </Label>
+                <div className="form-control-wrap">
+                  <div className="custom-file">
+                    <input
+                      type="file"
+                      className="custom-file-input form-control"
+                      id="utilityBill"
+                      onChange={(e) => {}}
+                    />
+                    <Label className="custom-file-label" htmlFor="utilityBill">
+                      {/* {file === "" ? "Choose file" : file} */}
+                      Choose file
+                    </Label>
+                  </div>
+                </div>
+              </FormGroup>
+            </Col>
+
+            <Col className={"my-2"} md="12">
+              <FormGroup>
+                <Button color="primary" size="lg">
+                  Submit
+                </Button>
+              </FormGroup>
+            </Col>
+          </Row>
+        </PreviewCard>
       </Content>
     </>
   );

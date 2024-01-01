@@ -32,14 +32,14 @@ import { Link } from "react-router-dom";
 const DataTableData = [
   {
     id: 0,
-    name: "3LINE",
+    name: "Service A",
     created_by: "Jack Grimoire",
     created_on: "2017-02-17",
     status: "ACTIVE",
   },
   {
     id: 1,
-    name: "ISW",
+    name: "Service B",
     created_by: "Jack Grimoire",
     created_on: "2017-02-17",
     status: "ACTIVE",
@@ -99,18 +99,8 @@ const AllServices = () => {
 
   const dataTableColumns = [
     {
-      name: "Name",
+      name: "Service Name",
       selector: (row) => row.name,
-      sortable: true,
-    },
-    {
-      name: "Created By",
-      selector: (row) => row.created_by,
-      sortable: true,
-    },
-    {
-      name: "Created On",
-      selector: (row) => row.created_on,
       sortable: true,
     },
     {
@@ -126,8 +116,7 @@ const AllServices = () => {
             <Icon name="plus" />
           </DropdownToggle>
           <DropdownMenu right>
-            <DropdownItem onClick={() => handleEdit(row)}>Edit Handler</DropdownItem>
-            <DropdownItem onClick={() => handleDelete(row)}>Delete Handler</DropdownItem>
+            <DropdownItem onClick={() => handleEdit(row)}>Service Metrics</DropdownItem>
           </DropdownMenu>
         </Dropdown>
       ),

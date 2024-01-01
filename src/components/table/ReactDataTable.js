@@ -99,8 +99,6 @@ const ReactDataTable = ({ data, columns, pagination, actions, className, selecta
   const [rowsPerPageS, setRowsPerPage] = useState(10);
   const [mobileView, setMobileView] = useState();
 
-  console.log("inside data table ", data, columns);
-
   useEffect(() => {
     let defaultData = tableData;
     if (searchText !== "") {

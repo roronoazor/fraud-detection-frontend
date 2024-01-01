@@ -25,6 +25,7 @@ import {
   ModalBody,
   DropdownItem,
   Form,
+  Card,
 } from "reactstrap";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
@@ -46,12 +47,7 @@ const DataTableData = [
   },
 ];
 
-const filterStatus = [
-  { value: "Active", label: "Active" },
-  { value: "Inactive", label: "Inactive" },
-];
-
-const MapServiceToAgent = () => {
+const TerminalMap = () => {
   const [smOption, setSmOption] = useState(false);
 
   const [tablesm, updateTableSm] = useState(false);
@@ -92,231 +88,59 @@ const MapServiceToAgent = () => {
     resetForm();
   };
 
-  const toggleDropdown = (e, row) => {
-    setEditId(row?.id);
-    setDropdownOpen(!dropdownOpen);
-  };
-
-  const dataTableColumns = [
-    {
-      name: "Name",
-      selector: (row) => row.name,
-      sortable: true,
-    },
-    {
-      name: "Created By",
-      selector: (row) => row.created_by,
-      sortable: true,
-    },
-    {
-      name: "Created On",
-      selector: (row) => row.created_on,
-      sortable: true,
-    },
-    {
-      name: "Status",
-      selector: (row) => row.status,
-      sortable: true,
-    },
-    {
-      name: "Actions",
-      cell: (row) => (
-        <Dropdown isOpen={dropdownOpen && editId == row?.id} toggle={(e) => toggleDropdown(e, row)}>
-          <DropdownToggle tag="span" data-toggle="dropdown" aria-expanded={dropdownOpen}>
-            <Icon name="plus" />
-          </DropdownToggle>
-          <DropdownMenu right>
-            <DropdownItem onClick={() => handleEdit(row)}>Edit Handler</DropdownItem>
-            <DropdownItem onClick={() => handleDelete(row)}>Delete Handler</DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
-      ),
-      button: true,
-    },
-  ];
-
-  const handleEdit = () => {
-    setModal({ ...modal, edit: true });
-  };
-  const handleDelete = () => {
-    setModal({ ...modal, delete: true });
-  };
-
   return (
     <>
-      <Head title="Basic Tables" />
+      <Head title="Terminal Mapping" />
       <Content>
         <BlockHead>
           <BlockHeadContent>
-            <BackTo link="/" icon="arrow-left">
-              Back to Dashboard
+            <BackTo link="/terminals" icon="arrow-left">
+              Back to Terminals
             </BackTo>
             <BlockBetween>
               <BlockTitle tag="h2" className="fw-normal">
-                Map Service to Agent
+                Map Agent to Service
               </BlockTitle>
             </BlockBetween>
           </BlockHeadContent>
         </BlockHead>
         <Block size="lg">
           <PreviewCard>
-            <ReactDataTable data={DataTableData} columns={dataTableColumns} pagination />
-          </PreviewCard>
-        </Block>
-        <Modal isOpen={modal.add} toggle={() => setModal({ add: false })} className="modal-dialog-centered" size="lg">
-          <ModalBody>
-            <a
-              href="#close"
-              onClick={(ev) => {
-                ev.preventDefault();
-                onFormCancel();
-              }}
-              className="close"
-            >
-              <Icon name="cross-sm"></Icon>
-            </a>
             <div className="p-2">
-              <h5 className="title">Add Handler</h5>
+              <h5 className="title">Map Service</h5>
               <div className="mt-4">
                 <Form className="row gy-4" noValidate onSubmit={() => {}}>
-                  <Col md="12">
+                  <Col md="6">
                     <FormGroup>
-                      <label className="form-label">Name</label>
+                      <label className="form-label">Select Agent</label>
                       <input
                         className="form-control"
                         type="text"
                         name="name"
                         defaultValue={formData.name}
-                        placeholder="Enter name of handler"
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.name && <span className="invalid">{errors.name.message}</span>}
-                    </FormGroup>
-                  </Col>
-                  <Col size="12">
-                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                      <li>
-                        <Button color="primary" size="md" type="submit">
-                          Add Handler
-                        </Button>
-                      </li>
-                      <li>
-                        <a
-                          href="#cancel"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                            onFormCancel();
-                          }}
-                          className="link link-light"
-                        >
-                          Cancel
-                        </a>
-                      </li>
-                    </ul>
-                  </Col>
-                </Form>
-              </div>
-            </div>
-          </ModalBody>
-        </Modal>
-
-        <Modal isOpen={modal.edit} toggle={() => setModal({ edit: false })} className="modal-dialog-centered" size="lg">
-          <ModalBody>
-            <a
-              href="#cancel"
-              onClick={(ev) => {
-                ev.preventDefault();
-                onFormCancel();
-              }}
-              className="close"
-            >
-              <Icon name="cross-sm"></Icon>
-            </a>
-            <div className="p-2">
-              <h5 className="title">Edit Handler</h5>
-              <div className="mt-4">
-                <Form className="row gy-4" onSubmit={handleSubmit(onEditSubmit)}>
-                  <Col md="6">
-                    <FormGroup>
-                      <label className="form-label">Name</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="name"
-                        defaultValue={formData.name}
-                        placeholder="Enter name"
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.name && <span className="invalid">{errors.name.message}</span>}
-                    </FormGroup>
-                  </Col>
-                  <Col md="6">
-                    <FormGroup>
-                      <label className="form-label">Email</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="email"
-                        defaultValue={formData.email}
-                        placeholder="Enter email"
-                        ref={register({
-                          required: "This field is required",
-                          pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                            message: "invalid email address",
-                          },
-                        })}
-                      />
-                      {errors.email && <span className="invalid">{errors.email.message}</span>}
-                    </FormGroup>
-                  </Col>
-                  <Col md="6">
-                    <FormGroup>
-                      <label className="form-label">Balance</label>
-                      <input
-                        className="form-control"
-                        type="number"
-                        name="balance"
                         disabled
-                        placeholder="Balance"
+                        placeholder="Agent X"
                         ref={register({ required: "This field is required" })}
                       />
-                      {errors.balance && <span className="invalid">{errors.balance.message}</span>}
-                    </FormGroup>
-                  </Col>
-                  <Col md="6">
-                    <FormGroup>
-                      <label className="form-label">Phone</label>
-                      <input
-                        className="form-control"
-                        type="number"
-                        name="phone"
-                        defaultValue={Number(formData.phone)}
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.phone && <span className="invalid">{errors.phone.message}</span>}
+                      {errors.name && <span className="invalid">{errors.name.message}</span>}
                     </FormGroup>
                   </Col>
                   <Col md="12">
                     <FormGroup>
-                      <label className="form-label">Status</label>
-                      <div className="form-control-wrap">
-                        <RSelect
-                          options={filterStatus}
-                          defaultValue={{
-                            value: formData.status,
-                            label: formData.status,
-                          }}
-                          onChange={(e) => setFormData({ ...formData, status: e.value })}
-                        />
-                      </div>
+                      <label className="form-label">Select Service</label>
+                      <RSelect
+                        options={[{ label: "Service A", value: "Service A" }]}
+                        isMulti
+                        defaultValue={formData.terminals}
+                        onChange={(e) => setFormData({ ...formData, terminals: e })}
+                      />
                     </FormGroup>
                   </Col>
-                  <Col size="12">
+                  <Col className={"my-2"} size="12">
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          Update User
+                          Map
                         </Button>
                       </li>
                       <li>
@@ -326,7 +150,7 @@ const MapServiceToAgent = () => {
                             ev.preventDefault();
                             onFormCancel();
                           }}
-                          className="link link-light"
+                          className="link link-light m-2"
                         >
                           Cancel
                         </a>
@@ -336,64 +160,82 @@ const MapServiceToAgent = () => {
                 </Form>
               </div>
             </div>
-          </ModalBody>
-        </Modal>
-
-        <Modal
-          isOpen={modal.delete}
-          toggle={() => setModal({ edit: false })}
-          className="modal-dialog-centered"
-          size="lg"
-        >
-          <ModalBody>
-            <a
-              href="#cancel"
-              onClick={(ev) => {
-                ev.preventDefault();
-                onFormCancel();
-              }}
-              className="close"
-            >
-              <Icon name="cross-sm"></Icon>
-            </a>
+          </PreviewCard>
+          <PreviewCard>
             <div className="p-2">
-              <h5 className="title">Delete</h5>
+              <h5 className="title">Services currently mapped to Agent X</h5>
               <div className="mt-4">
-                <Form className="row gy-4" onSubmit={handleSubmit(onEditSubmit)}>
-                  <Col md="6">
-                    <FormGroup>
-                      <p>Are you sure want to delete ?</p>
-                    </FormGroup>
-                  </Col>
-                  <Col size="12">
-                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                      <li>
-                        <Button color="primary" size="md" type="submit">
-                          Delete
-                        </Button>
-                      </li>
-                      <li>
-                        <a
-                          href="#cancel"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                            onFormCancel();
-                          }}
-                          className="link link-light"
-                        >
-                          Cancel
-                        </a>
-                      </li>
-                    </ul>
-                  </Col>
-                </Form>
+                <Card className="card-bordered card-stretch">
+                  <div className="card-inner-group">
+                    <div className="card-inner p-0">
+                      <table className="table table-tranx">
+                        <thead>
+                          <tr className="tb-tnx-head">
+                            <th className="tb-tnx-id">
+                              <span className="">#</span>
+                            </th>
+                            <th className="tb-tnx-info">
+                              <span className="tb-tnx-desc d-none d-sm-inline-block">
+                                <span>Service Name</span>
+                              </span>
+                            </th>
+                            <th className="tb-tnx-action">
+                              <span>&nbsp;</span>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr key={"2"} className="tb-tnx-item">
+                            <td className="tb-tnx-id">
+                              <a
+                                href="#ref"
+                                onClick={(ev) => {
+                                  ev.preventDefault();
+                                }}
+                              >
+                                <span>{"1."}</span>
+                              </a>
+                            </td>
+                            <td className="tb-tnx-info">
+                              <div className="tb-tnx-desc">
+                                <span className="title">{"Service A"}</span>
+                              </div>
+                            </td>
+                            <td className="tb-tnx-action">
+                              <UncontrolledDropdown>
+                                <DropdownToggle tag="a" className="text-soft dropdown-toggle btn btn-icon btn-trigger">
+                                  <Icon name="more-h"></Icon>
+                                </DropdownToggle>
+                                <DropdownMenu right>
+                                  <ul className="link-list-plain">
+                                    <li onClick={() => {}}>
+                                      <DropdownItem
+                                        tag="a"
+                                        href="#view"
+                                        onClick={(ev) => {
+                                          ev.preventDefault();
+                                        }}
+                                      >
+                                        Unmap
+                                      </DropdownItem>
+                                    </li>
+                                  </ul>
+                                </DropdownMenu>
+                              </UncontrolledDropdown>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </Card>
               </div>
             </div>
-          </ModalBody>
-        </Modal>
+          </PreviewCard>
+        </Block>
       </Content>
     </>
   );
 };
 
-export default MapServiceToAgent;
+export default TerminalMap;

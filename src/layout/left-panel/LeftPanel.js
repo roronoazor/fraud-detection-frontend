@@ -19,6 +19,7 @@ const LeftPanel = ({ theme }) => {
 
   const handleSignout = () => {
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("userData");
   };
 
   const appSidebarClass = classNames({
