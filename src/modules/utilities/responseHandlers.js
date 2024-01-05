@@ -12,7 +12,6 @@ import toast from "react-hot-toast";
  */
 export function handleApiError(error, customJSX) {
   let message = error?.response?.data?.detail ? error?.response?.data?.detail : error.toString();
-  toast.error(message);
   if (customJSX) {
     toast.custom(customJSX);
   } else {

@@ -69,10 +69,6 @@ const menu = [
         link: "/rules/create",
       },
       {
-        text: "Edit Rule",
-        link: "/rules/edit",
-      },
-      {
         text: "Merchant Rule",
         link: "/rules/monitorMerchant",
       },

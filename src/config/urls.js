@@ -41,8 +41,6 @@ export const GET_RULE_PREREQUISITE = BASE_URL + "api/rules/prerequisites/";
 
 export const CREATE_RULE = BASE_URL + "api/rules/create/";
 
-export const EDIT_RULE = BASE_URL + "api/rules/:id/";
-
 export const ACTIVATE_RULES = BASE_URL + "api/rules/activate/";
 
 export const DEACTIVATE_RULES = BASE_URL + "api/rules/deactivate/";
@@ -65,3 +63,7 @@ export const GET_PERCENTAGE_FLAGGED_STATS = `${BASE_URL}api/flagged_txn/percenta
 export const GET_TRANSACTION_TYPE_BREAKDOWN = `${BASE_URL}api/transaction/type/breakdown/`;
 export const GET_PRODUCT_OVERVIEW_BREAKDOWN = `${BASE_URL}api/transaction/product/overview/`;
 export const GET_CREATE_RULES = `${BASE_URL}api/rules/`;
+export const GET_SPROUTPAY_ADMINS = `${BASE_URL}api/sproutpay/admins/`;
+export const ACTIVATE_RULE = `${BASE_URL}api/rules/activate/`;
+export const DEACTIVATE_RULE = `${BASE_URL}api/rules/deactivate/`;
+export const GET_EDIT_RULE = `${BASE_URL}api/rules/edit/`;

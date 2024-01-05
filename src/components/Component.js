@@ -43,6 +43,7 @@ import Rating from "./rating/Rating";
 import Sidebar from "./sidebar/Sidebar";
 import ReactDataTable from "./table/ReactDataTable";
 import RSelect from "./select/ReactSelect";
+import EditDualList from "./dual-list-edit/EditDualList";
 
 export {
   Accordian,
@@ -99,4 +100,5 @@ export {
   DataTableTitle,
   PreviewAltCard,
   RSelect,
+  EditDualList,
 };

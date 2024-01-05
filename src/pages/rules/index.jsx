@@ -23,73 +23,49 @@ import {
   Badge,
 } from "reactstrap";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { handleApiError } from "../../modules/utilities/responseHandlers";
+import { Link, useHistory } from "react-router-dom";
+import { handleApiError, handleApiSuccess } from "../../modules/utilities/responseHandlers";
 import { useSelector } from "react-redux";
 import { getAuthToken } from "../../modules/auth/redux/authSelector";
-import { useQuery } from "react-query";
-import { fetchData } from "../../modules/utilities/util_query";
+import { useQueryClient, useMutation, useQuery } from "react-query";
+import { fetchData, postData } from "../../modules/utilities/util_query";
 import LoadingSpinner from "../components/common/ui-view/SpinnerUI";
 import ToastUI from "../components/common/ui-view/ToastUI";
-import { GET_CREATE_RULES } from "../../config/urls";
+import { GET_CREATE_RULES, DEACTIVATE_RULE, ACTIVATE_RULE } from "../../config/urls";
 
 
 const AllRules = () => {
-  const [smOption, setSmOption] = useState(false);
 
-  const [tablesm, updateTableSm] = useState(false);
-  const [onSearch, setonSearch] = useState(true);
-  const [onSearchText, setSearchText] = useState("");
   const [dataTableData, setDataTableData] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [modal, setModal] = useState({
-    edit: false,
-    add: false,
-    delete: false,
-  });
+  
   const [editId, setEditId] = useState();
-  const [formData, setFormData] = useState({
-    name: "",
-    created_by: "",
-    created_on: "",
-    status: "ACTIVE",
-  });
-  const [actionText, setActionText] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemPerPage, setItemPerPage] = useState(10);
-  const [sort, setSortState] = useState("");
-  const { errors, register, handleSubmit } = useForm();
-  const [passState, setPassState] = useState(false);
-
-  const onEditSubmit = () => {};
-
-  // function to reset the form
-  const resetForm = () => {
-    setFormData({
-      terminal_id: "",
-    });
-  };
-
- 
+  const history = useHistory();
+  const queryClient = useQueryClient();
 
   const toggleDropdown = (e, row) => {
     setEditId(row?.id);
     setDropdownOpen(!dropdownOpen);
   };
 
-  const handleEdit = () => {
-    setModal({ ...modal, edit: true });
-  };
+   // create the mutation object
+   const mutation = useMutation(postData, {
+    onSuccess: (response) => {
+      handleApiSuccess(response, <ToastUI success={true} message="Success" />)
+      queryClient.invalidateQueries(GET_CREATE_RULES);
+    },
+    onError: (error) => {
+        let message = error?.response?.data?.detail ? error?.response?.data?.detail : error.toString();
+        handleApiError(error, <ToastUI error={true} message={message} />);
+    }
+  });  
+
   let payload_data = {};
   
   const token = useSelector(getAuthToken);
   const [data, setData] = React.useState({});
   const dataTableColumns = [
-    {
-      name: "ID",
-      selector: (row) => row.id,
-      sortable: true,
-    },
+   
     {
       name: "Description",
       selector: (row) => row.description,
@@ -118,8 +94,9 @@ const AllRules = () => {
             <Icon name="plus" />
           </DropdownToggle>
           <DropdownMenu right>
-            <DropdownItem onClick={() => handleEdit(row)}>View Details</DropdownItem>
-            <DropdownItem onClick={() => handleEdit(row)}>Delete Rule</DropdownItem>
+            <DropdownItem onClick={() => goToEditPage(row)}>View Details</DropdownItem>
+            { row.active && <DropdownItem onClick={() => handleDeactivate(row)}>Deactivate Rule</DropdownItem>}
+            { !row.active && <DropdownItem onClick={() => handleActivate(row)}>Activate Rule</DropdownItem>}
           </DropdownMenu>
         </Dropdown>
       ),
@@ -150,9 +127,38 @@ const AllRules = () => {
     },
   );
 
-  if (result?.isLoading) {
+  if (result?.isLoading || mutation?.isLoading) {
     return <LoadingSpinner />;
   }
+
+  const goToEditPage = (row) => {
+    // Navigate to the edit page with the row's ID
+    history.push(`/rules/edit/${row.id}`);
+  };
+
+  const handleDeactivate = async (row) => {
+    mutation.mutate({
+      url: DEACTIVATE_RULE,
+      payload_data: {
+        id: row.id
+      },
+      token: token,
+      authenticate: true
+    });
+    return;
+  };
+
+  const handleActivate = async (row) => {
+    mutation.mutate({
+      url: ACTIVATE_RULE,
+      payload_data: {
+        id: row.id
+      },
+      token: token,
+      authenticate: true
+    });
+    return;
+  };
 
   return (
     <>

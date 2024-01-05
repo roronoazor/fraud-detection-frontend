@@ -305,7 +305,7 @@ const Pages = () => {
 
         <Route exact path={`${process.env.PUBLIC_URL}/rules`} component={AllRules}></Route>
         <Route exact path={`${process.env.PUBLIC_URL}/rules/create`} component={CreateRule}></Route>
-        <Route exact path={`${process.env.PUBLIC_URL}/rules/edit`} component={EditRule}></Route>
+        <Route exact path={`${process.env.PUBLIC_URL}/rules/edit/:id`} component={EditRule}></Route>
         <Route exact path={`${process.env.PUBLIC_URL}/rules/monitorMerchant`} component={MonitorMerchant}></Route>
 
         <Route
