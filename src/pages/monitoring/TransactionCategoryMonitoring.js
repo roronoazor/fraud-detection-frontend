@@ -13,8 +13,6 @@ import {
   BlockBetween,
 } from "../../components/Component";
 import { FormGroup, Label, Row } from "reactstrap";
-import { doughnutChartData } from "../../pages/components/charts/ChartData";
-import { PieChartExample } from "../../components/charts/Chart";
 import PieChartContainer from "../components/common/container/PieChartContainer";
 import { GET_PRODUCT_OVERVIEW_BREAKDOWN } from "../../config/urls";
 
