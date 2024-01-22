@@ -2,19 +2,16 @@ import React, { useState, useEffect } from "react";
 import Content from "../../layout/content/Content";
 import Head from "../../layout/head/Head";
 import {
-  Block,
   BlockHead,
   BlockHeadContent,
   BlockTitle,
   BackTo,
   PreviewCard,
   Icon,
-  ReactDataTable,
   Button,
   Col,
   BlockBetween,
   OverlineTitle,
-  ReactDualList,
   EditDualList
 } from "../../components/Component";
 import {
@@ -33,11 +30,8 @@ import { handleApiError, handleApiSuccess } from "../../modules/utilities/respon
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { getAuthToken } from "../../modules/auth/redux/authSelector";
+import LoadingSpinner from "../components/common/ui-view/SpinnerUI";
 
-const options = [
-  { value: "Staff A", label: "Staff A" },
-  { value: "Staff B", label: "Staff B" },
-];
 
 const EditRule = () => {
   
@@ -53,8 +47,7 @@ const EditRule = () => {
     const { name, value } = evt.target;
     setFormData({...formData, [name]: value});
  }
-  const onEditSubmit = () => {};
-
+  
   const setDangerValues = (values) => {
     setStaffDanger(values);
   }
@@ -158,12 +151,17 @@ const EditRule = () => {
     };
 
     mutation.mutate({
-      url: GET_EDIT_RULE,
+      url: `${GET_EDIT_RULE}${params?.id}/`,
       payload_data: data,
       token: token,
       authenticate: true
     });
     return;
+  }
+
+  if (editResult?.isLoading) {
+
+    return <LoadingSpinner />;
   }
   
 

@@ -14,131 +14,133 @@ import {
   BlockBetween,
   OverlineTitle,
   ReactDualList,
+  EditDualList,
 } from "../../components/Component";
 import {
-  DropdownMenu,
-  DropdownToggle,
   FormGroup,
-  UncontrolledDropdown,
-  Dropdown,
-  Modal,
-  ModalBody,
-  DropdownItem,
-  Form,
   Label,
   Input,
+  Spinner,
   Row,
 } from "reactstrap";
-import { useForm } from "react-hook-form";
+import { useHistory, useParams } from "react-router";
+import { useMutation, useQuery } from "react-query";
+import { postData, fetchData } from "../../modules/utilities/util_query";
+import { GET_SPROUTPAY_ADMINS, EDIT_MERCHANT_MONITORING_METRIC } from "../../config/urls";
+import ToastUI from "../components/common/ui-view/ToastUI";
+import { handleApiError, handleApiSuccess } from "../../modules/utilities/responseHandlers";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { getAuthToken } from "../../modules/auth/redux/authSelector";
 
-const dataTableData = [
-  {
-    id: "1",
-    description: "Rule 1",
-    status: "active",
-  },
-  {
-    id: "2",
-    description: "Rule 2",
-    status: "active",
-  },
-  {
-    id: "3",
-    description: "Rule 3",
-    status: "active",
-  },
-];
-
-const options = [
-  { value: "Staff A", label: "Staff A" },
-  { value: "Staff B", label: "Staff B" },
-];
 
 const MonitorMerchant = () => {
-  const [smOption, setSmOption] = useState(false);
 
-  const [tablesm, updateTableSm] = useState(false);
-  const [onSearch, setonSearch] = useState(true);
-  const [onSearchText, setSearchText] = useState("");
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [modal, setModal] = useState({
-    edit: false,
-    add: false,
-    delete: false,
+  const [formData, setFormData] = useState({});
+  const [staffNotify, setStaffNotify] = useState([]);
+  const [adminOptions, setAdminOptions] = useState([]);
+  const history = useHistory();
+  
+  
+  const handleChange = (evt) => {
+    const { name, value } = evt.target;
+    setFormData({...formData, [name]: value});
+ }
+  
+ let payload_data = {};
+ const token = useSelector(getAuthToken);
+ const result = useQuery(
+   [
+     `${GET_SPROUTPAY_ADMINS}`,
+     {
+       url: GET_SPROUTPAY_ADMINS,
+       payload_data,
+       authenticate: true,
+       token,
+     },
+   ],
+   fetchData,
+   {
+     retry: false,
+     onSuccess: (response) => {
+       let data = response?.data?.data;
+       const admins = data.map((item) => {
+         return { value: item?.info?.email, label: item?.info.email }
+       })
+       setAdminOptions(admins);
+     },
+     onError: (error) => {
+       handleApiError(error, <ToastUI error />);
+     },
+   },
+ );
+
+ const merchantResult = useQuery(
+  [
+    `${EDIT_MERCHANT_MONITORING_METRIC}`,
+    {
+      url: `${EDIT_MERCHANT_MONITORING_METRIC}`,
+      payload_data,
+      authenticate: true,
+      token,
+    },
+  ],
+  fetchData,
+  {
+    retry: false,
+    onSuccess: (response) => {
+      let data = response?.data?.data;
+      let notification_emails = data?.notification_emails || [];
+      
+      // Mapping notification_emails to create staffNotify
+      let staffNotify = notification_emails.map((rec) => ({ label: rec.email, value: rec.email }));
+      
+      setFormData(data);
+      setStaffNotify(staffNotify);
+
+      let updatedAdminOptions = adminOptions.filter(admin => 
+        !staffNotify.some(notify => notify.value === admin.value));
+
+      // const updatedAdmins = adminOptions.filter(admin => (notification_emails.map(rec => rec.email)).includes(admin.email))
+
+      // setAdminOptions(updatedAdminOptions);
+      setStaffNotify(staffNotify)
+    },
+    onError: (error) => {
+      handleApiError(error, <ToastUI error />);
+    },
+  },
+);
+
+console.log("sN: ", staffNotify);
+console.log("adminOptions: ", adminOptions);
+
+const mutation = useMutation(postData, {
+  onSuccess: (response) => {
+    handleApiSuccess(response, <ToastUI success={true} message="Successful" />)
+  },
+  onError: (error) => {
+      let message = error?.response?.data?.detail ? error?.response?.data?.detail : error.toString();
+      handleApiError(error, <ToastUI error={true} message={message} />);
+  }
+});   
+
+
+ const handleSubmit = () => {
+
+  const data = {
+    ...formData,
+    selectedEmails: staffNotify
+  }
+
+  mutation.mutate({
+    url: EDIT_MERCHANT_MONITORING_METRIC,
+    payload_data: data,
+    token: token,
+    authenticate: true
   });
-  const [editId, setEditId] = useState();
-  const [formData, setFormData] = useState({
-    name: "",
-    created_by: "",
-    created_on: "",
-    status: "ACTIVE",
-  });
-  const [actionText, setActionText] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemPerPage, setItemPerPage] = useState(10);
-  const [sort, setSortState] = useState("");
-  const { errors, register, handleSubmit } = useForm();
-  const [passState, setPassState] = useState(false);
-
-  const onEditSubmit = () => {};
-
-  // function to reset the form
-  const resetForm = () => {
-    setFormData({
-      terminal_id: "",
-    });
-  };
-
-  // function to close the form modal
-  const onFormCancel = () => {
-    setModal({ edit: false, add: false, delete: false });
-    resetForm();
-  };
-
-  const toggleDropdown = (e, row) => {
-    setEditId(row?.id);
-    setDropdownOpen(!dropdownOpen);
-  };
-
-  const handleEdit = () => {
-    setModal({ ...modal, edit: true });
-  };
-  const handleDelete = () => {
-    setModal({ ...modal, delete: true });
-  };
-
-  const dataTableColumns = [
-    {
-      name: "ID",
-      selector: (row) => row.id,
-      sortable: true,
-    },
-    {
-      name: "Description",
-      selector: (row) => row.description,
-      sortable: true,
-    },
-    {
-      name: "Status",
-      selector: (row) => row.status,
-      sortable: true,
-    },
-    {
-      name: "Actions",
-      cell: (row) => (
-        <Dropdown isOpen={dropdownOpen && editId == row?.id} toggle={(e) => toggleDropdown(e, row)}>
-          <DropdownToggle tag="span" data-toggle="dropdown" aria-expanded={dropdownOpen}>
-            <Icon name="plus" />
-          </DropdownToggle>
-          <DropdownMenu right>
-            <DropdownItem onClick={() => handleEdit(row)}>View Details</DropdownItem>
-            <DropdownItem onClick={() => handleEdit(row)}>Delete Rule</DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
-      ),
-      button: true,
-    },
-  ];
+  return;
+ }
 
   return (
     <>
@@ -172,10 +174,12 @@ const MonitorMerchant = () => {
                 <div className="form-control-wrap">
                   <input
                     className="form-control"
-                    name="number_of_days"
+                    name="no_of_days"
                     type="number"
                     id="default-0"
                     placeholder="Number of Days"
+                    onChange={handleChange}
+                    value={formData?.no_of_days}
                   />
                 </div>
               </FormGroup>
@@ -197,6 +201,8 @@ const MonitorMerchant = () => {
                     type="number"
                     id="default-0"
                     placeholder="Percentage Violation"
+                    onChange={handleChange}
+                    value={formData.percentage_violation}
                   />
                 </div>
               </FormGroup>
@@ -213,6 +219,8 @@ const MonitorMerchant = () => {
                     type="number"
                     id="default-0"
                     placeholder="Minimum Amount"
+                    onChange={handleChange}
+                    value={formData.minimum_amount}
                   />
                 </div>
               </FormGroup>
@@ -229,6 +237,8 @@ const MonitorMerchant = () => {
                     type="number"
                     id="default-0"
                     placeholder="Sending Intervals"
+                    onChange={handleChange}
+                    value={formData?.sending_intervals}
                   />
                 </div>
               </FormGroup>
@@ -240,7 +250,7 @@ const MonitorMerchant = () => {
                 </Label>
                 <div className="form-control-wrap">
                   <div className="form-control-select">
-                    <Input type="select" name="monitoring_action" id="default-4">
+                    <Input type="select" name="action" id="default-4" onChange={handleChange} value={formData?.action}>
                       <option value="">Choose Option</option>
                       <option value="block_agent">Block Agent</option>
                       <option value="block_transaction">Block Transaction</option>
@@ -257,15 +267,24 @@ const MonitorMerchant = () => {
                   Select Staff Below:
                 </Label>
                 <div className="form-control-wrap">
-                  <ReactDualList options={options} canFilter={false} />
+                   <EditDualList 
+                    options={adminOptions} 
+                    canFilter={false} 
+                    selected={staffNotify} 
+                    setValues={setStaffNotify} 
+                    />
                 </div>
               </FormGroup>
             </Col>
             <Col md="12">
               <FormGroup>
-                <Button color="primary" size="lg">
+              {mutation?.isLoading ? (
+                <Spinner color="primary" size="lg" /> 
+              ) : (
+                <Button color="primary" size="lg" onClick={handleSubmit}>
                   Submit
                 </Button>
+              )}
               </FormGroup>
             </Col>
           </Row>

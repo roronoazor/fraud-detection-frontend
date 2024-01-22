@@ -189,7 +189,6 @@ const AllRules = () => {
             <ReactDataTable data={dataTableData} columns={dataTableColumns} pagination />
           </PreviewCard>
         </Block>
-
       </Content>
     </>
   );

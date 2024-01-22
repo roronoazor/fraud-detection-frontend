@@ -43,17 +43,23 @@ const buttonIcon = {
 const ReactDualList = ({ options, icon, canFilter, selected, setValues = () => {} }) => {
   const [data, setData] = useState(options);
   const [filterText, setFilterText] = useState("");
+  const [selectedValues, setSelectedValues] = useState(selected || []);
 
-  const onListChange = (selected) => {
-    setValues(selected);
+  // Update selected values when the selected prop changes
+  useEffect(() => {
+    setSelectedValues(selected);
+  }, [selected]);
+
+  // Handle changes in the list selection
+  const onListChange = (newSelected) => {
+    setSelectedValues(newSelected);
+    setValues(newSelected);
   };
 
   // Filtering users by search
   useEffect(() => {
     if (filterText !== "") {
-      const filteredObject = options.filter((item) => {
-        return item.label.toLowerCase().includes(filterText.toLowerCase());
-      });
+      const filteredObject = options.filter((item) => item.label.toLowerCase().includes(filterText.toLowerCase()));
       setData([...filteredObject]);
     } else {
       setData([...options]);
@@ -67,7 +73,7 @@ const ReactDualList = ({ options, icon, canFilter, selected, setValues = () => {
       )}
       <DualListBox
         options={data}
-        selected={selected}
+        selected={selectedValues}
         icons={icon ? buttonIcon : buttonText}
         onChange={(s) => onListChange(s)}
         showHeaderLabels={true}

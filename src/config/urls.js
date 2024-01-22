@@ -53,8 +53,6 @@ export const GET_MERCHANT_TREND_FOR_LINE_CHART = BASE_URL + "api/merchants/trend
 
 export const GET_MERCHANTS_USERS = BASE_URL + "api/merchants/users/";
 
-export const EDIT_MERCHANT_MONITORING_METRIC = BASE_URL + "api/merchants/monitoring/metric";
-
 // v2
 export const GET_RULES_STATS = `${BASE_URL}api/rules/stats/`;
 export const GET_FLAGGED_TXN_STATS = `${BASE_URL}api/flagged_txn/stats/`;
@@ -67,3 +65,4 @@ export const GET_SPROUTPAY_ADMINS = `${BASE_URL}api/sproutpay/admins/`;
 export const ACTIVATE_RULE = `${BASE_URL}api/rules/activate/`;
 export const DEACTIVATE_RULE = `${BASE_URL}api/rules/deactivate/`;
 export const GET_EDIT_RULE = `${BASE_URL}api/rules/edit/`;
+export const EDIT_MERCHANT_MONITORING_METRIC = `${BASE_URL}api/merchants/monitoring/metric/`;
