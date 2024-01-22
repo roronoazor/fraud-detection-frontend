@@ -25,7 +25,11 @@ import { fetchData } from "../../modules/utilities/util_query";
 import { GET_CREATE_RULES, GET_TRANSACTION_RULE_BREAKDOWN } from "../../config/urls";
 import LoadingSpinner from "../components/common/ui-view/SpinnerUI";
 import { handleApiError } from "../../modules/utilities/responseHandlers";
-import { firstLetterUpper } from "../../modules/utilities";
+import {
+  firstLetterUpper,
+  getCurrentDateInput,
+  calculateSuspectedTransactionPercentage,
+} from "../../modules/utilities";
 
 const options = {
   scales: {
@@ -54,6 +58,41 @@ const options = {
       },
     },
   },
+};
+
+const generateDoughnutData = (labels, dataUnit, data) => {
+  return {
+    labels: labels,
+    dataUnit: dataUnit,
+    legend: false,
+    datasets: [
+      {
+        borderColor: "#fff",
+        backgroundColor: ["rgba(143, 234, 197, 0.8)", "rgba(244, 170, 164, 0.8)"],
+        data: data,
+      },
+    ],
+  };
+};
+
+const generateBarChartData = (labels, cleared, suspected) => {
+  return {
+    labels: labels,
+    stacked: true,
+    dataUnit: "N",
+    datasets: [
+      {
+        label: "Cleared",
+        backgroundColor: "rgba(92, 224, 170, 0.5)",
+        data: cleared,
+      },
+      {
+        label: "Suspected",
+        backgroundColor: "rgba(255, 0, 0, 0.5)",
+        data: suspected,
+      },
+    ],
+  };
 };
 
 const TransactionRuleMonitoring = (props) => {
@@ -178,7 +217,6 @@ const TransactionRuleMonitoring = (props) => {
                         options={rules}
                         isMulti
                         onChange={(e) => {
-                          console.log(e);
                           setSelectedRules(e);
                         }}
                       />
@@ -236,9 +274,39 @@ const TransactionRuleMonitoring = (props) => {
         {result?.isLoading ? (
           <LoadingSpinner />
         ) : (
-          ruleData.map((record) => {
+          ruleData.map((record, index) => {
+            let suspectTransactions = record?.suspected_transaction || [];
+            let totalTransactions = record?.total_transaction || [];
+
+            let suspectedPercentage = calculateSuspectedTransactionPercentage(suspectTransactions, totalTransactions);
+            let clearedPercentage = 100 - suspectedPercentage;
+
+            let transactionSeries = [];
+            let suspectedTransactionSeries = [];
+            let totalTransactionSeries = [];
+
+            // create the series
+            Object.keys(totalTransactions).map((txn_date, index) => {
+              transactionSeries.push(txn_date);
+              suspectedTransactionSeries.push(
+                suspectTransactions.hasOwnProperty(txn_date) ? suspectTransactions[txn_date] : null,
+              );
+              totalTransactionSeries.push(totalTransactions.hasOwnProperty(txn_date) ? totalTransactions[txn_date] : 0);
+            });
+
+            let doughnutChartData = generateDoughnutData(["Cleared", "Suspected"], "N", [
+              clearedPercentage,
+              suspectedPercentage,
+            ]);
+
+            let barChartData = generateBarChartData(
+              transactionSeries,
+              totalTransactionSeries,
+              suspectedTransactionSeries,
+            );
+
             return (
-              <Block>
+              <Block key={index}>
                 <Card className="card-bordered card-stretch">
                   <div className="card-inner-group">
                     <div className="card-inner">
@@ -274,7 +342,7 @@ const TransactionRuleMonitoring = (props) => {
                                 <h6 className="title text-center">Breakdown</h6>
                               </div>
                               <div className="nk-ck-sm">
-                                <BarChartExample stacked data={barChartStacked} />
+                                <BarChartExample stacked data={barChartData} />
                               </div>
                             </PreviewCard>
                           </Col>
