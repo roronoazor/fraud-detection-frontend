@@ -131,15 +131,19 @@ const generateTrendData = (labels, datasets) => {
     legend: true,
     categoryPercentage: 0.9,
     barPercentage: 0.6,
-    datasets: datasets.map((dataset) => ({
-      label: dataset.name,
-      lineTension: 0.4,
-      pointBorderWidth: 2,
-      pointBackgroundColor: getRandomColor(),
-      pointRadius: 4,
-      fill: true,
-      data: dataset.data,
-    })),
+    datasets: datasets.map((dataset) => {
+      let color = getRandomColor();
+      return {
+        label: dataset.name,
+        lineTension: 0.4,
+        pointBorderWidth: 2,
+        pointBackgroundColor: color,
+        backgroundColor: color,
+        pointRadius: 4,
+        fill: true,
+        data: dataset.data,
+      };
+    }),
   };
 };
 

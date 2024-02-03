@@ -30,6 +30,7 @@ import {
   getCurrentDateInput,
   calculateSuspectedTransactionPercentage,
 } from "../../modules/utilities";
+import { useHistory } from "react-router";
 
 const options = {
   scales: {
@@ -109,6 +110,7 @@ const TransactionRuleMonitoring = (props) => {
   const [queryStartDate, setQueryStartDate] = useState("");
   const [queryEndDate, setQueryEndDate] = useState("");
   const [endpoint, setEndpoint] = useState("");
+  const history = useHistory();
 
   let payload_data = {};
   const token = useSelector(getAuthToken);
@@ -167,13 +169,17 @@ const TransactionRuleMonitoring = (props) => {
     },
   );
 
+  const moveToBreakdown = (id) => {
+    history.push(`/monitoring/rule/suspected?ruleId=${id}&startDate=${queryStartDate}&endDate=${queryEndDate}`);
+  };
+
   const handleChange = () => {
     let selectedRuleIds = selectedRules.map((rule) => rule.value);
     selectedRuleIds = selectedRuleIds.join(", ");
     setIds(selectedRuleIds);
     setTimeout(() => {
       result.refetch();
-    }, 500);
+    }, 250);
   };
 
   return (
@@ -320,7 +326,18 @@ const TransactionRuleMonitoring = (props) => {
                             )})`}
                           </h5>
                         </div>
-                        <div className="card-tools mr-n1"></div>
+                        <div className="card-tools mr-n1">
+                          {suspectedPercentage > 0 && (
+                            <button
+                              className="btn btn-danger my-1"
+                              onClick={() => {
+                                moveToBreakdown(record?.rule?.id);
+                              }}
+                            >
+                              View Details
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
                     <form>

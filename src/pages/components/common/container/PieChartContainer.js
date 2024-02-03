@@ -7,6 +7,7 @@ import { useQuery } from "react-query";
 import { fetchData } from "../../../../modules/utilities/util_query";
 import ToastUI from "../ui-view/ToastUI";
 import PieChartUI from "../ui-view/PieChartUI";
+import { useHistory } from "react-router";
 
 const setChartData = (data) => {
   return {
@@ -27,6 +28,9 @@ const PieChartContainer = ({ title = "", url, type, startDate, endDate }) => {
   let payload_data = {};
   const token = useSelector(getAuthToken);
   const [data, setData] = React.useState({});
+  const [showDetails, setShowDetails] = useState(false);
+  const history = useHistory();
+
   const result = useQuery(
     [
       `${url}?type=${type}&startDate=${startDate}&endDate=${endDate}`,
@@ -42,6 +46,12 @@ const PieChartContainer = ({ title = "", url, type, startDate, endDate }) => {
       retry: false,
       onSuccess: (response) => {
         let data = response?.data?.data;
+        if (data?.suspected_transactions == 0) {
+          setShowDetails(false);
+        } else {
+          setShowDetails(true);
+        }
+
         setData(data);
       },
       onError: (error) => {
@@ -50,10 +60,14 @@ const PieChartContainer = ({ title = "", url, type, startDate, endDate }) => {
     },
   );
 
+  const onDetailClick = () => {
+    history.push(`/monitoring/rule/suspected?productType=${type}&startDate=${startDate}&endDate=${endDate}`);
+  };
+
   if (result?.isLoading) {
     return <LoadingSpinner />;
   }
 
-  return <PieChartUI title={title} data={setChartData(data)} />;
+  return <PieChartUI title={title} data={setChartData(data)} showDetails={showDetails} onDetailClick={onDetailClick} />;
 };
 export default PieChartContainer;
