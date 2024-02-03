@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Icon } from "../../../components/Component";
-import { CardTitle, Card, Label, FormGroup } from "reactstrap";
+import { CardTitle, Row, Col, Card, Label, FormGroup } from "reactstrap";
 import { fetchData } from "../../../modules/utilities/util_query";
 import ToastUI from "../../components/common/ui-view/ToastUI";
 import { formatCurrencyNumber } from "../../../modules/utilities";
@@ -9,8 +9,39 @@ import { handleApiError } from "../../../modules/utilities/responseHandlers";
 import { getAuthToken } from "../../../modules/auth/redux/authSelector";
 import { useSelector } from "react-redux";
 import LoadingSpinner from "../../components/common/ui-view/SpinnerUI";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
 
-const TimeBreakdown = ({ url, serviceType }) => {
+const generateDoughnutData = (labels, data) => {
+  return {
+    labels: labels,
+    datasets: [
+      {
+        label: "# of Votes",
+        data: data,
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+};
+
+const AmountBreakdown = ({ url, agentId }) => {
   let payload_data = {};
   const token = useSelector(getAuthToken);
   const [data, setData] = React.useState({});
@@ -25,8 +56,9 @@ const TimeBreakdown = ({ url, serviceType }) => {
   const [queryStartDate, setQueryStartDate] = useState(startDate);
   const [queryEndDate, setQueryEndDate] = useState(endDate);
   const [metricType, setMetricType] = useState("byAmount");
-  const [hourBreakdownByCount, setHourBreakdownByCount] = useState([]);
-  const [hourBreakdownByAmount, setHourBreakdownByAmount] = useState([]);
+  const [labels, setLabels] = useState([]);
+  const [countData, setCountData] = useState([]);
+  const [amountData, setAmountData] = useState([]);
 
   const onApplyClick = () => {
     setStartDate(queryStartDate);
@@ -35,9 +67,9 @@ const TimeBreakdown = ({ url, serviceType }) => {
 
   const fetchInfo = useQuery(
     [
-      `${url}?serviceType=${serviceType}&startDate=${startDate}&endDate=${endDate}`,
+      `${url}?agentId=${agentId}&startDate=${startDate}&endDate=${endDate}`,
       {
-        url: `${url}?serviceType=${serviceType}&startDate=${startDate}&endDate=${endDate}`,
+        url: `${url}?agentId=${agentId}&startDate=${startDate}&endDate=${endDate}`,
         payload_data,
         authenticate: true,
         token,
@@ -48,8 +80,11 @@ const TimeBreakdown = ({ url, serviceType }) => {
       retry: false,
       onSuccess: (response) => {
         const data = response?.data?.data;
-        setHourBreakdownByAmount(data?.amount_by_hour);
-        setHourBreakdownByCount(data?.count_by_hour);
+        console.log("data: ", data);
+
+        setLabels(Object.keys(data));
+        setCountData(Object.keys(data).map((item) => data[item]?.count));
+        setAmountData(Object.keys(data).map((item) => data[item]?.amount));
       },
       onError: (error) => {
         handleApiError(error, <ToastUI error message="Failed to fetch data, Please contact admin" />);
@@ -64,7 +99,7 @@ const TimeBreakdown = ({ url, serviceType }) => {
         <div className="card-inner-group">
           <div className="card-inner border-bottom">
             <div className="card-title">
-              <h5>Peak Transaction Hours</h5>
+              <h5>Agent Transaction Breakdown</h5>
             </div>
             <div className="card-title-group">
               <div className="card-tools mr-n1" style={{ display: "flex", alignItems: "flex-end" }}>
@@ -133,30 +168,11 @@ const TimeBreakdown = ({ url, serviceType }) => {
                 <ul className="timeline-list">
                   {metricType == "byAmount" && (
                     <>
-                      {hourBreakdownByAmount.length === 0 ? (
+                      {amountData.length === 0 ? (
                         <div className="text-center my-2">No data available</div>
                       ) : (
                         <>
-                          {hourBreakdownByAmount.map((item) => {
-                            const hour = item.hour;
-                            const amOrPm = hour >= 12 ? "PM" : "AM";
-                            const displayHour = hour > 12 ? hour - 12 : hour;
-
-                            return (
-                              <li className="timeline-item" key={item.hour}>
-                                <div className="timeline-status bg-primary"></div>
-                                <div className="timeline-date">
-                                  {displayHour} {amOrPm} <Icon name="alarm-alt"></Icon>
-                                </div>
-                                <div className="timeline-data">
-                                  <h6 className="timeline-title">Transactions: ₦{formatCurrencyNumber(item.amount)}</h6>
-                                  <div className="timeline-des">
-                                    <p>Percentage of Total: {item.percentage}%</p>
-                                  </div>
-                                </div>
-                              </li>
-                            );
-                          })}
+                          <Doughnut data={generateDoughnutData(labels, amountData)} />;
                         </>
                       )}
                     </>
@@ -164,30 +180,11 @@ const TimeBreakdown = ({ url, serviceType }) => {
 
                   {metricType == "byCount" && (
                     <>
-                      {hourBreakdownByCount.length == 0 ? (
+                      {countData.length == 0 ? (
                         <div className="text-center my-2">No data available</div>
                       ) : (
                         <>
-                          {hourBreakdownByCount.map((item) => {
-                            const hour = item.hour;
-                            const amOrPm = hour >= 12 ? "PM" : "AM";
-                            const displayHour = hour > 12 ? hour - 12 : hour;
-
-                            return (
-                              <li className="timeline-item" key={item.hour}>
-                                <div className="timeline-status bg-primary"></div>
-                                <div className="timeline-date">
-                                  {displayHour} {amOrPm} <Icon name="alarm-alt"></Icon>
-                                </div>
-                                <div className="timeline-data">
-                                  <h6 className="timeline-title">Count: {formatCurrencyNumber(item.count)}</h6>
-                                  <div className="timeline-des">
-                                    <p>Percentage of Total: {item.percentage}%</p>
-                                  </div>
-                                </div>
-                              </li>
-                            );
-                          })}
+                          <Doughnut data={generateDoughnutData(labels, countData)} />;
                         </>
                       )}
                     </>
@@ -202,4 +199,4 @@ const TimeBreakdown = ({ url, serviceType }) => {
   );
 };
 
-export default TimeBreakdown;
+export default AmountBreakdown;

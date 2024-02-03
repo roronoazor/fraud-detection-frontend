@@ -10,38 +10,37 @@ import {
   PreviewCard,
   BlockBetween,
 } from "../../components/Component";
-import DoublePercentageContainer from "../components/common/container/DoublePercentageContainer";
-import PercentageContainer from "../components/common/container/PercentageContainer";
-import {
-  GET_SERVICE_PROVIDER_RANKINGS,
-  GET_SERVICE_RISK_PROFILE,
-  GET_SERVICE_UPTIME,
-  GET_SERVICE_AGENT_RANKINGS,
-  GET_SERVICE_HOUR_BREAKDOWN,
-  GET_SERVICE_USAGE,
-} from "../../config/urls";
-import ProvidersList from "./components/ProviderList";
+import DoublePercentageContainer from "./components/DoublePercentageContainer";
 import TimeBreakdown from "./components/TimeBreakdown";
-import ServiceUsage from "./components/ServiceUsage";
+import PercentageContainer from "./components/PercentageContainer";
+import AgentUsage from "./components/AgentUsage";
+import {
+  GET_AGENTS_RISK_PROFILE,
+  GET_AGENTS_SUCCESS_RATE,
+  GET_AGENTS_PEAK_HOURS,
+  GET_AGENT_USAGE,
+  GET_AGENTS_TRANSACTION_GROUPED_BY_AMOUNT,
+  GET_AGENT_SUCCESS_FAILED,
+} from "../../config/urls";
 import { useParams } from "react-router-dom";
 import { Row, Col } from "reactstrap";
-import { getProductName } from "../../modules/utilities";
+import AmountBreakdown from "./components/AmountBreakdown";
+import AgentSuccessFailed from "./components/AgentSuccessFailed";
 
-const ServiceMetricPage = () => {
+const AgentMetricPage = () => {
   const [smOption, setSmOption] = useState(false);
-  const [serviceType, setServiceType] = useState("");
+  const [agentId, setAgentId] = useState("");
 
   const params = useParams();
-
   React.useEffect(() => {
-    if (params?.service) {
-      setServiceType(params.service);
+    if (params?.agentId) {
+      setAgentId(params.agentId);
     }
   }, []);
 
   return (
     <>
-      <Head title="Service Metric" />
+      <Head title="Agent Metrics" />
       <Content>
         <BlockHead>
           <BlockHeadContent>
@@ -50,7 +49,7 @@ const ServiceMetricPage = () => {
             </BackTo>
             <BlockBetween>
               <BlockTitle tag="h2" className="fw-normal">
-                {`Service Performance Metric (${getProductName(serviceType)})`}
+                {`Agent Performance Metric`}
               </BlockTitle>
             </BlockBetween>
           </BlockHeadContent>
@@ -61,35 +60,35 @@ const ServiceMetricPage = () => {
               <Col className={"my-1"} md="6">
                 <DoublePercentageContainer
                   captionText={"Risk Profile"}
-                  serviceType={serviceType}
-                  url={`${GET_SERVICE_RISK_PROFILE}`}
+                  agentId={agentId}
+                  url={`${GET_AGENTS_RISK_PROFILE}`}
                   title1={"By Amount"}
                   title2={"By Count"}
                 />
               </Col>
               <Col className={"my-1"} md="6">
                 <PercentageContainer
-                  title={"Service Uptime"}
-                  serviceType={serviceType}
-                  url={`${GET_SERVICE_UPTIME}`}
+                  title={"Agent Success Rate"}
+                  agentId={agentId}
+                  url={`${GET_AGENTS_SUCCESS_RATE}`}
                   invert={true}
                 />
               </Col>
             </Row>
             <Row>
               <Col className={"my-1"} md="6">
-                <TimeBreakdown serviceType={serviceType} url={GET_SERVICE_HOUR_BREAKDOWN} />
+                <TimeBreakdown agentId={agentId} url={GET_AGENTS_PEAK_HOURS} />
               </Col>
               <Col className={"my-1"} md="6">
-                <ServiceUsage serviceType={serviceType} url={GET_SERVICE_USAGE} />
+                <AgentUsage agentId={agentId} url={GET_AGENT_USAGE} />
               </Col>
             </Row>
             <Row>
               <Col className={"my-1"} md="6">
-                <ProvidersList serviceType={serviceType} title={"Providers"} url={GET_SERVICE_PROVIDER_RANKINGS} />
+                <AmountBreakdown agentId={agentId} url={GET_AGENTS_TRANSACTION_GROUPED_BY_AMOUNT} />
               </Col>
               <Col className={"my-1"} md="6">
-                <ProvidersList serviceType={serviceType} title={"Agents"} url={GET_SERVICE_AGENT_RANKINGS} />
+                <AgentSuccessFailed agentId={agentId} url={GET_AGENT_SUCCESS_FAILED} />
               </Col>
             </Row>
           </PreviewCard>
@@ -99,4 +98,4 @@ const ServiceMetricPage = () => {
   );
 };
 
-export default ServiceMetricPage;
+export default AgentMetricPage;

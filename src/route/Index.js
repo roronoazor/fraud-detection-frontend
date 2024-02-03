@@ -120,6 +120,7 @@ import TransactionRuleMonitoring from "../pages/monitoring/TransactionRuleMonito
 import MerchantMonitoring from "../pages/monitoring/MerchantMonitoring";
 import SuspectedTxnDetailPage from "../pages/monitoring/SuspectedTxnDetailPage";
 import ServiceMetricPage from "../pages/services/ServiceMetricPage";
+import AgentMetricPage from "../pages/agents/AgentMetricPage";
 
 const Pages = () => {
   useLayoutEffect(() => {
@@ -331,6 +332,7 @@ const Pages = () => {
           path={`${process.env.PUBLIC_URL}/services/:service/metrics/`}
           component={ServiceMetricPage}
         ></Route>
+        <Route exact path={`${process.env.PUBLIC_URL}/agents/:agentId/metrics/`} component={AgentMetricPage}></Route>
         <Route component={RedirectAs404}></Route>
       </Switch>
     </Suspense>

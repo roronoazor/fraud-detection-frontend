@@ -72,7 +72,7 @@ const ProvidersList = ({ serviceType, title, url }) => {
         <div className="card-inner">
           <div className="card-title">
             <h5>
-              {title} {metricType == "byAmount" ? "By Amount" : "By Count"}
+              Top {title} {metricType == "byAmount" ? "By Amount" : "By Count"}
             </h5>
           </div>
           <div className="card-title-group">

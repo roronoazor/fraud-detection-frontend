@@ -194,3 +194,35 @@ export function buildQueryString(url, queryParams) {
 
   return url;
 }
+
+export function getProductName(code) {
+  const productMapping = {
+    mtnvtu: "MTN Airtime",
+    glovtu: "Glo Airtime",
+    airtelvtu: "Airtel Airtime",
+    "9mobilevtu": "9Mobile Airtime",
+    ekedc: "Eko Electricity",
+    ikedc: "Ikeja Electricity",
+    ibedc: "Ibadan Electricity",
+    eedc: "Enugu Electricity",
+    kedco: "Kano Electricity",
+    phedc: "Port Harcourt Electricity",
+    aedc: "Abuja Electricity",
+    kadec: "Kaduna Electricity",
+    jedc: "Jos Electricity",
+    mtndata: "MTN Data",
+    glodata: "Glo Data",
+    airteldata: "Airtel Data",
+    "9mobiledata": "9Mobile Data",
+    smile: "Smile",
+    transfer: "Transfer",
+    multichoice: "Multichoice",
+    startimes: "Startimes",
+    withdrawal: "Withdrawal",
+    cgate: "CGate",
+    mcash: "MCash",
+    vfdCredit: "VFD Credit",
+  };
+
+  return productMapping[code] || "Unknown Product";
+}

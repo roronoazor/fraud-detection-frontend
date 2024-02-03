@@ -1,16 +1,61 @@
 import React, { useState } from "react";
 import { Icon } from "../../../components/Component";
 import { CardTitle, Card, Label, FormGroup } from "reactstrap";
-import { fetchData } from "../../../modules/utilities/util_query";
-import ToastUI from "../../components/common/ui-view/ToastUI";
-import { formatCurrencyNumber } from "../../../modules/utilities";
-import { useQuery } from "react-query";
-import { handleApiError } from "../../../modules/utilities/responseHandlers";
+import { LineChartExample } from "../../../components/charts/Chart";
 import { getAuthToken } from "../../../modules/auth/redux/authSelector";
 import { useSelector } from "react-redux";
 import LoadingSpinner from "../../components/common/ui-view/SpinnerUI";
+import { handleApiError } from "../../../modules/utilities/responseHandlers";
+import { useQuery } from "react-query";
+import { fetchData } from "../../../modules/utilities/util_query";
+import ToastUI from "../../components/common/ui-view/ToastUI";
+import { formatCurrencyNumber } from "../../../modules/utilities";
 
-const TimeBreakdown = ({ url, serviceType }) => {
+const formatData = (data) => {
+  let labels = Object.keys(data);
+  let totalTxnData = [];
+  let suspectedTxnData = [];
+
+  for (const key in data) {
+    totalTxnData.push(data[key]?.total_txn);
+    suspectedTxnData.push(data[key]?.suspected_txn);
+  }
+
+  return {
+    labels: labels,
+    dataUnit: "Transactions",
+    lineTension: 0.4,
+    legend: true,
+    categoryPercentage: 0.9,
+    barPercentage: 0.6,
+    datasets: [
+      {
+        label: "Suspected Transactions",
+        lineTension: 0.4,
+        borderColor: "#ff0000",
+        backgroundColor: "rgba(255, 0, 0, 0.5)",
+        pointBorderWidth: 2,
+        pointBackgroundColor: "white",
+        pointRadius: 4,
+        fill: true,
+        data: suspectedTxnData,
+      },
+      {
+        label: "Total Transactions",
+        borderColor: "#5ce0aa",
+        backgroundColor: "rgba(92, 224, 170, 0.5)",
+        pointBorderWidth: 2,
+        fill: true,
+        pointBackgroundColor: "white",
+        categoryPercentage: 0.9,
+        barPercentage: 0.6,
+        data: totalTxnData,
+      },
+    ],
+  };
+};
+
+const AgentUsage = ({ agentId, url }) => {
   let payload_data = {};
   const token = useSelector(getAuthToken);
   const [data, setData] = React.useState({});
@@ -25,8 +70,7 @@ const TimeBreakdown = ({ url, serviceType }) => {
   const [queryStartDate, setQueryStartDate] = useState(startDate);
   const [queryEndDate, setQueryEndDate] = useState(endDate);
   const [metricType, setMetricType] = useState("byAmount");
-  const [hourBreakdownByCount, setHourBreakdownByCount] = useState([]);
-  const [hourBreakdownByAmount, setHourBreakdownByAmount] = useState([]);
+  const [holder, setHolder] = useState({});
 
   const onApplyClick = () => {
     setStartDate(queryStartDate);
@@ -35,9 +79,9 @@ const TimeBreakdown = ({ url, serviceType }) => {
 
   const fetchInfo = useQuery(
     [
-      `${url}?serviceType=${serviceType}&startDate=${startDate}&endDate=${endDate}`,
+      `${url}?agentId=${agentId}&startDate=${startDate}&endDate=${endDate}`,
       {
-        url: `${url}?serviceType=${serviceType}&startDate=${startDate}&endDate=${endDate}`,
+        url: `${url}?agentId=${agentId}&startDate=${startDate}&endDate=${endDate}`,
         payload_data,
         authenticate: true,
         token,
@@ -48,14 +92,19 @@ const TimeBreakdown = ({ url, serviceType }) => {
       retry: false,
       onSuccess: (response) => {
         const data = response?.data?.data;
-        setHourBreakdownByAmount(data?.amount_by_hour);
-        setHourBreakdownByCount(data?.count_by_hour);
+        setHolder(data);
+        if (metricType == "byAmount") {
+          setData(data?.amount);
+        } else if (metricType == "byCount") {
+          setData(data?.count);
+        }
       },
       onError: (error) => {
         handleApiError(error, <ToastUI error message="Failed to fetch data, Please contact admin" />);
       },
     },
   );
+
   const { isLoading } = fetchInfo;
 
   return (
@@ -64,7 +113,7 @@ const TimeBreakdown = ({ url, serviceType }) => {
         <div className="card-inner-group">
           <div className="card-inner border-bottom">
             <div className="card-title">
-              <h5>Peak Transaction Hours</h5>
+              <h5>Agent Activity</h5>
             </div>
             <div className="card-title-group">
               <div className="card-tools mr-n1" style={{ display: "flex", alignItems: "flex-end" }}>
@@ -80,6 +129,11 @@ const TimeBreakdown = ({ url, serviceType }) => {
                       value={metricType}
                       onChange={(e) => {
                         setMetricType(e.target.value);
+                        if (e.target.value == "byAmount") {
+                          setData(holder?.amount);
+                        } else if (e.target.value == "byCount") {
+                          setData(holder?.count);
+                        }
                       }}
                     >
                       <option value="byAmount">By Amount</option>
@@ -125,75 +179,14 @@ const TimeBreakdown = ({ url, serviceType }) => {
           </div>
           <div className="card-inner">
             {isLoading ? (
-              <>
-                <LoadingSpinner />
-              </>
-            ) : (
-              <div className="timeline">
-                <ul className="timeline-list">
-                  {metricType == "byAmount" && (
-                    <>
-                      {hourBreakdownByAmount.length === 0 ? (
-                        <div className="text-center my-2">No data available</div>
-                      ) : (
-                        <>
-                          {hourBreakdownByAmount.map((item) => {
-                            const hour = item.hour;
-                            const amOrPm = hour >= 12 ? "PM" : "AM";
-                            const displayHour = hour > 12 ? hour - 12 : hour;
-
-                            return (
-                              <li className="timeline-item" key={item.hour}>
-                                <div className="timeline-status bg-primary"></div>
-                                <div className="timeline-date">
-                                  {displayHour} {amOrPm} <Icon name="alarm-alt"></Icon>
-                                </div>
-                                <div className="timeline-data">
-                                  <h6 className="timeline-title">Transactions: ₦{formatCurrencyNumber(item.amount)}</h6>
-                                  <div className="timeline-des">
-                                    <p>Percentage of Total: {item.percentage}%</p>
-                                  </div>
-                                </div>
-                              </li>
-                            );
-                          })}
-                        </>
-                      )}
-                    </>
-                  )}
-
-                  {metricType == "byCount" && (
-                    <>
-                      {hourBreakdownByCount.length == 0 ? (
-                        <div className="text-center my-2">No data available</div>
-                      ) : (
-                        <>
-                          {hourBreakdownByCount.map((item) => {
-                            const hour = item.hour;
-                            const amOrPm = hour >= 12 ? "PM" : "AM";
-                            const displayHour = hour > 12 ? hour - 12 : hour;
-
-                            return (
-                              <li className="timeline-item" key={item.hour}>
-                                <div className="timeline-status bg-primary"></div>
-                                <div className="timeline-date">
-                                  {displayHour} {amOrPm} <Icon name="alarm-alt"></Icon>
-                                </div>
-                                <div className="timeline-data">
-                                  <h6 className="timeline-title">Count: {formatCurrencyNumber(item.count)}</h6>
-                                  <div className="timeline-des">
-                                    <p>Percentage of Total: {item.percentage}%</p>
-                                  </div>
-                                </div>
-                              </li>
-                            );
-                          })}
-                        </>
-                      )}
-                    </>
-                  )}
-                </ul>
+              <LoadingSpinner />
+            ) : Object.keys(data).length == 0 ? (
+              <div className="text-center">
+                <Icon name="chart-line" size={50} color="gray" />
+                <p className="text-gray">No Data Available</p>
               </div>
+            ) : (
+              <LineChartExample data={formatData(data)} />
             )}
           </div>
         </div>
@@ -202,4 +195,4 @@ const TimeBreakdown = ({ url, serviceType }) => {
   );
 };
 
-export default TimeBreakdown;
+export default AgentUsage;

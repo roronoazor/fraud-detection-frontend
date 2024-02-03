@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { handleApiError } from "../../../../modules/utilities/responseHandlers";
-import LoadingSpinner from "../ui-view/SpinnerUI";
-import { useSelector } from "react-redux";
-import { getAuthToken } from "../../../../modules/auth/redux/authSelector";
-import { useQuery, useQueryClient } from "react-query";
-import { fetchData } from "../../../../modules/utilities/util_query";
-import ToastUI from "../ui-view/ToastUI";
-import DoublePercentageUI from "../ui-view/DoublePercentageUI";
+import PercentageUI from "../../components/common/ui-view/PercentageUI";
 import { Card, Col, Label, FormGroup } from "reactstrap";
+import { handleApiError } from "../../../modules/utilities/responseHandlers";
+import LoadingSpinner from "../../components/common/ui-view/SpinnerUI";
+import { useSelector } from "react-redux";
+import { getAuthToken } from "../../../modules/auth/redux/authSelector";
+import { useQuery, useQueryClient } from "react-query";
+import { fetchData } from "../../../modules/utilities/util_query";
+import ToastUI from "../../components/common/ui-view/ToastUI";
 
-const PercentageContainer = ({ title1 = "", title2 = "", captionText = "", invert = false, serviceType, url }) => {
+const PercentageContainer = ({ title = "", invert = false, agentId, url }) => {
   let payload_data = {};
   const token = useSelector(getAuthToken);
   const [data, setData] = React.useState({});
@@ -27,9 +27,9 @@ const PercentageContainer = ({ title1 = "", title2 = "", captionText = "", inver
 
   const result = useQuery(
     [
-      `${url}?serviceType=${serviceType}&startDate=${startDate}&endDate=${endDate}`,
+      `${url}?agentId=${agentId}&startDate=${startDate}&endDate=${endDate}`,
       {
-        url: `${url}?serviceType=${serviceType}&startDate=${startDate}&endDate=${endDate}`,
+        url: `${url}?agentId=${agentId}&startDate=${startDate}&endDate=${endDate}`,
         payload_data,
         authenticate: true,
         token,
@@ -65,7 +65,7 @@ const PercentageContainer = ({ title1 = "", title2 = "", captionText = "", inver
         <div className="card-inner-group">
           <div className="card-inner">
             <div className="card-title">
-              <h5>{captionText}</h5>
+              <h5>{title}</h5>
             </div>
             <div className="card-title-group">
               <div className="card-tools mr-n1" style={{ display: "flex", alignItems: "flex-end" }}>
@@ -109,13 +109,7 @@ const PercentageContainer = ({ title1 = "", title2 = "", captionText = "", inver
             {isLoading ? (
               <LoadingSpinner />
             ) : (
-              <DoublePercentageUI
-                title1={title1}
-                title2={title2}
-                invert={invert}
-                percentage1={data?.percentage?.amount_risk || 0}
-                percentage2={data?.percentage?.count_risk || 0}
-              />
+              <PercentageUI title={title} invert={invert} percentage={data?.percentage || 0} />
             )}
           </form>
         </div>

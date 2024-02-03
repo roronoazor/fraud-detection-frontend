@@ -26,178 +26,73 @@ import {
   DropdownItem,
   Form,
 } from "reactstrap";
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-
-const agentData = [
-  {
-    id: 1,
-    name: "John Smith",
-    email: "john.smith@example.com",
-    phone: "+1234567890",
-    address: "123 Main St, New York",
-    supervisor: "Sarah Johnson",
-    hire_date: "2020-08-15",
-    status: "ACTIVE",
-  },
-  {
-    id: 2,
-    name: "Alice Johnson",
-    email: "alice.johnson@example.com",
-    phone: "+9876543210",
-    address: "456 Elm St, Los Angeles",
-    supervisor: "Michael Brown",
-    hire_date: "2021-03-22",
-    status: "INACTIVE",
-  },
-  {
-    id: 3,
-    name: "David Wilson",
-    email: "david.wilson@example.com",
-    phone: "+3456789012",
-    address: "789 Oak St, Chicago",
-    supervisor: "Emily Davis",
-    hire_date: "2019-12-10",
-    status: "ACTIVE",
-  },
-  {
-    id: 4,
-    name: "Emily Davis",
-    email: "emily.davis@example.com",
-    phone: "+2345678901",
-    address: "567 Pine St, San Francisco",
-    supervisor: "David Wilson",
-    hire_date: "2022-01-30",
-    status: "INACTIVE",
-  },
-  {
-    id: 5,
-    name: "Michael Brown",
-    email: "michael.brown@example.com",
-    phone: "+6789012345",
-    address: "890 Cedar St, Miami",
-    supervisor: "Alice Johnson",
-    hire_date: "2020-05-05",
-    status: "ACTIVE",
-  },
-  {
-    id: 6,
-    name: "Sarah Johnson",
-    email: "sarah.johnson@example.com",
-    phone: "+4567890123",
-    address: "234 Birch St, Houston",
-    supervisor: "John Smith",
-    hire_date: "2021-08-20",
-    status: "INACTIVE",
-  },
-  {
-    id: 7,
-    name: "Ella Martinez",
-    email: "ella.martinez@example.com",
-    phone: "+8901234567",
-    address: "678 Maple St, Phoenix",
-    supervisor: "Ethan Garcia",
-    hire_date: "2018-11-12",
-    status: "ACTIVE",
-  },
-  {
-    id: 8,
-    name: "Liam Johnson",
-    email: "liam.johnson@example.com",
-    phone: "+5678901234",
-    address: "345 Walnut St, Dallas",
-    supervisor: "Olivia Wilson",
-    hire_date: "2023-02-25",
-    status: "INACTIVE",
-  },
-  {
-    id: 9,
-    name: "Ava Williams",
-    email: "ava.williams@example.com",
-    phone: "+1234567890",
-    address: "123 Main St, New York",
-    supervisor: "Elijah Martinez",
-    hire_date: "2017-07-07",
-    status: "ACTIVE",
-  },
-  {
-    id: 10,
-    name: "Olivia Wilson",
-    email: "olivia.wilson@example.com",
-    phone: "+6789012345",
-    address: "890 Cedar St, Miami",
-    supervisor: "Liam Johnson",
-    hire_date: "2022-04-18",
-    status: "INACTIVE",
-  },
-];
-
-const DataTableData = agentData.map((agent) => ({
-  id: agent.id,
-  name: agent.name,
-  email: agent.email,
-  phone: agent.phone,
-  address: agent.address,
-  supervisor: agent.supervisor,
-  hire_date: agent.hire_date,
-  status: agent.status,
-}));
+import LoadingSpinner from "../components/common/ui-view/SpinnerUI";
+import { GET_SPROUTPAY_AGENTS } from "../../config/urls";
+import ToastUI from "../components/common/ui-view/ToastUI";
+import { useQuery } from "react-query";
+import { useSelector } from "react-redux";
+import { getAuthToken } from "../../modules/auth/redux/authSelector";
+import { fetchData } from "../../modules/utilities/util_query";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const AllAgents = () => {
   const [smOption, setSmOption] = useState(false);
 
-  const [tablesm, updateTableSm] = useState(false);
-  const [onSearch, setonSearch] = useState(true);
-  const [onSearchText, setSearchText] = useState("");
+  const token = useSelector(getAuthToken);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [modal, setModal] = useState({
-    edit: false,
-    add: false,
-    delete: false,
-  });
-  const [editId, setEditId] = useState();
-  const [formData, setFormData] = useState({
-    name: "",
-    created_by: "",
-    created_on: "",
-    status: "ACTIVE",
-  });
-  const [actionText, setActionText] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemPerPage, setItemPerPage] = useState(10);
-  const [sort, setSortState] = useState("");
-  const { errors, register, handleSubmit } = useForm();
+  const [dataTableData, setDataTableData] = useState([]);
+  const history = useHistory();
 
-  const onEditSubmit = () => {};
+  // call the api that loads this data only once
+  let payload_data = {};
+  const result = useQuery(
+    [
+      "sprout_agents",
+      {
+        url: GET_SPROUTPAY_AGENTS,
+        payload_data,
+        authenticate: true,
+        token,
+      },
+    ],
+    fetchData,
+    {
+      retry: false,
+      onSuccess: (response) => {
+        const data = response?.data?.data;
+        const users = data?.users?.docs || [];
 
-  // function to reset the form
-  const resetForm = () => {
-    setFormData({
-      name: "",
-      status: "Active",
-    });
-  };
-
-  // function to close the form modal
-  const onFormCancel = () => {
-    setModal({ edit: false, add: false, delete: false });
-    resetForm();
-  };
-
-  const toggleDropdown = (e, row) => {
-    setEditId(row?.id);
-    setDropdownOpen(!dropdownOpen);
-  };
+        setDataTableData(users);
+      },
+      onError: (error) => {
+        handleApiError(error, <ToastUI error />);
+      },
+    },
+  );
 
   const dataTableColumns = [
     {
-      name: "ID",
-      selector: (row) => row.id,
+      name: "Username",
+      // capitalize the first letter of the username
+      selector: (row) => {
+        const username = row.username || "";
+        return username.charAt(0).toUpperCase() + username.slice(1);
+      },
       sortable: true,
     },
     {
-      name: "Name",
-      selector: (row) => row.name,
+      name: "First Name",
+      selector: (row) => (row.firstName ? row.firstName.charAt(0).toUpperCase() + row.firstName.slice(1) : ""),
+      sortable: true,
+    },
+    {
+      name: "Last Name",
+      selector: (row) => (row.lastName ? row.lastName.charAt(0).toUpperCase() + row.lastName.slice(1) : ""),
+      sortable: true,
+    },
+    {
+      name: "Phone Number",
+      selector: (row) => row.phoneNumber,
       sortable: true,
     },
     {
@@ -206,52 +101,27 @@ const AllAgents = () => {
       sortable: true,
     },
     {
-      name: "Phone",
-      selector: (row) => row.phone,
-      sortable: true,
-    },
-    {
-      name: "Address",
-      selector: (row) => row.address,
-      sortable: true,
-    },
-    {
-      name: "Supervisor",
-      selector: (row) => row.supervisor,
-      sortable: true,
-    },
-    {
-      name: "Hire Date",
-      selector: (row) => row.hire_date,
-      sortable: true,
-    },
-    {
-      name: "Status",
-      selector: (row) => row.status,
-      sortable: true,
-    },
-    {
       name: "Actions",
       cell: (row) => (
-        <Dropdown isOpen={dropdownOpen && editId == row?.id} toggle={(e) => toggleDropdown(e, row)}>
-          <DropdownToggle tag="span" data-toggle="dropdown" aria-expanded={dropdownOpen}>
-            <Icon name="plus" />
-          </DropdownToggle>
-          <DropdownMenu right>
-            <DropdownItem onClick={() => handleEdit(row)}>View Agent Metrics</DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            handleEdit(row);
+          }}
+          style={{ height: "25px", width: "70px" }}
+        >
+          View
+        </button>
       ),
       button: true,
     },
   ];
 
-  const handleEdit = () => {
-    setModal({ ...modal, edit: true });
+  const handleEdit = (row) => {
+    history.push(`/agents/${row?.walletId}/metrics/`);
   };
-  const handleDelete = () => {
-    setModal({ ...modal, delete: true });
-  };
+
+  const { isLoading } = result;
 
   return (
     <>
@@ -271,7 +141,11 @@ const AllAgents = () => {
         </BlockHead>
         <Block size="lg">
           <PreviewCard>
-            <ReactDataTable data={DataTableData} columns={dataTableColumns} pagination />
+            {isLoading ? (
+              <LoadingSpinner />
+            ) : (
+              <ReactDataTable data={dataTableData} columns={dataTableColumns} pagination />
+            )}
           </PreviewCard>
         </Block>
       </Content>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Icon } from "../../../components/Component";
-import { CardTitle, Card, Label, FormGroup } from "reactstrap";
+import { CardTitle, Row, Col, Card, Label, FormGroup } from "reactstrap";
 import { fetchData } from "../../../modules/utilities/util_query";
 import ToastUI from "../../components/common/ui-view/ToastUI";
 import { formatCurrencyNumber } from "../../../modules/utilities";
@@ -10,7 +10,7 @@ import { getAuthToken } from "../../../modules/auth/redux/authSelector";
 import { useSelector } from "react-redux";
 import LoadingSpinner from "../../components/common/ui-view/SpinnerUI";
 
-const TimeBreakdown = ({ url, serviceType }) => {
+const TimeBreakdown = ({ url, agentId }) => {
   let payload_data = {};
   const token = useSelector(getAuthToken);
   const [data, setData] = React.useState({});
@@ -35,9 +35,9 @@ const TimeBreakdown = ({ url, serviceType }) => {
 
   const fetchInfo = useQuery(
     [
-      `${url}?serviceType=${serviceType}&startDate=${startDate}&endDate=${endDate}`,
+      `${url}?agentId=${agentId}&startDate=${startDate}&endDate=${endDate}`,
       {
-        url: `${url}?serviceType=${serviceType}&startDate=${startDate}&endDate=${endDate}`,
+        url: `${url}?agentId=${agentId}&startDate=${startDate}&endDate=${endDate}`,
         payload_data,
         authenticate: true,
         token,

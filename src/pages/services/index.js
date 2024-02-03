@@ -21,6 +21,7 @@ import { GET_SERVICES } from "../../config/urls";
 import { useSelector } from "react-redux";
 import { getAuthToken } from "../../modules/auth/redux/authSelector";
 import { useHistory } from "react-router-dom";
+import { getProductName } from "../../modules/utilities";
 
 const AllServices = () => {
   const [smOption, setSmOption] = useState(false);
@@ -60,7 +61,7 @@ const AllServices = () => {
         );
       },
       onError: (error) => {
-        handleApiError(error);
+        handleApiError(error, <ToastUI error message="Failed to fetch services" />);
       },
     },
   );
@@ -68,6 +69,11 @@ const AllServices = () => {
   const dataTableColumns = [
     {
       name: "Service Name",
+      selector: (row) => getProductName(row.name),
+      sortable: true,
+    },
+    {
+      name: "Service Code",
       selector: (row) => row.name,
       sortable: true,
     },
@@ -93,9 +99,7 @@ const AllServices = () => {
     history.push(`/services/${row?.name}/metrics/`);
   };
 
-  if (result?.isLoading) {
-    return <LoadingSpinner />;
-  }
+  const { isLoading } = result;
 
   return (
     <>
@@ -115,7 +119,11 @@ const AllServices = () => {
         </BlockHead>
         <Block size="lg">
           <PreviewCard>
-            <ReactDataTable data={dataTableData} columns={dataTableColumns} pagination />
+            {isLoading ? (
+              <LoadingSpinner />
+            ) : (
+              <ReactDataTable data={dataTableData} columns={dataTableColumns} pagination />
+            )}
           </PreviewCard>
         </Block>
       </Content>

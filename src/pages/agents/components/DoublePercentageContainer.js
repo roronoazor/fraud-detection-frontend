@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { handleApiError } from "../../../../modules/utilities/responseHandlers";
-import LoadingSpinner from "../ui-view/SpinnerUI";
+import { handleApiError } from "../../../modules/utilities/responseHandlers";
+import LoadingSpinner from "../../components/common/ui-view/SpinnerUI";
 import { useSelector } from "react-redux";
-import { getAuthToken } from "../../../../modules/auth/redux/authSelector";
+import { getAuthToken } from "../../../modules/auth/redux/authSelector";
 import { useQuery, useQueryClient } from "react-query";
-import { fetchData } from "../../../../modules/utilities/util_query";
-import ToastUI from "../ui-view/ToastUI";
-import DoublePercentageUI from "../ui-view/DoublePercentageUI";
+import { fetchData } from "../../../modules/utilities/util_query";
+import ToastUI from "../../components/common/ui-view/ToastUI";
+import DoublePercentageUI from "../../components/common/ui-view/DoublePercentageUI";
+
 import { Card, Col, Label, FormGroup } from "reactstrap";
 
-const PercentageContainer = ({ title1 = "", title2 = "", captionText = "", invert = false, serviceType, url }) => {
+const PercentageContainer = ({ title1 = "", title2 = "", captionText = "", invert = false, agentId, url }) => {
   let payload_data = {};
   const token = useSelector(getAuthToken);
   const [data, setData] = React.useState({});
@@ -27,9 +28,9 @@ const PercentageContainer = ({ title1 = "", title2 = "", captionText = "", inver
 
   const result = useQuery(
     [
-      `${url}?serviceType=${serviceType}&startDate=${startDate}&endDate=${endDate}`,
+      `${url}?agentId=${agentId}&startDate=${startDate}&endDate=${endDate}`,
       {
-        url: `${url}?serviceType=${serviceType}&startDate=${startDate}&endDate=${endDate}`,
+        url: `${url}?agentId=${agentId}&startDate=${startDate}&endDate=${endDate}`,
         payload_data,
         authenticate: true,
         token,
@@ -52,7 +53,6 @@ const PercentageContainer = ({ title1 = "", title2 = "", captionText = "", inver
   );
 
   const onApplyClick = () => {
-    // queryClient.invalidateQueries(`${url}?startDate=${startDate}&endDate=${endDate}`);
     setStartDate(queryStartDate);
     setEndDate(queryEndDate);
   };
