@@ -6,11 +6,10 @@ import { getAuthToken } from "../../../../modules/auth/redux/authSelector";
 import { useQuery, useQueryClient } from "react-query";
 import { fetchData } from "../../../../modules/utilities/util_query";
 import ToastUI from "../ui-view/ToastUI";
-import { useHistory } from "react-router";
-import PercentageUI from "../ui-view/PercentageUI";
+import DoublePercentageUI from "../ui-view/DoublePercentageUI";
 import { Card, Col, Label, FormGroup } from "reactstrap";
 
-const PercentageContainer = ({ title = "", invert = false, serviceType, url }) => {
+const PercentageContainer = ({ title1 = "", title2 = "", captionText = "", invert = false, serviceType, url }) => {
   let payload_data = {};
   const token = useSelector(getAuthToken);
   const [data, setData] = React.useState({});
@@ -41,6 +40,7 @@ const PercentageContainer = ({ title = "", invert = false, serviceType, url }) =
       retry: false,
       onSuccess: (response) => {
         let data = response?.data?.data;
+        console.log("xx: ", data);
         setData(data);
       },
       onError: (error) => {
@@ -66,7 +66,7 @@ const PercentageContainer = ({ title = "", invert = false, serviceType, url }) =
         <div className="card-inner-group">
           <div className="card-inner">
             <div className="card-title">
-              <h5>{title}</h5>
+              <h5>{captionText}</h5>
             </div>
             <div className="card-title-group">
               <div className="card-tools mr-n1" style={{ display: "flex", alignItems: "flex-end" }}>
@@ -110,7 +110,13 @@ const PercentageContainer = ({ title = "", invert = false, serviceType, url }) =
             {isLoading ? (
               <LoadingSpinner />
             ) : (
-              <PercentageUI title={title} invert={invert} percentage={data?.percentage || 0} />
+              <DoublePercentageUI
+                title1={title1}
+                title2={title2}
+                invert={invert}
+                percentage1={data?.percentage?.amount_risk || 0}
+                percentage2={data?.percentage?.count_risk || 0}
+              />
             )}
           </form>
         </div>

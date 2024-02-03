@@ -10,13 +10,15 @@ import {
   PreviewCard,
   BlockBetween,
 } from "../../components/Component";
-import LoadingSpinner from "../components/common/ui-view/SpinnerUI";
+import DoublePercentageContainer from "../components/common/container/DoublePercentageContainer";
 import PercentageContainer from "../components/common/container/PercentageContainer";
 import {
   GET_SERVICE_PROVIDER_RANKINGS,
   GET_SERVICE_RISK_PROFILE,
   GET_SERVICE_UPTIME,
   GET_SERVICE_AGENT_RANKINGS,
+  GET_SERVICE_HOUR_BREAKDOWN,
+  GET_SERVICE_USAGE,
 } from "../../config/urls";
 import ProvidersList from "./components/ProviderList";
 import TimeBreakdown from "./components/TimeBreakdown";
@@ -56,10 +58,12 @@ const ServiceMetricPage = () => {
           <PreviewCard>
             <Row>
               <Col className={"my-1"} md="6">
-                <PercentageContainer
-                  title={"Risk Profile"}
+                <DoublePercentageContainer
+                  captionText={"Risk Profile"}
                   serviceType={serviceType}
                   url={`${GET_SERVICE_RISK_PROFILE}`}
+                  title1={"By Amount"}
+                  title2={"By Count"}
                 />
               </Col>
               <Col className={"my-1"} md="6">
@@ -73,10 +77,10 @@ const ServiceMetricPage = () => {
             </Row>
             <Row>
               <Col className={"my-1"} md="6">
-                <TimeBreakdown />
+                <TimeBreakdown serviceType={serviceType} url={GET_SERVICE_HOUR_BREAKDOWN} />
               </Col>
               <Col className={"my-1"} md="6">
-                <ServiceUsage />
+                <ServiceUsage serviceType={serviceType} url={GET_SERVICE_USAGE} />
               </Col>
             </Row>
             <Row>

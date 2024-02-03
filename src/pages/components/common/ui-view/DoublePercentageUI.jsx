@@ -1,7 +1,7 @@
 import React from "react";
 import { PreviewCard } from "../../../../components/Component";
 
-const PercentageHolder = ({ percentage, invert=false }) => {
+const PercentageHolder = ({ percentage, title, invert=false }) => {
     
     if (invert){
       var strokeColor = percentage < 50 ? 'red' : percentage < 80 ? 'orange' : 'green';
@@ -14,7 +14,10 @@ const PercentageHolder = ({ percentage, invert=false }) => {
     const offset = circumference - (percentage / 100) * circumference;
   
     return (
-      
+      <div className="m-2">
+      <div>
+        {title}
+      </div>
       <svg width="100" height="100" viewBox="0 0 100 100">
         <circle
           cx="50"
@@ -38,16 +41,19 @@ const PercentageHolder = ({ percentage, invert=false }) => {
           {percentage}%
         </text>
       </svg>
-      
+      </div>
     );
   };
 
 
-const PercentageUI = ({ title, percentage, invert, showDetails=false, onDetailClick=()=>{} }) => {
+const PercentageUI = ({ title1, title2, percentage1, percentage2, invert, showDetails=false, onDetailClick=()=>{} }) => {
   return (
     <>
         <div className="nk-ck-sm">
-            <PercentageHolder invert={invert} percentage={percentage} />
+            <PercentageHolder title={title1} invert={invert} percentage={percentage1} />
+        </div>
+        <div className="nk-ck-sm">
+            <PercentageHolder title={title2} invert={invert} percentage={percentage2} />
         </div>
     </>
   );

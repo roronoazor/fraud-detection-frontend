@@ -71,3 +71,5 @@ export const GET_SERVICE_RISK_PROFILE = `${BASE_URL}api/services/risk/`;
 export const GET_SERVICE_UPTIME = `${BASE_URL}api/services/uptime/`;
 export const GET_SERVICE_PROVIDER_RANKINGS = `${BASE_URL}api/services/provider/rankings/`;
 export const GET_SERVICE_AGENT_RANKINGS = `${BASE_URL}api/services/agent/rankings/`;
+export const GET_SERVICE_HOUR_BREAKDOWN = `${BASE_URL}api/services/hour/breakdown/`;
+export const GET_SERVICE_USAGE = `${BASE_URL}api/services/usage/`;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, FormGroup, Label, CardBody, CardTitle, CardImg, ListGroup, ListGroupItem, Progress } from "reactstrap";
+import { Card, FormGroup, Label, ListGroup, ListGroupItem, Progress } from "reactstrap";
 import { getAuthToken } from "../../../modules/auth/redux/authSelector";
 import { useSelector } from "react-redux";
 import LoadingSpinner from "../../components/common/ui-view/SpinnerUI";
@@ -9,16 +9,7 @@ import { fetchData } from "../../../modules/utilities/util_query";
 import ToastUI from "../../components/common/ui-view/ToastUI";
 import { formatCurrencyNumber } from "../../../modules/utilities";
 
-var providers = [
-  { name: "Provider 1", totalTransactions: 100, successfulTransactions: 90 },
-  { name: "Provider 2", totalTransactions: 200, successfulTransactions: 180 },
-  { name: "Provider 3", totalTransactions: 150, successfulTransactions: 140 },
-  { name: "Provider 4", totalTransactions: 300, successfulTransactions: 250 },
-  { name: "Provider 5", totalTransactions: 250, successfulTransactions: 200 },
-];
-const totalTransactionsInDB = providers.reduce((total, provider) => total + provider.totalTransactions, 0);
-
-const ProvidersList = ({ providers, serviceType, totalTransactionsInDB = 5000, title, url }) => {
+const ProvidersList = ({ serviceType, title, url }) => {
   let payload_data = {};
   const token = useSelector(getAuthToken);
   const [data, setData] = React.useState({});
@@ -42,15 +33,6 @@ const ProvidersList = ({ providers, serviceType, totalTransactionsInDB = 5000, t
     setStartDate(queryStartDate);
     setEndDate(queryEndDate);
   };
-
-  // Dummy data
-  var providers = [
-    { name: "Provider 1", totalTransactions: 100, successfulTransactions: 90 },
-    { name: "Provider 2", totalTransactions: 200, successfulTransactions: 180 },
-    { name: "Provider 3", totalTransactions: 150, successfulTransactions: 140 },
-    { name: "Provider 4", totalTransactions: 300, successfulTransactions: 250 },
-    { name: "Provider 5", totalTransactions: 250, successfulTransactions: 200 },
-  ];
 
   const fetchInfo = useQuery(
     [
@@ -150,87 +132,91 @@ const ProvidersList = ({ providers, serviceType, totalTransactionsInDB = 5000, t
             </div>
           </div>
         </div>
-        <form>
-          {metricType == "byAmount" && providerByAmount.length != 0 && (
-            <>
-              <h6>Total Amount: ₦{`${formatCurrencyNumber(totalAmount)}`}</h6>
-            </>
-          )}
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <form>
+            {metricType == "byAmount" && providerByAmount.length != 0 && (
+              <>
+                <h6>Total Amount: ₦{`${formatCurrencyNumber(totalAmount)}`}</h6>
+              </>
+            )}
 
-          {metricType == "byCount" && providerByCount.length != 0 && (
-            <>
-              <strong>
-                <h6>Total Count: {`${formatCurrencyNumber(totalCount)}`}</h6>
-              </strong>
-            </>
-          )}
-          {metricType == "byAmount" && (
-            <>
-              {providerByAmount.length === 0 ? (
-                <div className="text-center my-2">No data available</div>
-              ) : (
-                <ListGroup numbered>
-                  {providerByAmount.map((provider, index) => {
-                    const { provider: name, total_amount, successful_amount } = provider;
-                    const providerTransactionPercentage = (total_amount / totalAmount) * 100;
-                    const successRate = (successful_amount / total_amount) * 100;
+            {metricType == "byCount" && providerByCount.length != 0 && (
+              <>
+                <strong>
+                  <h6>Total Count: {`${formatCurrencyNumber(totalCount)}`}</h6>
+                </strong>
+              </>
+            )}
+            {metricType == "byAmount" && (
+              <>
+                {providerByAmount.length === 0 ? (
+                  <div className="text-center my-2">No data available</div>
+                ) : (
+                  <ListGroup numbered>
+                    {providerByAmount.map((provider, index) => {
+                      const { provider: name, total_amount, successful_amount } = provider;
+                      const providerTransactionPercentage = (total_amount / totalAmount) * 100;
+                      const successRate = (successful_amount / total_amount) * 100;
 
-                    return (
-                      <ListGroupItem key={index} style={{ marginBottom: "15px" }}>
-                        <div>
-                          <strong>{name.toUpperCase()}</strong>
-                        </div>
-                        <div>
-                          Total Amount: ₦{formatCurrencyNumber(total_amount)} (
-                          {providerTransactionPercentage.toFixed(2)}% of total)
-                        </div>
-                        <Progress value={providerTransactionPercentage} style={{ marginBottom: "10px" }} />
-                        <div>
-                          Successful Amount: ₦{formatCurrencyNumber(successful_amount)} ({successRate.toFixed(2)}%
-                          successful)
-                        </div>
-                        <Progress color="success" value={successRate} />
-                      </ListGroupItem>
-                    );
-                  })}
-                </ListGroup>
-              )}
-            </>
-          )}
-          {metricType == "byCount" && (
-            <>
-              {providerByCount.length === 0 ? (
-                <div>No data available</div>
-              ) : (
-                <ListGroup numbered>
-                  {providerByCount.map((provider, index) => {
-                    const { provider: name, total_count, successful_count } = provider;
-                    const providerTransactionPercentage = (total_count / totalCount) * 100;
-                    const successRate = (successful_count / total_count) * 100;
+                      return (
+                        <ListGroupItem key={index} style={{ marginBottom: "15px" }}>
+                          <div>
+                            <strong>{name.toUpperCase()}</strong>
+                          </div>
+                          <div>
+                            Total Amount: ₦{formatCurrencyNumber(total_amount)} (
+                            {providerTransactionPercentage.toFixed(2)}% of total)
+                          </div>
+                          <Progress value={providerTransactionPercentage} style={{ marginBottom: "10px" }} />
+                          <div>
+                            Successful Amount: ₦{formatCurrencyNumber(successful_amount)} ({successRate.toFixed(2)}%
+                            successful)
+                          </div>
+                          <Progress color="success" value={successRate} />
+                        </ListGroupItem>
+                      );
+                    })}
+                  </ListGroup>
+                )}
+              </>
+            )}
+            {metricType == "byCount" && (
+              <>
+                {providerByCount.length === 0 ? (
+                  <div>No data available</div>
+                ) : (
+                  <ListGroup numbered>
+                    {providerByCount.map((provider, index) => {
+                      const { provider: name, total_count, successful_count } = provider;
+                      const providerTransactionPercentage = (total_count / totalCount) * 100;
+                      const successRate = (successful_count / total_count) * 100;
 
-                    return (
-                      <ListGroupItem key={index} style={{ marginBottom: "15px" }}>
-                        <div>
-                          <strong>{name.toUpperCase()}</strong>
-                        </div>
-                        <div>
-                          Total Transactions: {formatCurrencyNumber(total_count)} (
-                          {providerTransactionPercentage.toFixed(2)}% of total)
-                        </div>
-                        <Progress value={providerTransactionPercentage} style={{ marginBottom: "10px" }} />
-                        <div>
-                          Successful Transactions: {formatCurrencyNumber(successful_count)} ({successRate.toFixed(2)}%
-                          successful)
-                        </div>
-                        <Progress color="success" value={successRate} />
-                      </ListGroupItem>
-                    );
-                  })}
-                </ListGroup>
-              )}
-            </>
-          )}
-        </form>
+                      return (
+                        <ListGroupItem key={index} style={{ marginBottom: "15px" }}>
+                          <div>
+                            <strong>{name.toUpperCase()}</strong>
+                          </div>
+                          <div>
+                            Total Transactions: {formatCurrencyNumber(total_count)} (
+                            {providerTransactionPercentage.toFixed(2)}% of total)
+                          </div>
+                          <Progress value={providerTransactionPercentage} style={{ marginBottom: "10px" }} />
+                          <div>
+                            Successful Transactions: {formatCurrencyNumber(successful_count)} ({successRate.toFixed(2)}%
+                            successful)
+                          </div>
+                          <Progress color="success" value={successRate} />
+                        </ListGroupItem>
+                      );
+                    })}
+                  </ListGroup>
+                )}
+              </>
+            )}
+          </form>
+        )}
       </div>
     </Card>
   );
