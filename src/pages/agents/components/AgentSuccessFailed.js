@@ -13,12 +13,12 @@ import { formatCurrencyNumber } from "../../../modules/utilities";
 
 const formatData = (data) => {
   let labels = Object.keys(data);
-  let totalTxnData = [];
-  let suspectedTxnData = [];
+  let succesfulTxnData = [];
+  let failedTxnData = [];
 
   for (const key in data) {
-    totalTxnData.push(data[key]?.total_txn);
-    suspectedTxnData.push(data[key]?.suspected_txn);
+    succesfulTxnData.push(data[key]?.successful_txn);
+    failedTxnData.push(data[key]?.failed_txn);
   }
 
   return {
@@ -38,7 +38,7 @@ const formatData = (data) => {
         pointBackgroundColor: "white",
         pointRadius: 4,
         fill: true,
-        data: suspectedTxnData,
+        data: failedTxnData,
       },
       {
         label: "Successful Transactions",
@@ -49,7 +49,7 @@ const formatData = (data) => {
         pointBackgroundColor: "white",
         categoryPercentage: 0.9,
         barPercentage: 0.6,
-        data: totalTxnData,
+        data: succesfulTxnData,
       },
     ],
   };

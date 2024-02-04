@@ -1,47 +1,61 @@
 import React, { useState } from "react";
 import { Icon } from "../../../components/Component";
-import { CardTitle, Row, Col, Card, Label, FormGroup } from "reactstrap";
-import { fetchData } from "../../../modules/utilities/util_query";
-import ToastUI from "../../components/common/ui-view/ToastUI";
-import { formatCurrencyNumber } from "../../../modules/utilities";
-import { useQuery } from "react-query";
-import { handleApiError } from "../../../modules/utilities/responseHandlers";
+import { CardTitle, Card, Label, FormGroup } from "reactstrap";
+import { LineChartExample } from "../../../components/charts/Chart";
 import { getAuthToken } from "../../../modules/auth/redux/authSelector";
 import { useSelector } from "react-redux";
 import LoadingSpinner from "../../components/common/ui-view/SpinnerUI";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Doughnut } from "react-chartjs-2";
+import { handleApiError } from "../../../modules/utilities/responseHandlers";
+import { useQuery } from "react-query";
+import { fetchData } from "../../../modules/utilities/util_query";
+import ToastUI from "../../components/common/ui-view/ToastUI";
+import { formatCurrencyNumber } from "../../../modules/utilities";
 
-const generateDoughnutData = (labels, data) => {
+const formatData = (data, highestAmount) => {
+  let labels = Object.keys(data);
+
+  let txnData = [];
+  let highestData = [];
+
+  for (const key in data) {
+    txnData.push(data[key]?.total_txn);
+    highestData.push(highestAmount);
+  }
+
   return {
     labels: labels,
+    dataUnit: "Transactions",
+    lineTension: 0.4,
+    legend: true,
+    categoryPercentage: 0.9,
+    barPercentage: 0.6,
     datasets: [
       {
-        label: "# of Votes",
-        data: data,
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-        ],
-        borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)",
-        ],
-        borderWidth: 1,
+        label: "Max Amount Ever Recorded",
+        lineTension: 0.4,
+        borderColor: "#ff0000",
+        pointBorderWidth: 2,
+        pointBackgroundColor: "white",
+        pointRadius: 4,
+        fill: true,
+        data: highestData,
+      },
+      {
+        label: "Amount",
+        borderColor: "#5ce0aa",
+        backgroundColor: "rgba(92, 224, 170, 0.5)",
+        pointBorderWidth: 2,
+        fill: true,
+        pointBackgroundColor: "white",
+        categoryPercentage: 0.9,
+        barPercentage: 0.6,
+        data: txnData,
       },
     ],
   };
 };
 
-const AmountBreakdown = ({ url, agentId }) => {
+const AgentPerformance = ({ agentId, url }) => {
   let payload_data = {};
   const token = useSelector(getAuthToken);
   const [data, setData] = React.useState({});
@@ -55,10 +69,7 @@ const AmountBreakdown = ({ url, agentId }) => {
   const [endDate, setEndDate] = useState(formattedToday);
   const [queryStartDate, setQueryStartDate] = useState(startDate);
   const [queryEndDate, setQueryEndDate] = useState(endDate);
-  const [metricType, setMetricType] = useState("byAmount");
-  const [labels, setLabels] = useState([]);
-  const [countData, setCountData] = useState([]);
-  const [amountData, setAmountData] = useState([]);
+  const [highestAmount, setHighestAmount] = useState(0);
 
   const onApplyClick = () => {
     setStartDate(queryStartDate);
@@ -80,16 +91,16 @@ const AmountBreakdown = ({ url, agentId }) => {
       retry: false,
       onSuccess: (response) => {
         const data = response?.data?.data;
-
-        setLabels(Object.keys(data));
-        setCountData(Object.keys(data).map((item) => data[item]?.count));
-        setAmountData(Object.keys(data).map((item) => data[item]?.amount));
+        let highestAmount = data?.highest_daily_amount;
+        setData(data?.amount);
+        setHighestAmount(highestAmount);
       },
       onError: (error) => {
         handleApiError(error, <ToastUI error message="Failed to fetch data, Please contact admin" />);
       },
     },
   );
+
   const { isLoading } = fetchInfo;
 
   return (
@@ -98,11 +109,11 @@ const AmountBreakdown = ({ url, agentId }) => {
         <div className="card-inner-group">
           <div className="card-inner border-bottom">
             <div className="card-title">
-              <h5>Agent Transaction Breakdown</h5>
+              <h5>Agent Performance</h5>
             </div>
             <div className="card-title-group">
               <div className="card-tools mr-n1" style={{ display: "flex", alignItems: "flex-end" }}>
-                <FormGroup style={{ marginRight: "5px" }}>
+                {/* <FormGroup style={{ marginRight: "5px" }}>
                   <Label htmlFor="metric-type" className="form-label">
                     Metric Type
                   </Label>
@@ -114,13 +125,18 @@ const AmountBreakdown = ({ url, agentId }) => {
                       value={metricType}
                       onChange={(e) => {
                         setMetricType(e.target.value);
+                        if (e.target.value == "byAmount") {
+                          setData(holder?.amount);
+                        } else if (e.target.value == "byCount") {
+                          setData(holder?.count);
+                        }
                       }}
                     >
                       <option value="byAmount">By Amount</option>
                       <option value="byCount">By Count</option>
                     </select>
                   </div>
-                </FormGroup>
+                </FormGroup> */}
                 <FormGroup style={{ marginRight: "5px" }}>
                   <Label htmlFor="default-0" className="form-label ">
                     Start Date
@@ -159,37 +175,14 @@ const AmountBreakdown = ({ url, agentId }) => {
           </div>
           <div className="card-inner">
             {isLoading ? (
-              <>
-                <LoadingSpinner />
-              </>
-            ) : (
-              <div className="timeline">
-                <ul className="timeline-list">
-                  {metricType == "byAmount" && (
-                    <>
-                      {amountData.length === 0 ? (
-                        <div className="text-center my-2">No data available</div>
-                      ) : (
-                        <>
-                          <Doughnut data={generateDoughnutData(labels, amountData)} />;
-                        </>
-                      )}
-                    </>
-                  )}
-
-                  {metricType == "byCount" && (
-                    <>
-                      {countData.length == 0 ? (
-                        <div className="text-center my-2">No data available</div>
-                      ) : (
-                        <>
-                          <Doughnut data={generateDoughnutData(labels, countData)} />;
-                        </>
-                      )}
-                    </>
-                  )}
-                </ul>
+              <LoadingSpinner />
+            ) : Object.keys(data).length == 0 ? (
+              <div className="text-center">
+                <Icon name="chart-line" size={50} color="gray" />
+                <p className="text-gray">No Data Available</p>
               </div>
+            ) : (
+              <LineChartExample data={formatData(data, highestAmount)} />
             )}
           </div>
         </div>
@@ -198,4 +191,4 @@ const AmountBreakdown = ({ url, agentId }) => {
   );
 };
 
-export default AmountBreakdown;
+export default AgentPerformance;

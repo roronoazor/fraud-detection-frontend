@@ -18,14 +18,16 @@ import {
   GET_AGENTS_RISK_PROFILE,
   GET_AGENTS_SUCCESS_RATE,
   GET_AGENTS_PEAK_HOURS,
-  GET_AGENT_USAGE,
+  GET_AGENTS_USAGE,
   GET_AGENTS_TRANSACTION_GROUPED_BY_AMOUNT,
-  GET_AGENT_SUCCESS_FAILED,
+  GET_AGENTS_SUCCESS_FAILED,
+  GET_AGENTS_PERFORMANCE,
 } from "../../config/urls";
 import { useParams } from "react-router-dom";
 import { Row, Col } from "reactstrap";
 import AmountBreakdown from "./components/AmountBreakdown";
 import AgentSuccessFailed from "./components/AgentSuccessFailed";
+import AgentPerformance from "./components/AgentPerformance";
 
 const AgentMetricPage = () => {
   const [smOption, setSmOption] = useState(false);
@@ -80,7 +82,7 @@ const AgentMetricPage = () => {
                 <TimeBreakdown agentId={agentId} url={GET_AGENTS_PEAK_HOURS} />
               </Col>
               <Col className={"my-1"} md="6">
-                <AgentUsage agentId={agentId} url={GET_AGENT_USAGE} />
+                <AgentUsage agentId={agentId} url={GET_AGENTS_USAGE} />
               </Col>
             </Row>
             <Row>
@@ -88,7 +90,12 @@ const AgentMetricPage = () => {
                 <AmountBreakdown agentId={agentId} url={GET_AGENTS_TRANSACTION_GROUPED_BY_AMOUNT} />
               </Col>
               <Col className={"my-1"} md="6">
-                <AgentSuccessFailed agentId={agentId} url={GET_AGENT_SUCCESS_FAILED} />
+                <AgentSuccessFailed agentId={agentId} url={GET_AGENTS_SUCCESS_FAILED} />
+              </Col>
+            </Row>
+            <Row>
+              <Col className={"my-1"} md="6">
+                <AgentPerformance agentId={agentId} url={GET_AGENTS_PERFORMANCE} />
               </Col>
             </Row>
           </PreviewCard>
