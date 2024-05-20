@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Content from "../../layout/content/Content";
 import Head from "../../layout/head/Head";
-import DatePicker from "react-datepicker";
 import { UncontrolledDropdown, DropdownMenu, DropdownToggle, Card, DropdownItem } from "reactstrap";
 import {
   Button,
@@ -14,49 +13,67 @@ import {
   Icon,
 } from "../../components/Component";
 import { useForm } from "react-hook-form";
-//import { readExcelFile, downloadExcelTemplate } from "./excelUtils"; // Import Excel parsing and downloading functions
+import { TERMINAL_BULK_UPLOAD_TEMPLATE, TERMINAL_BULK_UPLOAD } from "../../config/urls";
+import { toast } from "react-toastify";
+import { useMutation } from "react-query";
+import { useHistory } from "react-router-dom";
+import { postData } from "../../modules/utilities/util_query";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { getAuthToken } from "../../modules/auth/redux/authSelector";
+import { Spinner } from "reactstrap";
 
 const BulkCreateHandler = () => {
   const [onSearch, setonSearch] = useState(true);
-  const [onSearchText, setSearchText] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemPerPage, setItemPerPage] = useState(10);
-  const [sort, setSortState] = useState("");
   const { register, handleSubmit } = useForm();
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState("");
+  const token = useSelector(getAuthToken);
+  const history = useHistory();
 
-  // onChange function for searching name
-  const onFilterChange = (e) => {
-    setSearchText(e.target.value);
-  };
+  const mutation = useMutation(postData, {
+    onSuccess: (response) => {
+      toast.success("Success");
+    },
+    onError: (error) => {
+      let message = error?.response?.data?.detail ? error?.response?.data?.detail : error.toString();
+      toast.error(message);
+    },
+  });
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
-    if (file) {
-      // Read and parse the Excel file
-      // readExcelFile(file)
-      //   .then((data) => {
-      //     // Set the parsed data for preview
-      //     setPreviewData(data);
-      //   })
-      //   .catch((error) => {
-      //     console.error("Error reading Excel file:", error);
-      //   });
+  };
+
+  const onSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!selectedFile) {
+      toast.warn("Please select a file");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    try {
+      setIsLoading(true);
+      const response = await axios.post(`${TERMINAL_BULK_UPLOAD}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      toast.success("File uploaded successfully");
+    } catch (error) {
+      let message = error.response?.data?.detail || error.toString();
+      toast.error(message);
+    } finally {
+      setIsLoading(false);
     }
   };
-
-  const onSubmit = (data) => {
-    // Handle submission of the parsed data
-    console.log("Parsed data to submit:", previewData);
-    // Add your logic to submit the data to the server here
-  };
-
-  // function to toggle the search option
-  const toggle = () => setonSearch(!onSearch);
-
-  // Get current list, pagination
-  const indexOfLastItem = currentPage * itemPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemPerPage;
 
   return (
     <React.Fragment>
@@ -81,7 +98,7 @@ const BulkCreateHandler = () => {
                   <div className="card-tools mr-n1"></div>
                 </div>
               </div>
-              <form onSubmit={handleSubmit(onSubmit)}>
+              <form onSubmit={onSubmit}>
                 <div className="card-inner">
                   <div className="form-group">
                     <label htmlFor="excelFile">Select Excel File:</label>
@@ -95,12 +112,17 @@ const BulkCreateHandler = () => {
                       ref={register}
                     />
                   </div>
-                  <button type="submit" className="btn btn-primary">
-                    Upload Excel File
-                  </button>
-                  <button type="button" className="btn btn-secondary ml-2">
+
+                  {isLoading ? (
+                    <Spinner size="sm" color="primary" />
+                  ) : (
+                    <button type="submit" className="btn btn-primary">
+                      Upload Excel File
+                    </button>
+                  )}
+                  <a href={`${TERMINAL_BULK_UPLOAD_TEMPLATE}`} target="_blank" className="btn btn-secondary ml-2">
                     Download Template
-                  </button>
+                  </a>
                 </div>
               </form>
             </div>

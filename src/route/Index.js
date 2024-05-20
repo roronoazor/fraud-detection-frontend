@@ -121,6 +121,8 @@ import MerchantMonitoring from "../pages/monitoring/MerchantMonitoring";
 import SuspectedTxnDetailPage from "../pages/monitoring/SuspectedTxnDetailPage";
 import ServiceMetricPage from "../pages/services/ServiceMetricPage";
 import AgentMetricPage from "../pages/agents/AgentMetricPage";
+import TerminalMetric from "../pages/terminal/TerminalMetric";
+import EditTerminals from "../pages/terminal/EditTerminal";
 
 const Pages = () => {
   useLayoutEffect(() => {
@@ -293,6 +295,8 @@ const Pages = () => {
 
         {/** Terminal Management API's */}
         <Route exact path={`${process.env.PUBLIC_URL}/terminals`} component={Terminals}></Route>
+        <Route exact path={`${process.env.PUBLIC_URL}/terminals/metric/:id`} component={TerminalMetric}></Route>
+        <Route exact path={`${process.env.PUBLIC_URL}/terminals/edit/:id`} component={EditTerminals}></Route>
         <Route exact path={`${process.env.PUBLIC_URL}/terminals/map`} component={TerminalMap}></Route>
         <Route exact path={`${process.env.PUBLIC_URL}/terminals/handlers`} component={TerminalHandlers}></Route>
         <Route exact path={`${process.env.PUBLIC_URL}/terminals/cards`} component={TerminalCards}></Route>

@@ -28,62 +28,38 @@ import {
 } from "reactstrap";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-
-const DataTableData = [
-  {
-    id: 0,
-    name: "3LINE",
-    created_by: "Jack Grimoire",
-    created_on: "2017-02-17",
-    status: "ACTIVE",
-  },
-  {
-    id: 1,
-    name: "ISW",
-    created_by: "Jack Grimoire",
-    created_on: "2017-02-17",
-    status: "ACTIVE",
-  },
-];
-
-const filterStatus = [
-  { value: "Active", label: "Active" },
-  { value: "Inactive", label: "Inactive" },
-];
+import { GET_CREATE_TERMINAL_CARD, DEACTIVATE_TERMINAL_CARD } from "../../../config/urls";
+import { useQueryClient, useMutation, useQuery } from "react-query";
+import { fetchData, postData } from "../../../modules/utilities/util_query";
+import LoadingSpinner from "../../components/common/ui-view/SpinnerUI";
+import ToastUI from "../../components/common/ui-view/ToastUI";
+import { handleApiError, handleApiSuccess } from "../../../modules/utilities/responseHandlers";
+import { useSelector } from "react-redux";
+import { getAuthToken } from "../../../modules/auth/redux/authSelector";
+import { convertDateStringtoLocalDateString } from "../../../modules/utilities";
 
 const AllCards = () => {
-  const [smOption, setSmOption] = useState(false);
-
-  const [tablesm, updateTableSm] = useState(false);
-  const [onSearch, setonSearch] = useState(true);
-  const [onSearchText, setSearchText] = useState("");
+  let payload_data = {};
+  const [dataTableData, setDataTableData] = useState([]);
+  const token = useSelector(getAuthToken);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [modal, setModal] = useState({
     edit: false,
     add: false,
     delete: false,
   });
-  const [editId, setEditId] = useState();
+  const [editId, setEditId] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
-    created_by: "",
-    created_on: "",
-    status: "ACTIVE",
   });
-  const [actionText, setActionText] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemPerPage, setItemPerPage] = useState(10);
-  const [sort, setSortState] = useState("");
   const { errors, register, handleSubmit } = useForm();
-
-  const onEditSubmit = () => {};
 
   // function to reset the form
   const resetForm = () => {
     setFormData({
       name: "",
-      status: "Active",
     });
+    setEditId(null);
   };
 
   // function to close the form modal
@@ -110,12 +86,12 @@ const AllCards = () => {
     },
     {
       name: "Created On",
-      selector: (row) => row.created_on,
+      selector: (row) => convertDateStringtoLocalDateString(row.created_at),
       sortable: true,
     },
     {
       name: "Status",
-      selector: (row) => row.status,
+      selector: (row) => (row.active ? "ACTIVE" : "INACTIVE"),
       sortable: true,
     },
     {
@@ -126,8 +102,7 @@ const AllCards = () => {
             <Icon name="plus" />
           </DropdownToggle>
           <DropdownMenu right>
-            <DropdownItem onClick={() => handleEdit(row)}>Edit Card</DropdownItem>
-            <DropdownItem onClick={() => handleDelete(row)}>Delete Card</DropdownItem>
+            <DropdownItem onClick={() => handleDeactivate(row)}>Deactivate</DropdownItem>
           </DropdownMenu>
         </Dropdown>
       ),
@@ -135,12 +110,75 @@ const AllCards = () => {
     },
   ];
 
-  const handleEdit = () => {
-    setModal({ ...modal, edit: true });
+  const deactivateRow = () => {
+    mutation.mutate({
+      url: DEACTIVATE_TERMINAL_CARD,
+      payload_data: {
+        id: editId,
+      },
+      token: token,
+      authenticate: true,
+    });
+    onFormCancel();
   };
-  const handleDelete = () => {
+
+  const handleDeactivate = (row) => {
     setModal({ ...modal, delete: true });
+    setEditId(row.id);
   };
+
+  const queryClient = useQueryClient();
+
+  const addCard = () => {
+    mutation.mutate({
+      url: GET_CREATE_TERMINAL_CARD,
+      payload_data: {
+        name: formData.name,
+      },
+      token: token,
+      authenticate: true,
+    });
+    return;
+  };
+
+  const mutation = useMutation(postData, {
+    onSuccess: (response) => {
+      handleApiSuccess(response, <ToastUI success={true} message="Success" />);
+      queryClient.invalidateQueries(GET_CREATE_TERMINAL_CARD);
+      onFormCancel();
+    },
+    onError: (error) => {
+      let message = error?.response?.data?.detail ? error?.response?.data?.detail : error.toString();
+      handleApiError(error, <ToastUI error={true} message={message} />);
+    },
+  });
+
+  const result = useQuery(
+    [
+      GET_CREATE_TERMINAL_CARD,
+      {
+        url: GET_CREATE_TERMINAL_CARD,
+        payload_data,
+        authenticate: true,
+        token,
+      },
+    ],
+    fetchData,
+    {
+      retry: false,
+      onSuccess: (response) => {
+        let data = response?.data?.data;
+        setDataTableData(data);
+      },
+      onError: (error) => {
+        handleApiError(error, <ToastUI error />);
+      },
+    },
+  );
+
+  if (result?.isLoading || mutation?.isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <>
@@ -172,7 +210,7 @@ const AllCards = () => {
         </BlockHead>
         <Block size="lg">
           <PreviewCard>
-            <ReactDataTable data={DataTableData} columns={dataTableColumns} pagination />
+            <ReactDataTable data={dataTableData} columns={dataTableColumns} showSearch={false} pagination />
           </PreviewCard>
         </Block>
         <Modal isOpen={modal.add} toggle={() => setModal({ add: false })} className="modal-dialog-centered" size="lg">
@@ -190,7 +228,13 @@ const AllCards = () => {
             <div className="p-2">
               <h5 className="title">Add Card</h5>
               <div className="mt-4">
-                <Form className="row gy-4" noValidate onSubmit={() => {}}>
+                <Form
+                  className="row gy-4"
+                  noValidate
+                  onSubmit={() => {
+                    addCard();
+                  }}
+                >
                   <Col md="12">
                     <FormGroup>
                       <label className="form-label">Name</label>
@@ -199,6 +243,7 @@ const AllCards = () => {
                         type="text"
                         name="name"
                         defaultValue={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="Enter name of handler"
                         ref={register({ required: "This field is required" })}
                       />
@@ -210,63 +255,6 @@ const AllCards = () => {
                       <li>
                         <Button color="primary" size="md" type="submit">
                           Add Card
-                        </Button>
-                      </li>
-                      <li>
-                        <a
-                          href="#cancel"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                            onFormCancel();
-                          }}
-                          className="link link-light"
-                        >
-                          Cancel
-                        </a>
-                      </li>
-                    </ul>
-                  </Col>
-                </Form>
-              </div>
-            </div>
-          </ModalBody>
-        </Modal>
-
-        <Modal isOpen={modal.edit} toggle={() => setModal({ edit: false })} className="modal-dialog-centered" size="lg">
-          <ModalBody>
-            <a
-              href="#cancel"
-              onClick={(ev) => {
-                ev.preventDefault();
-                onFormCancel();
-              }}
-              className="close"
-            >
-              <Icon name="cross-sm"></Icon>
-            </a>
-            <div className="p-2">
-              <h5 className="title">Edit Card</h5>
-              <div className="mt-4">
-                <Form className="row gy-4" onSubmit={handleSubmit(onEditSubmit)}>
-                  <Col md="12">
-                    <FormGroup>
-                      <label className="form-label">Name</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="name"
-                        defaultValue={formData.name}
-                        placeholder="Enter name"
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.name && <span className="invalid">{errors.name.message}</span>}
-                    </FormGroup>
-                  </Col>
-                  <Col size="12">
-                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                      <li>
-                        <Button color="primary" size="md" type="submit">
-                          Update Card
                         </Button>
                       </li>
                       <li>
@@ -309,10 +297,10 @@ const AllCards = () => {
             <div className="p-2">
               <h5 className="title">Delete</h5>
               <div className="mt-4">
-                <Form className="row gy-4" onSubmit={handleSubmit(onEditSubmit)}>
+                <Form className="row gy-4" onSubmit={() => deactivateRow()}>
                   <Col md="6">
                     <FormGroup>
-                      <p>Are you sure want to delete ?</p>
+                      <p>Are you sure want to deactivate ?</p>
                     </FormGroup>
                   </Col>
                   <Col size="12">

@@ -10,7 +10,6 @@ import {
   PreviewCard,
   Icon,
   ReactDataTable,
-  Button,
   Col,
   BlockBetween,
   RSelect,
@@ -25,158 +24,25 @@ import {
   ModalBody,
   DropdownItem,
   Form,
+  Button,
+  Tooltip,
 } from "reactstrap";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-
-const generateRandomTerminalData = () => {
-  const terminalData = [];
-  const numberOfTerminals = 10; // You can change this to the desired number of terminals.
-
-  for (let id = 1; id <= numberOfTerminals; id++) {
-    const terminal = {
-      id: id,
-      terminal_id: `TID-${id}`,
-      serial_number: `SN-${id}`,
-      merchant_name: `Merchant ${id}`,
-      profile: `Profile ${id}`,
-      blocked: Math.random() < 0.5 ? "Yes" : "No", // Randomly assign "Yes" or "No" for blocked
-    };
-
-    terminalData.push(terminal);
-  }
-
-  return terminalData;
-};
+import { Link, useHistory } from "react-router-dom";
+import { CREATE_TERMINAL_CONFIG, GET_CREATE_TERMINAL, DEACTIVATE_TERMINAL } from "../../config/urls";
+import { useQueryClient, useMutation, useQuery } from "react-query";
+import { fetchData, postData } from "../../modules/utilities/util_query";
+import LoadingSpinner from "../components/common/ui-view/SpinnerUI";
+import ToastUI from "../components/common/ui-view/ToastUI";
+import { handleApiError, handleApiSuccess } from "../../modules/utilities/responseHandlers";
+import { useSelector } from "react-redux";
+import { getAuthToken } from "../../modules/auth/redux/authSelector";
+import { toast } from "react-toastify";
 
 const changeMerchantPinOptions = [
   { value: "Yes", label: "Yes" },
   { value: "No", label: "No" },
 ];
-
-const handlerRouteOptions = [
-  { value: "3LINE", label: "3LINE" },
-  { value: "ISW", label: "ISW" },
-];
-
-function generateAmountRouteList(handlers, amounts) {
-  const amountRouteList = [];
-
-  for (const handler of handlers) {
-    for (const amount of amounts) {
-      const value = `${amount}:${handler}`;
-      amountRouteList.push({ value, label: value });
-    }
-  }
-
-  return amountRouteList;
-}
-
-function generateBankRouteList(handlers, bank) {
-  const bankRouteList = [];
-
-  for (const bank of banks) {
-    for (const handler of handlers) {
-      const value = `${bank}:${handler}`;
-      bankRouteList.push({ value, label: value });
-    }
-  }
-
-  return bankRouteList;
-}
-
-function generateCardRouteList(handlers, cardTypes) {
-  const cardRouteList = [];
-
-  handlers.forEach((handler) => {
-    cardTypes.forEach((cardType) => {
-      const value = `${cardType}:${handler}`;
-      cardRouteList.push({ value, label: value });
-    });
-  });
-
-  return cardRouteList;
-}
-
-const banks = [
-  "ACCESS",
-  "ECO",
-  "FIDELITY",
-  "FIRST",
-  "FCMB",
-  "HERITAGE",
-  "KEYSTONE",
-  "SKYE",
-  "STANBIC",
-  "UNION",
-  "UBA",
-  "WEMA",
-  "ZENITH",
-  "STERLING",
-];
-
-const handlers = ["3LINE", "ISW"];
-const amounts = [
-  "100",
-  "500",
-  "1000",
-  "5000",
-  "10000",
-  "15000",
-  "20000",
-  "25000",
-  "50000",
-  "100000",
-  "500000",
-  "1000000",
-];
-const cardTypes = ["VERVE", "MASTERCARD", "VISA", "AMERICAN-EXPRESS", "JCB", "CARD"];
-
-function SwitchHandlersInput({ handlersObject }) {
-  const [switchHandlers, setSwitchHandlers] = useState({}); // State to store switch handlers
-
-  // Function to handle adding or updating a handler with an ID
-  const handleSwitchHandlerChange = (handler, id) => {
-    setSwitchHandlers((prevHandlers) => ({
-      ...prevHandlers,
-      [handler]: id,
-    }));
-  };
-
-  return (
-    <div>
-      <div className="row">
-        <Col md="3">
-          <FormGroup>
-            <label>
-              3LINE ID:
-              <input
-                type="text"
-                className="form-control"
-                value={switchHandlers["3LINE"] || ""}
-                onChange={(e) => handleSwitchHandlerChange("3LINE", e.target.value)}
-              />
-            </label>
-          </FormGroup>
-        </Col>
-
-        <Col md="3">
-          <FormGroup>
-            <label>
-              ISW ID:
-              <input
-                type="text"
-                className="form-control"
-                value={switchHandlers["ISW"] || ""}
-                onChange={(e) => handleSwitchHandlerChange("ISW", e.target.value)}
-              />
-            </label>
-          </FormGroup>
-        </Col>
-      </div>
-    </div>
-  );
-}
 
 const AllTerminals = () => {
   const [smOption, setSmOption] = useState(false);
@@ -192,23 +58,43 @@ const AllTerminals = () => {
   });
   const [editId, setEditId] = useState();
   const [formData, setFormData] = useState({
-    name: "",
-    created_by: "",
-    created_on: "",
-    status: "ACTIVE",
+    terminal_id: "",
+    profile: "",
+    admin_pin: "",
+    merchant_pin: "",
+    merchant_wallet_id: "",
+    change_merchant_pin: "",
+    block_terminal: "",
+    block_pin: "",
+    serial_number: "",
+    application_version: "",
+    terminal_model: "",
+    super_agent: "",
+    primary_route: "",
+    secondary_route: "",
+    amount_route: [],
+    amount_limit: [],
+    card_route: "",
+    bank_route: "",
+    switch_handlers: [],
   });
   const [actionText, setActionText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage, setItemPerPage] = useState(10);
   const [sort, setSortState] = useState("");
+  let payload_data = {};
+  const token = useSelector(getAuthToken);
+
   const { errors, register, handleSubmit } = useForm();
   const [dataTableData, setDataTableData] = useState([]);
   const [passState, setPassState] = useState(false);
-  const [handlersList, _] = useState(generateAmountRouteList(handlers, amounts));
-  const [bankRouteList, __] = useState(generateBankRouteList(handlers, banks));
-  const [cardRouteList, ___] = useState(generateCardRouteList(handlers, cardTypes));
-
-  const onEditSubmit = () => {};
+  const [handlersList, setHandlersList] = useState([]);
+  const [bankRouteList, setBankRouteList] = useState([]);
+  const [cardRouteList, setCardRouteList] = useState([]);
+  const [amountRouteList, setAmountRouteList] = useState([]);
+  const [handlers, setHandlers] = useState([]);
+  const [switchHandlersList, setSwitchHandlersList] = useState([]);
+  const history = useHistory();
 
   // function to reset the form
   const resetForm = () => {
@@ -228,19 +114,35 @@ const AllTerminals = () => {
     setDropdownOpen(!dropdownOpen);
   };
 
-  const handleEdit = () => {
-    setModal({ ...modal, edit: true });
+  const handleEdit = (row) => {
+    // setModal({ ...modal, edit: true });
   };
-  const handleDelete = () => {
-    setModal({ ...modal, delete: true });
+
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const onChangeTerminalId = (e) => {
+    setFormData({ ...formData, terminal_id: e.target.value, switch_handler: "" });
+    setSwitchHandlersList(
+      handlers.map((handler) => {
+        let concat = `${handler}:${e.target.value}`;
+        return { value: concat, label: concat };
+      }),
+    );
+  };
+
+  const viewRow = (row) => {
+    history.push(`/terminals/metric/${row.terminal_id}`);
   };
 
   const dataTableColumns = [
-    {
-      name: "ID",
-      selector: (row) => row.id,
-      sortable: true,
-    },
+    // {
+    //   name: "ID",
+    //   selector: (row) => row.id,
+    //   sortable: true,
+    // },
     {
       name: "Terminal ID",
       selector: (row) => row.terminal_id,
@@ -257,45 +159,166 @@ const AllTerminals = () => {
       sortable: true,
     },
     {
-      name: "Profile",
-      selector: (row) => row.profile,
-      sortable: true,
-    },
-    {
-      name: "Blocked",
-      selector: (row) => row.blocked,
-      sortable: true,
-    },
-    {
       name: "Actions",
       cell: (row) => (
-        <Dropdown isOpen={dropdownOpen && editId == row?.id} toggle={(e) => toggleDropdown(e, row)}>
-          <DropdownToggle tag="span" data-toggle="dropdown" aria-expanded={dropdownOpen}>
-            <Icon name="plus" />
-          </DropdownToggle>
-          <DropdownMenu right>
-            <DropdownItem onClick={() => handleEdit()}>Terminal Metrics</DropdownItem>
-            <DropdownItem onClick={() => handleEdit(row)}>Terminal Details</DropdownItem>
-            <DropdownItem onClick={() => handleEdit(row)}>Delete Terminal</DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
+        <>
+          <Button outline color="light mr-1" onClick={() => viewRow(row)}>
+            <span>View Terminal</span>
+            <Icon name="eye" />
+          </Button>
+          {/* <Button outline color="primary mr-1">
+            <span>Edit</span>
+            <Icon name="edit" />
+          </Button>
+          <Button outline color="danger" onClick={}>
+            <span>Deactivate</span>
+            <Icon name="trash" />
+          </Button> */}
+        </>
       ),
-      button: true,
+      grow: 1.1,
     },
   ];
 
-  useEffect(() => {
-    const terminalData = generateRandomTerminalData();
-    const mappedData = terminalData.map((terminal) => ({
-      id: terminal.id,
-      terminal_id: terminal.terminal_id,
-      serial_number: terminal.serial_number,
-      merchant_name: terminal.merchant_name,
-      profile: terminal.profile,
-      blocked: terminal.blocked,
-    }));
-    setDataTableData(mappedData);
-  }, []);
+  const queryClient = useQueryClient();
+
+  const addTerminal = (event) => {
+    // validate switch handler
+    event.preventDefault();
+
+    if (!formData.terminal_id) {
+      toast.error("Terminal ID is required", {
+        position: "top-center",
+        autoClose: true,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: false,
+        // closeButton: <CloseButton />,
+      });
+      return;
+    }
+
+    mutation.mutate({
+      url: GET_CREATE_TERMINAL,
+      payload_data: {
+        terminal_id: formData.terminal_id,
+        profile: formData.profile,
+        admin_pin: formData.admin_pin,
+        merchant_pin: formData.merchant_pin,
+        merchant_wallet_id: formData.merchant_wallet_id,
+        change_merchant_pin: formData.change_merchant_pin ? formData.change_merchant_pin.value : null,
+        block_terminal: formData.block_terminal ? formData.block_terminal.value : null,
+        block_pin: formData.block_pin,
+        serial_number: formData.serial_number,
+        application_version: formData.application_version,
+        terminal_model: formData.terminal_model,
+        super_agent: formData.super_agent,
+        primary_route: formData.primary_route ? formData.primary_route.value : null,
+        secondary_route: formData.secondary_route ? formData.secondary_route.value : null,
+        amount_route: formData.amount_route,
+        amount_limit: formData.amount_list,
+        card_route: formData.card_route,
+        bank_route: formData.bank_route,
+        switch_handlers: formData.switch_handler,
+      },
+      token: token,
+      authenticate: true,
+    });
+    return;
+  };
+
+  const result = useQuery(
+    [
+      GET_CREATE_TERMINAL,
+      {
+        url: GET_CREATE_TERMINAL,
+        payload_data: {},
+        authenticate: true,
+        token,
+      },
+    ],
+    fetchData,
+    {
+      retry: false,
+      onSuccess: (response) => {
+        let data = response?.data?.data;
+        setDataTableData(data);
+      },
+      onError: (error) => {
+        handleApiError(error, <ToastUI error />);
+      },
+    },
+  );
+
+  const mutation = useMutation(postData, {
+    onSuccess: (response) => {
+      handleApiSuccess(response, <ToastUI success={true} message="Success" />);
+      queryClient.invalidateQueries(GET_CREATE_TERMINAL);
+      onFormCancel();
+    },
+    onError: (error) => {
+      let message = error?.response?.data?.detail ? error?.response?.data?.detail : error.toString();
+      handleApiError(error, <ToastUI error={true} message={message} />);
+    },
+  });
+
+  const config = useQuery(
+    [
+      CREATE_TERMINAL_CONFIG,
+      {
+        url: CREATE_TERMINAL_CONFIG,
+        payload_data,
+        authenticate: true,
+        token,
+      },
+    ],
+    fetchData,
+    {
+      retry: false,
+      onSuccess: (response) => {
+        let data = response?.data?.data;
+
+        let handlers = data?.handlers || [];
+        setHandlers(handlers.map((handler) => handler.name));
+
+        // Set card routes
+        let cardRoutes = data?.card_routes || [];
+        setCardRouteList(
+          cardRoutes.map((route) => {
+            return { value: route, label: route };
+          }),
+        );
+
+        // set bank routes
+        let bankRoutes = data?.bank_routes || [];
+        setBankRouteList(
+          bankRoutes.map((route) => {
+            return { value: route, label: route };
+          }),
+        );
+
+        // set amount routes
+        let amountRoutes = data?.amount_routes || [];
+        setAmountRouteList(
+          amountRoutes.map((route) => {
+            return { value: route, label: route };
+          }),
+        );
+
+        // set handler list
+        setHandlersList(
+          handlers.map((handler) => {
+            return { value: handler.name, label: handler.name };
+          }),
+        );
+      },
+      onError: (error) => {
+        handleApiError(error, <ToastUI error />);
+      },
+    },
+  );
 
   return (
     <>
@@ -333,7 +356,11 @@ const AllTerminals = () => {
         </BlockHead>
         <Block size="lg">
           <PreviewCard>
-            <ReactDataTable data={dataTableData} columns={dataTableColumns} pagination />
+            {result?.isLoading ? (
+              <LoadingSpinner />
+            ) : (
+              <ReactDataTable data={dataTableData} columns={dataTableColumns} pagination />
+            )}
           </PreviewCard>
         </Block>
 
@@ -352,7 +379,7 @@ const AllTerminals = () => {
             <div className="p-2">
               <h5 className="title">Add Terminal</h5>
               <div className="mt-4">
-                <Form className="row gy-4" noValidate onSubmit={() => {}}>
+                <Form className="row gy-4" noValidate onSubmit={addTerminal}>
                   <Col md="6">
                     <FormGroup>
                       <label className="form-label">Terminal ID</label>
@@ -360,7 +387,10 @@ const AllTerminals = () => {
                         className="form-control"
                         type="text"
                         name="terminal_id"
-                        defaultValue={formData.terminal_id}
+                        value={formData.terminal_id}
+                        onChange={(e) => {
+                          onChangeTerminalId(e);
+                        }}
                         placeholder="Enter Terminal ID"
                         required
                         ref={register({ required: "This field is required" })}
@@ -377,6 +407,7 @@ const AllTerminals = () => {
                         name="profile"
                         required
                         defaultValue={formData.profile}
+                        onChange={onChange}
                         placeholder="Enter Profile"
                         ref={register({ required: "This field is required" })}
                       />
@@ -411,6 +442,8 @@ const AllTerminals = () => {
                           name="admin_pin"
                           defaultValue={formData.admin_pin}
                           required
+                          maxlength="4"
+                          onChange={onChange}
                           placeholder="Enter Admin Pin"
                           ref={register({ required: "This field is required" })}
                         />
@@ -461,6 +494,8 @@ const AllTerminals = () => {
                           required
                           defaultValue={formData.merchant_pin}
                           placeholder="Merchant PIN"
+                          maxlength="4"
+                          onChange={onChange}
                           ref={register({ required: "This field is required" })}
                         />
                         {errors.merchant_pin && <span className="invalid">{errors.merchant_pin.message}</span>}
@@ -469,48 +504,17 @@ const AllTerminals = () => {
                   </Col>
                   <Col md="3">
                     <FormGroup>
-                      <label className="form-label">Merchant Name</label>
+                      <label className="form-label">Merchant Wallet ID</label>
                       <input
                         className="form-control"
                         type="text"
-                        name="merchant_name"
+                        name="merchant_wallet_id"
                         required
-                        defaultValue={formData.merchant_name}
-                        placeholder="Merchant Name"
+                        onChange={onChange}
+                        defaultValue={formData.merchant_wallet_id}
+                        placeholder="Merchant Wallet ID"
                         ref={register({ required: "This field is required" })}
                       />
-                      {errors.merchant_name && <span className="invalid">{errors.merchant_name.message}</span>}
-                    </FormGroup>
-                  </Col>
-                  <Col md="3">
-                    <FormGroup>
-                      <label className="form-label">Merchant Email</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="merchant_email"
-                        required
-                        defaultValue={formData.merchant_email}
-                        placeholder="Merchant Email"
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.merchant_email && <span className="invalid">{errors.merchant_email.message}</span>}
-                    </FormGroup>
-                  </Col>
-                  <Col md="6">
-                    <FormGroup>
-                      <label className="form-label">Merchant Address</label>
-                      <textarea
-                        name="merchant_address"
-                        defaultValue={formData.merchant_address}
-                        placeholder="Merchant Address"
-                        onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
-                        className="form-control-xl form-control no-resize"
-                        ref={register({
-                          required: "This field is required",
-                        })}
-                      />
-                      {errors.merchant_address && <span className="invalid">{errors.merchant_address.message}</span>}
                     </FormGroup>
                   </Col>
                   <Col md="4">
@@ -553,6 +557,8 @@ const AllTerminals = () => {
                           name="block_pin"
                           required
                           defaultValue={formData.block_pin}
+                          onChange={onChange}
+                          maxlength="4"
                           placeholder="Block PIN"
                           ref={register({ required: "This field is required" })}
                         />
@@ -569,6 +575,7 @@ const AllTerminals = () => {
                         name="serial_number"
                         required
                         defaultValue={formData.serial_number}
+                        onChange={onChange}
                         placeholder="Serial Number"
                         ref={register({ required: "This field is required" })}
                       />
@@ -583,7 +590,8 @@ const AllTerminals = () => {
                         type="text"
                         name="application_version"
                         required
-                        defaultValue={formData.appliation_version}
+                        onChange={onChange}
+                        defaultValue={formData.application_version}
                         placeholder="Application Version"
                         ref={register({ required: "This field is required" })}
                       />
@@ -600,6 +608,7 @@ const AllTerminals = () => {
                         type="text"
                         name="terminal_model"
                         required
+                        onChange={onChange}
                         defaultValue={formData.terminal_model}
                         placeholder="Terminal Model"
                         ref={register({ required: "This field is required" })}
@@ -613,9 +622,10 @@ const AllTerminals = () => {
                       <input
                         className="form-control"
                         type="text"
-                        name="superagent"
+                        name="super_agent"
                         required
-                        defaultValue={formData.superagent}
+                        onChange={onChange}
+                        defaultValue={formData.super_agent}
                         placeholder="Super Agent"
                         ref={register({ required: "This field is required" })}
                       />
@@ -626,7 +636,7 @@ const AllTerminals = () => {
                     <FormGroup>
                       <label className="form-label">Primary Route</label>
                       <RSelect
-                        options={handlerRouteOptions}
+                        options={handlersList}
                         //isMulti
                         defaultValue={formData.primary_route}
                         onChange={(e) => setFormData({ ...formData, primary_route: e })}
@@ -638,7 +648,7 @@ const AllTerminals = () => {
                     <FormGroup>
                       <label className="form-label">Secondary Route</label>
                       <RSelect
-                        options={handlerRouteOptions}
+                        options={handlersList}
                         //isMulti
                         defaultValue={formData.secondary_route}
                         onChange={(e) => setFormData({ ...formData, secondary_route: e })}
@@ -650,7 +660,7 @@ const AllTerminals = () => {
                     <FormGroup>
                       <label className="form-label">Amount Route</label>
                       <RSelect
-                        options={handlersList}
+                        options={amountRouteList}
                         isMulti
                         defaultValue={formData.amount_route}
                         onChange={(e) => setFormData({ ...formData, amount_route: e })}
@@ -658,18 +668,22 @@ const AllTerminals = () => {
                       {errors.amount_route && <span className="invalid">{errors.amount_route.message}</span>}
                     </FormGroup>
                   </Col>
-                  <Col md="12">
+                  <Col md="4">
                     <FormGroup>
                       <label className="form-label">Switch Handler</label>
-                      <SwitchHandlersInput />
-                      {errors.switch_handler && <span className="invalid">{errors.switch_handler.message}</span>}
+                      <RSelect
+                        options={switchHandlersList}
+                        isMulti
+                        defaultValue={formData.switch_handler}
+                        onChange={(e) => setFormData({ ...formData, switch_handler: e })}
+                      />
                     </FormGroup>
                   </Col>
                   <Col md="4">
                     <FormGroup>
                       <label className="form-label">Amount Limit</label>
                       <RSelect
-                        options={handlersList}
+                        options={amountRouteList}
                         isMulti
                         defaultValue={formData.amount_list}
                         onChange={(e) => setFormData({ ...formData, amount_list: e })}
@@ -703,10 +717,14 @@ const AllTerminals = () => {
                   </Col>
                   <Col size="12">
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                      <li>
-                        <Button color="primary" size="md" type="submit">
-                          Add Handler
-                        </Button>
+                      <li class="m-2">
+                        {mutation?.isLoading ? (
+                          <Spinner size="sm" color="primary" />
+                        ) : (
+                          <Button color="primary" size="md" type="submit">
+                            Add Handler
+                          </Button>
+                        )}
                       </li>
                       <li>
                         <a

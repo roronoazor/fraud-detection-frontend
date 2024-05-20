@@ -27,39 +27,22 @@ import {
   Form,
 } from "reactstrap";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-
-const DataTableData = [
-  {
-    id: 0,
-    name: "3LINE",
-    created_by: "Jack Grimoire",
-    created_on: "2017-02-17",
-    status: "ACTIVE",
-  },
-  {
-    id: 1,
-    name: "ISW",
-    created_by: "Jack Grimoire",
-    created_on: "2017-02-17",
-    status: "ACTIVE",
-  },
-];
-
-const filterStatus = [
-  { value: "Active", label: "Active" },
-  { value: "Inactive", label: "Inactive" },
-];
+import { GET_CREATE_TERMINAL_HANDLER, DEACTIVATE_TERMINAL_HANDLER } from "../../../config/urls";
+import { useQueryClient, useMutation, useQuery } from "react-query";
+import { fetchData, postData } from "../../../modules/utilities/util_query";
+import LoadingSpinner from "../../components/common/ui-view/SpinnerUI";
+import ToastUI from "../../components/common/ui-view/ToastUI";
+import { handleApiError, handleApiSuccess } from "../../../modules/utilities/responseHandlers";
+import { useSelector } from "react-redux";
+import { getAuthToken } from "../../../modules/auth/redux/authSelector";
+import { convertDateStringtoLocalDateString } from "../../../modules/utilities";
 
 const AllHandlers = () => {
-  const [smOption, setSmOption] = useState(false);
-
-  const [tablesm, updateTableSm] = useState(false);
-  const [onSearch, setonSearch] = useState(true);
-  const [onSearchText, setSearchText] = useState("");
+  let payload_data = {};
+  const [dataTableData, setDataTableData] = useState([]);
+  const token = useSelector(getAuthToken);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [modal, setModal] = useState({
-    edit: false,
     add: false,
     delete: false,
   });
@@ -70,20 +53,14 @@ const AllHandlers = () => {
     created_on: "",
     status: "ACTIVE",
   });
-  const [actionText, setActionText] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemPerPage, setItemPerPage] = useState(10);
-  const [sort, setSortState] = useState("");
   const { errors, register, handleSubmit } = useForm();
-
-  const onEditSubmit = () => {};
 
   // function to reset the form
   const resetForm = () => {
     setFormData({
       name: "",
-      status: "Active",
     });
+    setEditId(null);
   };
 
   // function to close the form modal
@@ -110,12 +87,12 @@ const AllHandlers = () => {
     },
     {
       name: "Created On",
-      selector: (row) => row.created_on,
+      selector: (row) => convertDateStringtoLocalDateString(row.created_at),
       sortable: true,
     },
     {
       name: "Status",
-      selector: (row) => row.status,
+      selector: (row) => (row.active ? "ACTIVE" : "INACTIVE"),
       sortable: true,
     },
     {
@@ -126,8 +103,7 @@ const AllHandlers = () => {
             <Icon name="plus" />
           </DropdownToggle>
           <DropdownMenu right>
-            <DropdownItem onClick={() => handleEdit(row)}>Edit Handler</DropdownItem>
-            <DropdownItem onClick={() => handleDelete(row)}>Delete Handler</DropdownItem>
+            <DropdownItem onClick={() => handleDeactivate(row)}>Deactivate</DropdownItem>
           </DropdownMenu>
         </Dropdown>
       ),
@@ -135,12 +111,75 @@ const AllHandlers = () => {
     },
   ];
 
-  const handleEdit = () => {
-    setModal({ ...modal, edit: true });
+  const deactivateRow = () => {
+    mutation.mutate({
+      url: DEACTIVATE_TERMINAL_HANDLER,
+      payload_data: {
+        id: editId,
+      },
+      token: token,
+      authenticate: true,
+    });
+    onFormCancel();
   };
-  const handleDelete = () => {
+
+  const handleDeactivate = (row) => {
     setModal({ ...modal, delete: true });
+    setEditId(row.id);
   };
+
+  const queryClient = useQueryClient();
+
+  const addHandler = () => {
+    mutation.mutate({
+      url: GET_CREATE_TERMINAL_HANDLER,
+      payload_data: {
+        name: formData.name,
+      },
+      token: token,
+      authenticate: true,
+    });
+    return;
+  };
+
+  const mutation = useMutation(postData, {
+    onSuccess: (response) => {
+      handleApiSuccess(response, <ToastUI success={true} message="Success" />);
+      queryClient.invalidateQueries(GET_CREATE_TERMINAL_HANDLER);
+      onFormCancel();
+    },
+    onError: (error) => {
+      let message = error?.response?.data?.detail ? error?.response?.data?.detail : error.toString();
+      handleApiError(error, <ToastUI error={true} message={message} />);
+    },
+  });
+
+  const result = useQuery(
+    [
+      GET_CREATE_TERMINAL_HANDLER,
+      {
+        url: GET_CREATE_TERMINAL_HANDLER,
+        payload_data,
+        authenticate: true,
+        token,
+      },
+    ],
+    fetchData,
+    {
+      retry: false,
+      onSuccess: (response) => {
+        let data = response?.data?.data;
+        setDataTableData(data);
+      },
+      onError: (error) => {
+        handleApiError(error, <ToastUI error />);
+      },
+    },
+  );
+
+  if (result?.isLoading || mutation?.isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <>
@@ -172,7 +211,7 @@ const AllHandlers = () => {
         </BlockHead>
         <Block size="lg">
           <PreviewCard>
-            <ReactDataTable data={DataTableData} columns={dataTableColumns} pagination />
+            <ReactDataTable data={dataTableData} columns={dataTableColumns} showSearch={false} pagination />
           </PreviewCard>
         </Block>
         <Modal isOpen={modal.add} toggle={() => setModal({ add: false })} className="modal-dialog-centered" size="lg">
@@ -190,7 +229,13 @@ const AllHandlers = () => {
             <div className="p-2">
               <h5 className="title">Add Handler</h5>
               <div className="mt-4">
-                <Form className="row gy-4" noValidate onSubmit={() => {}}>
+                <Form
+                  className="row gy-4"
+                  noValidate
+                  onSubmit={() => {
+                    addHandler();
+                  }}
+                >
                   <Col md="12">
                     <FormGroup>
                       <label className="form-label">Name</label>
@@ -199,6 +244,7 @@ const AllHandlers = () => {
                         type="text"
                         name="name"
                         defaultValue={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="Enter name of handler"
                         ref={register({ required: "This field is required" })}
                       />
@@ -231,126 +277,6 @@ const AllHandlers = () => {
             </div>
           </ModalBody>
         </Modal>
-
-        <Modal isOpen={modal.edit} toggle={() => setModal({ edit: false })} className="modal-dialog-centered" size="lg">
-          <ModalBody>
-            <a
-              href="#cancel"
-              onClick={(ev) => {
-                ev.preventDefault();
-                onFormCancel();
-              }}
-              className="close"
-            >
-              <Icon name="cross-sm"></Icon>
-            </a>
-            <div className="p-2">
-              <h5 className="title">Edit Handler</h5>
-              <div className="mt-4">
-                <Form className="row gy-4" onSubmit={handleSubmit(onEditSubmit)}>
-                  <Col md="6">
-                    <FormGroup>
-                      <label className="form-label">Name</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="name"
-                        defaultValue={formData.name}
-                        placeholder="Enter name"
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.name && <span className="invalid">{errors.name.message}</span>}
-                    </FormGroup>
-                  </Col>
-                  <Col md="6">
-                    <FormGroup>
-                      <label className="form-label">Email</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="email"
-                        defaultValue={formData.email}
-                        placeholder="Enter email"
-                        ref={register({
-                          required: "This field is required",
-                          pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                            message: "invalid email address",
-                          },
-                        })}
-                      />
-                      {errors.email && <span className="invalid">{errors.email.message}</span>}
-                    </FormGroup>
-                  </Col>
-                  <Col md="6">
-                    <FormGroup>
-                      <label className="form-label">Balance</label>
-                      <input
-                        className="form-control"
-                        type="number"
-                        name="balance"
-                        disabled
-                        placeholder="Balance"
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.balance && <span className="invalid">{errors.balance.message}</span>}
-                    </FormGroup>
-                  </Col>
-                  <Col md="6">
-                    <FormGroup>
-                      <label className="form-label">Phone</label>
-                      <input
-                        className="form-control"
-                        type="number"
-                        name="phone"
-                        defaultValue={Number(formData.phone)}
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.phone && <span className="invalid">{errors.phone.message}</span>}
-                    </FormGroup>
-                  </Col>
-                  <Col md="12">
-                    <FormGroup>
-                      <label className="form-label">Status</label>
-                      <div className="form-control-wrap">
-                        <RSelect
-                          options={filterStatus}
-                          defaultValue={{
-                            value: formData.status,
-                            label: formData.status,
-                          }}
-                          onChange={(e) => setFormData({ ...formData, status: e.value })}
-                        />
-                      </div>
-                    </FormGroup>
-                  </Col>
-                  <Col size="12">
-                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                      <li>
-                        <Button color="primary" size="md" type="submit">
-                          Update User
-                        </Button>
-                      </li>
-                      <li>
-                        <a
-                          href="#cancel"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                            onFormCancel();
-                          }}
-                          className="link link-light"
-                        >
-                          Cancel
-                        </a>
-                      </li>
-                    </ul>
-                  </Col>
-                </Form>
-              </div>
-            </div>
-          </ModalBody>
-        </Modal>
-
         <Modal
           isOpen={modal.delete}
           toggle={() => setModal({ edit: false })}
@@ -371,7 +297,7 @@ const AllHandlers = () => {
             <div className="p-2">
               <h5 className="title">Delete</h5>
               <div className="mt-4">
-                <Form className="row gy-4" onSubmit={handleSubmit(onEditSubmit)}>
+                <Form className="row gy-4" onSubmit={() => deactivateRow()}>
                   <Col md="6">
                     <FormGroup>
                       <p>Are you sure want to delete ?</p>

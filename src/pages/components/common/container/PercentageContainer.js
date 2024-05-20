@@ -10,7 +10,7 @@ import { useHistory } from "react-router";
 import PercentageUI from "../ui-view/PercentageUI";
 import { Card, Col, Label, FormGroup } from "reactstrap";
 
-const PercentageContainer = ({ title = "", invert = false, serviceType, url }) => {
+const PercentageContainer = ({ title = "", invert = false, serviceType, url, queryName = "serviceType" }) => {
   let payload_data = {};
   const token = useSelector(getAuthToken);
   const [data, setData] = React.useState({});
@@ -28,9 +28,9 @@ const PercentageContainer = ({ title = "", invert = false, serviceType, url }) =
 
   const result = useQuery(
     [
-      `${url}?serviceType=${serviceType}&startDate=${startDate}&endDate=${endDate}`,
+      `${url}?${queryName}=${serviceType}&startDate=${startDate}&endDate=${endDate}`,
       {
-        url: `${url}?serviceType=${serviceType}&startDate=${startDate}&endDate=${endDate}`,
+        url: `${url}?${queryName}=${serviceType}&startDate=${startDate}&endDate=${endDate}`,
         payload_data,
         authenticate: true,
         token,

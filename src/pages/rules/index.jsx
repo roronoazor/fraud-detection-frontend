@@ -22,7 +22,6 @@ import {
   DropdownItem,
   Badge,
 } from "reactstrap";
-import { useForm } from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
 import { handleApiError, handleApiSuccess } from "../../modules/utilities/responseHandlers";
 import { useSelector } from "react-redux";
@@ -89,18 +88,37 @@ const AllRules = () => {
     {
       name: "Actions",
       cell: (row) => (
-        <Dropdown isOpen={dropdownOpen && editId == row?.id} toggle={(e) => toggleDropdown(e, row)}>
-          <DropdownToggle tag="span" data-toggle="dropdown" aria-expanded={dropdownOpen}>
-            <Icon name="plus" />
-          </DropdownToggle>
-          <DropdownMenu right>
-            <DropdownItem onClick={() => goToEditPage(row)}>View Details</DropdownItem>
-            { row.active && <DropdownItem onClick={() => handleDeactivate(row)}>Deactivate Rule</DropdownItem>}
-            { !row.active && <DropdownItem onClick={() => handleActivate(row)}>Activate Rule</DropdownItem>}
-          </DropdownMenu>
-        </Dropdown>
+        <>
+        <button
+          className="btn btn-secondary"
+          onClick={() => {
+            goToEditPage  (row);
+          }}
+          
+        >
+          View
+        </button>
+          {
+            (row?.active) ? (
+                <button
+                className="btn btn-warning"
+                style={{ marginLeft: '1%', width: '120px' }}
+                onClick={() => handleDeactivate(row)}
+              >
+                Deactivate
+              </button>
+            ) : (
+              <button
+                className="btn btn-success"
+                onClick={() => handleActivate(row)}
+                style={{ marginLeft: '1%', width: '120px' }}
+              >
+                Activate
+              </button>
+            )
+          }
+        </>
       ),
-      button: true,
     },
   ];
 

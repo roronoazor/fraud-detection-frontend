@@ -21,6 +21,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { useSelector } from "react-redux";
 import { persistStore } from "redux-persist";
 import { Toaster } from "react-hot-toast";
+import { ToastContainer } from "react-toastify";
 import { getAuthToken } from "./modules/auth/redux/authSelector";
 
 const accessToken = localStorage.getItem("accessToken");
@@ -30,6 +31,7 @@ const App = (props) => {
   return (
     <>
       <Toaster />
+      <ToastContainer />
       <QueryClientProvider client={queryClient}>
         <Switch>
           {/* Auth Pages */}

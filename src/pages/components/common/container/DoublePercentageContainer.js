@@ -9,7 +9,15 @@ import ToastUI from "../ui-view/ToastUI";
 import DoublePercentageUI from "../ui-view/DoublePercentageUI";
 import { Card, Col, Label, FormGroup } from "reactstrap";
 
-const PercentageContainer = ({ title1 = "", title2 = "", captionText = "", invert = false, serviceType, url }) => {
+const PercentageContainer = ({
+  title1 = "",
+  title2 = "",
+  captionText = "",
+  invert = false,
+  url,
+  serviceType = "serviceType",
+  queryName = "serviceType",
+}) => {
   let payload_data = {};
   const token = useSelector(getAuthToken);
   const [data, setData] = React.useState({});
@@ -27,9 +35,9 @@ const PercentageContainer = ({ title1 = "", title2 = "", captionText = "", inver
 
   const result = useQuery(
     [
-      `${url}?serviceType=${serviceType}&startDate=${startDate}&endDate=${endDate}`,
+      `${url}?${queryName}=${serviceType}&startDate=${startDate}&endDate=${endDate}`,
       {
-        url: `${url}?serviceType=${serviceType}&startDate=${startDate}&endDate=${endDate}`,
+        url: `${url}?${queryName}=${serviceType}&startDate=${startDate}&endDate=${endDate}`,
         payload_data,
         authenticate: true,
         token,
