@@ -55,7 +55,7 @@ const DateTimePicker = () => {
               Date & Time Picker
             </BlockTitle>
             <BlockDes>
-            <p className="lead">
+              <p className="lead">
                 Examples and usage guidelines for date and time picker for forms. For further preview, visit the{" "}
                 <a href="https://reactdatepicker.com/" target="_blank" rel="noreferrer">
                   React Datepicker
@@ -133,7 +133,7 @@ const DateTimePicker = () => {
                   <Label>Datepicker Range Multiple Input</Label>
                   <div className="form-control-wrap">
                     <div className="input-daterange date-picker-range input-group">
-                    <DatePicker
+                      <DatePicker
                         selected={rangeStart}
                         onChange={setRangeStart}
                         selectsStart

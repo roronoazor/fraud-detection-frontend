@@ -17,36 +17,49 @@ import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import Success from "./pages/auth/Success";
-import InvoicePrint from "./pages/pre-built/invoice/InvoicePrint";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { useSelector } from "react-redux";
+import { persistStore } from "redux-persist";
+import { Toaster } from "react-hot-toast";
+import { ToastContainer } from "react-toastify";
+import { getAuthToken } from "./modules/auth/redux/authSelector";
+
+const accessToken = localStorage.getItem("accessToken");
+const queryClient = new QueryClient();
 
 const App = (props) => {
   return (
-    <Switch>
-      {/* Auth Pages */}
-      <Route exact path={`${process.env.PUBLIC_URL}/auth-success`} component={Success}></Route>
-      <Route exact path={`${process.env.PUBLIC_URL}/auth-reset`} component={ForgotPassword}></Route>
-      <Route exact path={`${process.env.PUBLIC_URL}/auth-register`} component={Register}></Route>
-      <Route exact path={`${process.env.PUBLIC_URL}/auth-login`} component={Login}></Route>
+    <>
+      <Toaster />
+      <ToastContainer />
+      <QueryClientProvider client={queryClient}>
+        <Switch>
+          {/* Auth Pages */}
+          {!accessToken && (
+            <>
+              <Route exact path={`${process.env.PUBLIC_URL}/auth-success`} component={Success} />
+              <Route exact path={`${process.env.PUBLIC_URL}/auth-reset`} component={ForgotPassword} />
+              <Route exact path={`${process.env.PUBLIC_URL}/auth-register`} component={Register} />
+              <Route exact path={`${process.env.PUBLIC_URL}/auth-login`} component={Login} />
+            </>
+          )}
 
-      {/* Print Pages */}
-      <Route exact path={`${process.env.PUBLIC_URL}/invoice-print/:id`} component={InvoicePrint}></Route>
+          {/* Helper pages */}
+          <Route exact path={`${process.env.PUBLIC_URL}/auths/terms`} component={Terms}></Route>
+          <Route exact path={`${process.env.PUBLIC_URL}/auths/faq`} component={Faq}></Route>
 
-      {/* Helper pages */}
-      <Route exact path={`${process.env.PUBLIC_URL}/auths/terms`} component={Terms}></Route>
-      <Route exact path={`${process.env.PUBLIC_URL}/auths/faq`} component={Faq}></Route>
+          {/*Error Pages*/}
+          <Route exact path={`${process.env.PUBLIC_URL}/errors/404-classic`} component={Error404Classic}></Route>
+          <Route exact path={`${process.env.PUBLIC_URL}/errors/504-modern`} component={Error504Modern}></Route>
+          <Route exact path={`${process.env.PUBLIC_URL}/errors/404-modern`} component={Error404Modern}></Route>
+          <Route exact path={`${process.env.PUBLIC_URL}/errors/504-classic`} component={Error504Classic}></Route>
 
-      <Route exact path={`${process.env.PUBLIC_URL}/invoice-print`} component={InvoicePrint}></Route>
-
-      {/*Error Pages*/}
-      <Route exact path={`${process.env.PUBLIC_URL}/errors/404-classic`} component={Error404Classic}></Route>
-      <Route exact path={`${process.env.PUBLIC_URL}/errors/504-modern`} component={Error504Modern}></Route>
-      <Route exact path={`${process.env.PUBLIC_URL}/errors/404-modern`} component={Error404Modern}></Route>
-      <Route exact path={`${process.env.PUBLIC_URL}/errors/504-classic`} component={Error504Classic}></Route>
-
-      {/*Main Routes*/}
-      <PrivateRoute exact path="" component={Layout}></PrivateRoute>
-      <Route component={RedirectAs404}></Route>
-    </Switch>
+          {/*Main Routes*/}
+          <PrivateRoute exact path="" component={Layout}></PrivateRoute>
+          <Route component={RedirectAs404}></Route>
+        </Switch>
+      </QueryClientProvider>
+    </>
   );
 };
 export default withRouter(App);

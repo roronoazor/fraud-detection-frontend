@@ -7,16 +7,15 @@
   flex-direction: column;
 
   // No need to set list-style: none; since .list-group-item is block level
-  @if($rtl==false){
+  @if ($rtl==false) {
     padding-left: 0; // reset padding because ul and ol
   }
-  @if($rtl==true){
+  @if ($rtl==true) {
     padding-right: 0; // reset padding because ul and ol
   }
   margin-bottom: 0;
   @include border-radius($list-group-border-radius);
 }
-
 
 // Interactive list items
 //
@@ -41,7 +40,6 @@
     background-color: $list-group-action-active-bg;
   }
 }
-
 
 // Individual list items
 //
@@ -89,7 +87,6 @@
   }
 }
 
-
 // Horizontal
 //
 // Change the layout of list group items from vertical (default) to horizontal.
@@ -118,18 +115,18 @@
 
         & + .list-group-item {
           border-top-width: $list-group-border-width;
-          @if($rtl==false){
+          @if ($rtl==false) {
             border-left-width: 0;
           }
-          @if($rtl==true){
+          @if ($rtl==true) {
             border-right-width: 0;
           }
           &.active {
-            @if($rtl==false){
+            @if ($rtl==false) {
               margin-left: -$list-group-border-width;
               border-left-width: $list-group-border-width;
             }
-            @if($rtl==true){
+            @if ($rtl==true) {
               margin-right: -$list-group-border-width;
               border-right-width: $list-group-border-width;
             }
@@ -139,7 +136,6 @@
     }
   }
 }
-
 
 // Flush list items
 //
@@ -157,7 +153,6 @@
     }
   }
 }
-
 
 // Contextual variants
 //

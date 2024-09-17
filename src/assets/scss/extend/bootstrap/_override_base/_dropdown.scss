@@ -20,11 +20,11 @@
   left: 0;
   z-index: $zindex-dropdown;
   display: none; // none by default, but block on "open" of the menu
-  @if($rtl==false){
+  @if ($rtl==false) {
     float: left;
     text-align: left; // Ensures proper alignment if parent has it changed (e.g., modal footer)
   }
-  @if($rtl==true){
+  @if ($rtl==true) {
     float: right;
     text-align: right; // Ensures proper alignment if parent has it changed (e.g., modal footer)
   }
@@ -46,22 +46,22 @@
     $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
 
     .dropdown-menu#{$infix}-left {
-      @if($rtl==false){
+      @if ($rtl==false) {
         right: auto;
         left: 0;
       }
-      @if($rtl==true){
+      @if ($rtl==true) {
         right: 0;
         left: auto;
       }
     }
 
     .dropdown-menu#{$infix}-right {
-      @if($rtl==false){
+      @if ($rtl==false) {
         right: 0;
         left: auto;
       }
-      @if($rtl==true){
+      @if ($rtl==true) {
         right: auto;
         left: 0;
       }
@@ -88,12 +88,12 @@
   .dropdown-menu {
     top: 0;
     margin-top: 0;
-    @if($rtl==false){
+    @if ($rtl==false) {
       right: auto;
       left: 100%;
       margin-left: $dropdown-spacer;
     }
-    @if($rtl==true){
+    @if ($rtl==true) {
       right: 100%;
       left: auto;
       margin-right: $dropdown-spacer;
@@ -112,12 +112,12 @@
   .dropdown-menu {
     top: 0;
     margin-top: 0;
-    @if($rtl==false){
+    @if ($rtl==false) {
       right: 100%;
       left: auto;
       margin-right: $dropdown-spacer;
     }
-    @if($rtl==true){
+    @if ($rtl==true) {
       right: auto;
       left: 100%;
       margin-left: $dropdown-spacer;
@@ -139,10 +139,10 @@
   &[x-placement^="right"],
   &[x-placement^="bottom"],
   &[x-placement^="left"] {
-    @if($rtl==false){
+    @if ($rtl==false) {
       right: auto;
     }
-    @if($rtl==true){
+    @if ($rtl==true) {
       left: auto;
     }
     bottom: auto;

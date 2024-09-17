@@ -3,13 +3,13 @@
 
 // Page Title
 .page-title {
-    font-family: $page-title-ff;
-    font-size: $page-title-fs;
-    font-weight: $page-title-fw;
+  font-family: $page-title-ff;
+  font-size: $page-title-fs;
+  font-weight: $page-title-fw;
 }
 
 @media (min-width: 992px) {
-    .page-title {
-        font-size: $page-title-fs-lg;
-    }
+  .page-title {
+    font-size: $page-title-fs-lg;
+  }
 }

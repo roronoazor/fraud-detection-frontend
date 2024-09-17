@@ -2,7 +2,7 @@
 ///        INCLUDED THIRD-PARTY VENDORS         ///
 ///////////////////////////////////////////////////
 
-// Include NioIcon 
+// Include NioIcon
 @import "nioicon/nioicon";
 
 //FontAwesome Icons
@@ -20,7 +20,7 @@
 // $bi-font-path : "../fonts";
 // @import "bootstrap-icons/bootstrap-icons";
 
-// Include Prettify 
+// Include Prettify
 @import "prettify";
 
 // Include React Beautiful dnd
@@ -29,7 +29,7 @@
 // Include Simplebar
 @import "simplebar";
 .simplebar-scroll-content {
-	@extend .simplebar-content-wrapper;
+  @extend .simplebar-content-wrapper;
 }
 
 // Include Slick

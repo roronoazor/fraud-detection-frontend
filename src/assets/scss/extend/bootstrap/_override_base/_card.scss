@@ -28,7 +28,7 @@
       @include border-top-radius($card-inner-border-radius);
     }
 
-    &:last-child  {
+    &:last-child {
       border-bottom-width: 0;
       @include border-bottom-radius($card-inner-border-radius);
     }
@@ -72,10 +72,10 @@
   }
 
   + .card-link {
-    @if($rtl==false){
+    @if ($rtl==false) {
       margin-left: $card-spacer-x;
     }
-    @if($rtl==true){
+    @if ($rtl==true) {
       margin-right: $card-spacer-x;
     }
   }
@@ -107,7 +107,6 @@
     @include border-radius(0 0 $card-inner-border-radius $card-inner-border-radius);
   }
 }
-
 
 //
 // Header navs
@@ -153,7 +152,6 @@
   @include border-bottom-radius($card-inner-border-radius);
 }
 
-
 // Card deck
 
 .card-deck {
@@ -176,7 +174,6 @@
     }
   }
 }
-
 
 //
 // Card groups
@@ -207,10 +204,10 @@
       // Handle rounded corners
       @if $enable-rounded {
         &:not(:last-child) {
-          @if($rtl==false){
+          @if ($rtl==false) {
             @include border-right-radius(0);
           }
-          @if($rtl==true){
+          @if ($rtl==true) {
             @include border-left-radius(0);
           }
           .card-img-top,
@@ -226,10 +223,10 @@
         }
 
         &:not(:first-child) {
-          @if($rtl==false){
+          @if ($rtl==false) {
             @include border-left-radius(0);
           }
-          @if($rtl==true){
+          @if ($rtl==true) {
             @include border-right-radius(0);
           }
           .card-img-top,
@@ -247,7 +244,6 @@
     }
   }
 }
-
 
 //
 // Columns
@@ -270,7 +266,6 @@
     }
   }
 }
-
 
 //
 // Accordion

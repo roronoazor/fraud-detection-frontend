@@ -1,9 +1,9 @@
-$image_throbber : "../../../images/jsTree/throbber.gif";
-$image_throbber_dark : "../../../images/jsTree/throbber-dark.gif";
-$image_32 : "../../../images/jsTree/32px.png";
-$image_32_dark : "../../../images/jsTree/32px-dark.png";
-$image_40 : "../../../images/jsTree/40px.png";
-$image_40_dark : "../../../images/jsTree/40px-dark.png";
+$image_throbber: "../../../images/jsTree/throbber.gif";
+$image_throbber_dark: "../../../images/jsTree/throbber-dark.gif";
+$image_32: "../../../images/jsTree/32px.png";
+$image_32_dark: "../../../images/jsTree/32px-dark.png";
+$image_40: "../../../images/jsTree/40px.png";
+$image_40_dark: "../../../images/jsTree/40px-dark.png";
 /* jsTree default theme */
 .jstree-node,
 .jstree-children,
@@ -123,10 +123,10 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
 .vakata-context,
 .vakata-context ul {
   margin: 0;
-  padding: .5rem 0;
+  padding: 0.5rem 0;
   position: absolute;
   background-color: $dropdown-bg;
-  border-radius:$dropdown-border-radius;
+  border-radius: $dropdown-border-radius;
   border: $dropdown-border-width solid $dropdown-border-color;
   box-shadow: $dropdown-box-shadow;
   min-width: $dropdown-width-sm;
@@ -158,8 +158,8 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
 }
 .vakata-context li > a:hover {
   position: relative;
-  color: $accent-color; 
-  background: $lighter; 
+  color: $accent-color;
+  background: $lighter;
   box-shadow: none;
 }
 .vakata-context li > a.vakata-context-parent {
@@ -172,8 +172,8 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
 }
 .vakata-context .vakata-context-hover > a {
   position: relative;
-  color: $accent-color; 
-  background: $lighter; 
+  color: $accent-color;
+  background: $lighter;
   box-shadow: none;
 }
 .vakata-context .vakata-context-separator > a,
@@ -308,26 +308,28 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
 .jstree-default .jstree-anchor,
 .jstree-default .jstree-animated,
 .jstree-default .jstree-wholerow {
-  transition: background-color 0.15s, box-shadow 0.15s !important; 
+  transition:
+    background-color 0.15s,
+    box-shadow 0.15s !important;
 }
 .jstree-default .jstree-hovered {
   background: $lighter !important;
   border-radius: 2px !important;
-  .dark-mode &{
+  .dark-mode & {
     background: lighten($darker, 10%) !important;
   }
 }
 .jstree-default .jstree-context {
   background: $lighter !important;
   border-radius: 2px !important;
-  .dark-mode &{
+  .dark-mode & {
     background: lighten($darker, 12%);
   }
 }
 .jstree-default .jstree-clicked {
   background: $light !important;
   border-radius: 2px !important;
-  .dark-mode &{
+  .dark-mode & {
     background: lighten($darker, 10%) !important;
   }
 }
@@ -337,7 +339,7 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
 .jstree-default .jstree-disabled {
   background: transparent !important;
   color: #666666 !important;
-  .dark-mode &{
+  .dark-mode & {
     color: $text-off !important;
   }
 }
@@ -350,7 +352,7 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
 }
 .jstree-default .jstree-disabled > .jstree-icon {
   opacity: 0.8;
-  filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'jstree-grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#jstree-grayscale") !important;
+  filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='jstree-grayscale'><feColorMatrix type='matrix' values='0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0'/></filter></svg>#jstree-grayscale") !important;
   /* Firefox 10+ */
   filter: gray;
   /* IE6-9 */
@@ -367,7 +369,7 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
 }
 .jstree-default.jstree-checkbox-no-clicked .jstree-clicked {
   background: transparent;
-  box-shadow: none ;
+  box-shadow: none;
 }
 .jstree-default.jstree-checkbox-no-clicked .jstree-clicked.jstree-hovered {
   background: #e7f4f9;
@@ -381,7 +383,8 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
 .jstree-default > .jstree-striped {
   min-width: 100%;
   display: inline-block;
-  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAkCAMAAAB/qqA+AAAABlBMVEUAAAAAAAClZ7nPAAAAAnRSTlMNAMM9s3UAAAAXSURBVHjajcEBAQAAAIKg/H/aCQZ70AUBjAATb6YPDgAAAABJRU5ErkJggg==") left top repeat;
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAkCAMAAAB/qqA+AAAABlBMVEUAAAAAAAClZ7nPAAAAAnRSTlMNAMM9s3UAAAAXSURBVHjajcEBAQAAAIKg/H/aCQZ70AUBjAATb6YPDgAAAABJRU5ErkJggg==")
+    left top repeat;
 }
 .jstree-default > .jstree-wholerow-ul .jstree-hovered,
 .jstree-default > .jstree-wholerow-ul .jstree-clicked {
@@ -396,13 +399,13 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
 }
 .jstree-default .jstree-wholerow-hovered {
   background: $lighter !important;
-  .dark-mode &{
+  .dark-mode & {
     background: lighten($darker, 8%) !important;
   }
 }
 .jstree-default .jstree-wholerow-clicked {
   background: $lighter !important;
-  .dark-mode &{
+  .dark-mode & {
     background: lighten($darker, 8%) !important;
   }
 }
@@ -495,7 +498,7 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
   background-position: -196px -36px !important;
 }
 
-.dark-mode{ 
+.dark-mode {
   .jstree-default .jstree-node,
   .jstree-default .jstree-icon {
     background-image: url($image_32_dark) !important;
@@ -536,7 +539,7 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
     background: transparent !important;
   }
   .jstree-default .jstree-disabled.jstree-clicked {
-    background: lighten($darker,5%) !important;
+    background: lighten($darker, 5%) !important;
   }
   .jstree-default .jstree-checkbox {
     background-position: -164px -4px !important;
@@ -560,10 +563,9 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
   }
 }
 
-
 .jstree-default .jstree-checkbox-disabled {
   opacity: 0.8;
-  filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'jstree-grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#jstree-grayscale");
+  filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='jstree-grayscale'><feColorMatrix type='matrix' values='0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0'/></filter></svg>#jstree-grayscale");
   /* Firefox 10+ */
   filter: gray;
   /* IE6-9 */
@@ -605,28 +607,28 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
   background-position: 0 0 !important;
   margin-right: 0 !important;
   background-image: none !important;
-  .dark-mode &{
+  .dark-mode & {
     background-image: none !important;
   }
-  &.icon{
+  &.icon {
     font-size: 1rem !important;
   }
 }
 .jstree-default > .jstree-container-ul .jstree-loading > .jstree-ocl {
   background: url($image_throbber) center center no-repeat !important;
-  .dark-mode &{ 
+  .dark-mode & {
     background: url($image_throbber_dark) center center no-repeat !important;
   }
 }
 .jstree-default .jstree-file {
   background: url($image_32) -100px -68px no-repeat !important;
-  .dark-mode &{ 
+  .dark-mode & {
     background: url($image_32_dark) -100px -68px no-repeat !important;
   }
 }
 .jstree-default .jstree-folder {
   background: url($image_32) -260px -4px no-repeat !important;
-  .dark-mode &{ 
+  .dark-mode & {
     background: url($image_32_dark) -260px -4px no-repeat !important;
   }
 }
@@ -643,7 +645,7 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
   background-image: url($image_32) !important;
   background-repeat: no-repeat;
   background-color: transparent;
-  .dark-mode &{ 
+  .dark-mode & {
     background-image: url($image_32_dark) !important;
     background-repeat: no-repeat;
     background-color: transparent;
@@ -661,7 +663,7 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
 #jstree-dnd.jstree-default .jstree-er {
   background-position: -36px -68px;
 }
-.dark-mode{ 
+.dark-mode {
   #jstree-dnd.jstree-default .jstree-ok {
     background-position: -4px -68px;
   }
@@ -771,7 +773,7 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
 .jstree-default-small .jstree-anchor > .jstree-undetermined:hover {
   background-position: -199px -39px;
 }
-.dark-mode{ 
+.dark-mode {
   .jstree-default-small .jstree-node,
   .jstree-default-small .jstree-icon {
     background-image: url($image_32_dark) !important;
@@ -837,7 +839,7 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
 }
 .jstree-default-small .jstree-checkbox-disabled {
   opacity: 0.8;
-  filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'jstree-grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#jstree-grayscale");
+  filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='jstree-grayscale'><feColorMatrix type='matrix' values='0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0'/></filter></svg>#jstree-grayscale");
   /* Firefox 10+ */
   filter: gray;
   /* IE6-9 */
@@ -881,19 +883,19 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
 }
 .jstree-default-small > .jstree-container-ul .jstree-loading > .jstree-ocl {
   background: url($image_throbber) center center no-repeat;
-  .dark-mode &{ 
+  .dark-mode & {
     background: url($image_throbber_dark) center center no-repeat;
   }
 }
 .jstree-default-small .jstree-file {
   background: url($image_32) -103px -71px no-repeat;
-  .dark-mode &{ 
+  .dark-mode & {
     background: url($image_32_dark) -103px -71px no-repeat !important;
   }
 }
 .jstree-default-small .jstree-folder {
   background: url($image_32) -263px -7px no-repeat;
-  .dark-mode &{ 
+  .dark-mode & {
     background: url($image_32_dark) -263px -7px no-repeat !important;
   }
 }
@@ -910,7 +912,7 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
   background-image: url($image_32);
   background-repeat: no-repeat;
   background-color: transparent;
-  .dark-mode &{ 
+  .dark-mode & {
     background-image: url($image_32_dark) !important;
     background-repeat: no-repeat;
     background-color: transparent;
@@ -928,7 +930,7 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
 #jstree-dnd.jstree-default-small .jstree-er {
   background-position: -39px -71px;
 }
-.dark-mode{ 
+.dark-mode {
   #jstree-dnd.jstree-default-small .jstree-ok {
     background-position: -7px -71px;
   }
@@ -1038,7 +1040,7 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
 .jstree-default-large .jstree-anchor > .jstree-undetermined:hover {
   background-position: -192px -32px;
 }
-.dark-mode{ 
+.dark-mode {
   .jstree-default-large .jstree-node,
   .jstree-default-large .jstree-icon {
     background-image: url($image_32_dark) !important;
@@ -1104,7 +1106,7 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
 }
 .jstree-default-large .jstree-checkbox-disabled {
   opacity: 0.8;
-  filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'jstree-grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#jstree-grayscale");
+  filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='jstree-grayscale'><feColorMatrix type='matrix' values='0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0'/></filter></svg>#jstree-grayscale");
   /* Firefox 10+ */
   filter: gray;
   /* IE6-9 */
@@ -1148,19 +1150,19 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
 }
 .jstree-default-large > .jstree-container-ul .jstree-loading > .jstree-ocl {
   background: url($image_throbber) center center no-repeat;
-  .dark-mode &{ 
+  .dark-mode & {
     background: url($image_throbber_dark) center center no-repeat;
   }
 }
 .jstree-default-large .jstree-file {
   background: url($image_32) -96px -64px no-repeat;
-  .dark-mode &{ 
+  .dark-mode & {
     background: url($image_32_dark) -96px -64px no-repeat;
   }
 }
 .jstree-default-large .jstree-folder {
   background: url($image_32) -256px 0px no-repeat;
-  .dark-mode &{ 
+  .dark-mode & {
     background: url($image_32_dark) -256px 0px no-repeat;
   }
 }
@@ -1177,7 +1179,7 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
   background-image: url($image_32);
   background-repeat: no-repeat;
   background-color: transparent;
-  .dark-mode &{ 
+  .dark-mode & {
     background-image: url($image_32_dark);
     background-repeat: no-repeat;
     background-color: transparent;
@@ -1195,7 +1197,7 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
 #jstree-dnd.jstree-default-large .jstree-er {
   background-position: -32px -64px;
 }
-.dark-mode { 
+.dark-mode {
   #jstree-dnd.jstree-default-large .jstree-ok {
     background-position: 0px -64px;
   }
@@ -1233,7 +1235,7 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
     background-image: url($image_40);
     background-position: 0 -200px;
     background-size: 120px 240px;
-    .dark-mode &{ 
+    .dark-mode & {
       background-image: url($image_40_dark);
       background-position: 0 -200px;
       background-size: 120px 240px;
@@ -1243,7 +1245,7 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
     background-image: url($image_40);
     background-position: -40px -200px;
     background-size: 120px 240px;
-    .dark-mode &{ 
+    .dark-mode & {
       background-image: url($image_40_dark);
       background-position: -40px -200px;
       background-size: 120px 240px;
@@ -1265,7 +1267,7 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
   }
   .jstree-default-responsive .jstree-icon {
     background-image: url($image_40) !important;
-    .dark-mode &{ 
+    .dark-mode & {
       background-image: url($image_40_dark) !important;
     }
   }
@@ -1336,7 +1338,7 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
   .jstree-default-responsive .jstree-anchor > .jstree-undetermined:hover {
     background-position: 0 -120px;
   }
-  .dark-mode{ 
+  .dark-mode {
     .jstree-default-responsive .jstree-ocl,
     .jstree-default-responsive .jstree-themeicon,
     .jstree-default-responsive .jstree-checkbox {
@@ -1390,7 +1392,8 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
   .jstree-default-responsive .jstree-wholerow-hovered {
     background: transparent !important;
   }
-  .jstree-default-responsive .jstree-wholerow-clicked,.jstree-default-responsive .jstree-wholerow-clicked:hover  {
+  .jstree-default-responsive .jstree-wholerow-clicked,
+  .jstree-default-responsive .jstree-wholerow-clicked:hover {
     background: #beebff !important;
   }
   .jstree-default-responsive .jstree-children .jstree-last > .jstree-wholerow {
@@ -1437,7 +1440,7 @@ $image_40_dark : "../../../images/jsTree/40px-dark.png";
     background: url($image_40) -40px -40px no-repeat !important;
     background-size: 120px 240px !important;
   }
-  .dark-mode{ 
+  .dark-mode {
     .jstree-default-responsive .jstree-node,
     .jstree-default-responsive .jstree-icon,
     .jstree-default-responsive .jstree-node > .jstree-ocl,

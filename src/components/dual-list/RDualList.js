@@ -40,12 +40,13 @@ const buttonIcon = {
   moveBottom: <span className="fa fa-double-angle-down" />,
 };
 
-const ReactDualList = ({ options, icon, canFilter, preSelected }) => {
+const ReactDualList = ({ options, icon, canFilter, preSelected, setValues = () => {} }) => {
   const [data, setData] = useState(options);
   const [filterText, setFilterText] = useState("");
   const [selected, setSelected] = useState(preSelected ? preSelected : []);
   const onListChange = (selected) => {
     setSelected(selected);
+    setValues(selected);
   };
 
   // Filtering users by search

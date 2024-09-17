@@ -54,13 +54,13 @@ const InboxAside = ({
           item.message.meta[tab.toLowerCase()] === true &&
           item.message.meta.trash !== true &&
           item.message.meta.archive !== true &&
-          item.message.meta.unread !== true
+          item.message.meta.unread !== true,
       );
       return defaultData.length;
     } else if (tab === "Draft") {
       let defaultData = data.filter(
         (item) =>
-          item.message.meta.draft === true && item.message.meta.trash !== true && item.message.meta.archive !== true
+          item.message.meta.draft === true && item.message.meta.trash !== true && item.message.meta.archive !== true,
       );
       return defaultData.length;
     } else if (tab === "Archive") {

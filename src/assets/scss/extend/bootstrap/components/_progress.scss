@@ -1,106 +1,106 @@
-.progress{
-    &-bar{
-        height: 100%;
-        line-height: 1;
+.progress {
+  &-bar {
+    height: 100%;
+    line-height: 1;
+  }
+  &-sm {
+    height: 0.25rem;
+  }
+  &-md {
+    height: 0.375rem;
+  }
+  &-lg {
+    height: 1rem;
+  }
+  &-pill {
+    border-radius: 100px;
+    .progress-bar {
+      @extend .progress-pill;
     }
-    &-sm{
-        height:.25rem;
-    }
-    &-md{
-        height:.375rem;
-    }
-    &-lg{
-        height:1rem;
-    }
-    &-pill{
-        border-radius: 100px;
-        .progress-bar{
-            @extend .progress-pill;
-        }
-    }
-    
-    &-text{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        color: $base-light;
-        margin-bottom: 0.25rem;
-    }
-    &-label{
-        font-size: 0.875rem;
-    }
-    &-amount{
-        font-size: $fx-sz-12;
-        @if($rtl==false){
-            padding-left: .5rem;
-        }
-        @if($rtl==true){
-            padding-right: .5rem;
-        }
-    }
+  }
 
-    &-alt{
-        display: flex;
-        align-items: center;
-        overflow: visible;
-        .progress-bar{
-            border-radius: $progress-border-radius;
-        }
+  &-text {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: $base-light;
+    margin-bottom: 0.25rem;
+  }
+  &-label {
+    font-size: 0.875rem;
+  }
+  &-amount {
+    font-size: $fx-sz-12;
+    @if ($rtl==false) {
+      padding-left: 0.5rem;
     }
+    @if ($rtl==true) {
+      padding-right: 0.5rem;
+    }
+  }
 
-    &-reverse{
-        flex-direction: row-reverse;
+  &-alt {
+    display: flex;
+    align-items: center;
+    overflow: visible;
+    .progress-bar {
+      border-radius: $progress-border-radius;
     }
-    &-bordered{
-        .progress-bar{
-            margin-top: -2px;
-            border:2px solid $white;
-            box-sizing: content-box;
-            &:not(:first-child){
-                @if($rtl==false){
-                    margin-left: -4px;
-                }
-                @if($rtl==true){
-                    margin-right: -4px;
-                }
-            }
+  }
+
+  &-reverse {
+    flex-direction: row-reverse;
+  }
+  &-bordered {
+    .progress-bar {
+      margin-top: -2px;
+      border: 2px solid $white;
+      box-sizing: content-box;
+      &:not(:first-child) {
+        @if ($rtl==false) {
+          margin-left: -4px;
         }
-        &.progress-reverse {
-            .progress-bar{
-                @if($rtl==false){
-                    margin-left: 0;
-                }
-                @if($rtl==true){
-                    margin-right: 0;
-                }
-                &:not(:last-child){
-                    @if($rtl==false){
-                        margin-left: -5px;
-                    }
-                    @if($rtl==true){
-                        margin-right: -5px;
-                    }
-                }
-            }
+        @if ($rtl==true) {
+          margin-right: -4px;
         }
+      }
     }
-    //@e-290
-    &-rating{
-        display: flex;
-        align-items: center;
-        &-title{
-            width: 48px;
-            flex-grow: 0;
-            line-height: 1.25rem;
+    &.progress-reverse {
+      .progress-bar {
+        @if ($rtl==false) {
+          margin-left: 0;
         }
-        &-percent{
-            width: 40px;
-            // flex-grow: 0;
-            line-height: 1.25rem;
-            text-align: right;
+        @if ($rtl==true) {
+          margin-right: 0;
         }
-        .progress{
-            flex-grow: 1;
+        &:not(:last-child) {
+          @if ($rtl==false) {
+            margin-left: -5px;
+          }
+          @if ($rtl==true) {
+            margin-right: -5px;
+          }
         }
+      }
     }
+  }
+  //@e-290
+  &-rating {
+    display: flex;
+    align-items: center;
+    &-title {
+      width: 48px;
+      flex-grow: 0;
+      line-height: 1.25rem;
+    }
+    &-percent {
+      width: 40px;
+      // flex-grow: 0;
+      line-height: 1.25rem;
+      text-align: right;
+    }
+    .progress {
+      flex-grow: 1;
+    }
+  }
 }

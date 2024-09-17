@@ -24,7 +24,11 @@ const BadgesPage = () => {
               <p className="lead">
                 Documentation and examples for badges, our small count and labeling component. To use it, import it such
                 as <code>import {`{Badge}`} from "reactstrap"</code>. Visit the{" "}
-                <a href={"https://deploy-preview-2356--reactstrap.netlify.app/components/badge"} target="_blank" rel="noreferrer">
+                <a
+                  href={"https://deploy-preview-2356--reactstrap.netlify.app/components/badge"}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Reactstrap
                 </a>{" "}
                 library for detailed instructions.

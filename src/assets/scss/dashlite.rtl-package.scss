@@ -44,18 +44,18 @@ $rtl: true;
 @import "global/style";
 
 //////  APPLICATONS - Common Uses
-@import "apps/asterisk"; 
-@import "apps/reply-comment"; 
-@import "apps/attach"; 
+@import "apps/asterisk";
+@import "apps/reply-comment";
+@import "apps/attach";
 
 //////  Apps
-@import "apps/messages";  		// - Support Messages
-@import "apps/inbox";  			// - Inbox/ Mail App
-@import "apps/file-manager";  	// - File Manager
-@import "apps/chats";  			// - Chats
+@import "apps/messages"; // - Support Messages
+@import "apps/inbox"; // - Inbox/ Mail App
+@import "apps/file-manager"; // - File Manager
+@import "apps/chats"; // - Chats
 
-///////  PREVIEW PURPOSE 
-@import "core/preview";			// Can be remove on real projoect
+///////  PREVIEW PURPOSE
+@import "core/preview"; // Can be remove on real projoect
 
 ///////  UI/MODE OVERRIDE
 @import "core/mode-override";

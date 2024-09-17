@@ -9,40 +9,56 @@ import {
   Icon,
   PreviewCard,
 } from "../../components/Component";
-import Logo from "../../images/logo.png";
-import LogoDark from "../../images/logo-dark.png";
+
 import { Form, FormGroup, Spinner, Alert } from "reactstrap";
 import PageContainer from "../../layout/page-container/PageContainer";
 import Head from "../../layout/head/Head";
-import AuthFooter from "./AuthFooter";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { LOGIN_URL } from "../../config/urls";
+import { useDispatch } from "react-redux";
+import { login } from "../../modules/auth/redux/authSlice";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const [passState, setPassState] = useState(false);
   const [errorVal, setError] = useState("");
+  const dispatch = useDispatch();
 
   const onFormSubmit = (formData) => {
     setLoading(true);
-    const loginName = "info@softnio.com";
-    const pass = "123456";
-    if (formData.name === loginName && formData.passcode === pass) {
-      localStorage.setItem("accessToken", "token");
-      setTimeout(() => {
-        window.history.pushState(
-          `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/"}`,
-          "auth-login",
-          `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/"}`
-        );
-        window.location.reload();
-      }, 2000);
-    } else {
-      setTimeout(() => {
-        setError("Cannot login with credentials");
+    const payload = {
+      email: formData.name,
+      password: formData.passcode,
+    };
+
+    axios
+      .post(LOGIN_URL, payload)
+      .then((response) => {
+        if (response.status === 200) {
+          dispatch(login({ token: response.data.token, authUser: response.data.user }));
+          setLoading(false);
+          setTimeout(() => {
+            window.history.pushState(
+              `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/dashboard/admin"}`,
+              "auth-login",
+              `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/dashboard/admin"}`,
+            );
+            window.location.reload();
+          }, 500);
+        } else {
+          setTimeout(() => {
+            setError("Cannot login with credentials");
+            setLoading(false);
+          }, 500);
+        }
+      })
+      .catch((error) => {
+        const message = error?.response?.data?.detail || "An error occured while logging in";
+        setError(message);
         setLoading(false);
-      }, 2000);
-    }
+      });
   };
 
   const { errors, register, handleSubmit } = useForm();
@@ -52,27 +68,17 @@ const Login = () => {
       <Head title="Login" />
       <PageContainer>
         <Block className="nk-block-middle nk-auth-body  wide-xs">
-          <div className="brand-logo pb-4 text-center">
-            <Link to={process.env.PUBLIC_URL + "/"} className="logo-link">
-              <img className="logo-light logo-img logo-img-lg" src={Logo} alt="logo" />
-              <img className="logo-dark logo-img logo-img-lg" src={LogoDark} alt="logo-dark" />
-            </Link>
-          </div>
-
           <PreviewCard className="card-bordered" bodyClass="card-inner-lg">
             <BlockHead>
               <BlockContent>
                 <BlockTitle tag="h4">Sign-In</BlockTitle>
-                <BlockDes>
-                  <p>Access Dashlite using your email and passcode.</p>
-                </BlockDes>
               </BlockContent>
             </BlockHead>
             {errorVal && (
               <div className="mb-3">
                 <Alert color="danger" className="alert-icon">
                   {" "}
-                  <Icon name="alert-circle" /> Unable to login with credentials{" "}
+                  <Icon name="alert-circle" /> {`${errorVal}`}
                 </Alert>
               </div>
             )}
@@ -80,7 +86,7 @@ const Login = () => {
               <FormGroup>
                 <div className="form-label-group">
                   <label className="form-label" htmlFor="default-01">
-                    Email or Username
+                    Email
                   </label>
                 </div>
                 <div className="form-control-wrap">
@@ -89,8 +95,7 @@ const Login = () => {
                     id="default-01"
                     name="name"
                     ref={register({ required: "This field is required" })}
-                    defaultValue="info@softnio.com"
-                    placeholder="Enter your email address or username"
+                    placeholder="Enter your email address"
                     className="form-control-lg form-control"
                   />
                   {errors.name && <span className="invalid">{errors.name.message}</span>}
@@ -122,7 +127,6 @@ const Login = () => {
                     type={passState ? "text" : "password"}
                     id="password"
                     name="passcode"
-                    defaultValue="123456"
                     ref={register({ required: "This field is required" })}
                     placeholder="Enter your passcode"
                     className={`form-control-lg form-control ${passState ? "is-hidden" : "is-shown"}`}
@@ -140,38 +144,8 @@ const Login = () => {
               {" "}
               New on our platform? <Link to={`${process.env.PUBLIC_URL}/auth-register`}>Create an account</Link>
             </div>
-            <div className="text-center pt-4 pb-3">
-              <h6 className="overline-title overline-title-sap">
-                <span>OR</span>
-              </h6>
-            </div>
-            <ul className="nav justify-center gx-4">
-              <li className="nav-item">
-                <a
-                  className="nav-link"
-                  href="#socials"
-                  onClick={(ev) => {
-                    ev.preventDefault();
-                  }}
-                >
-                  Facebook
-                </a>
-              </li>
-              <li className="nav-item">
-                <a
-                  className="nav-link"
-                  href="#socials"
-                  onClick={(ev) => {
-                    ev.preventDefault();
-                  }}
-                >
-                  Google
-                </a>
-              </li>
-            </ul>
           </PreviewCard>
         </Block>
-        <AuthFooter />
       </PageContainer>
     </React.Fragment>
   );

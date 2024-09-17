@@ -633,7 +633,13 @@ export const ProjectListPage = () => {
                         </Button>
                       </li>
                       <li>
-                        <Button  onClick={(ev) => {ev.preventDefault(); onFormCancel()}} className="link link-light">
+                        <Button
+                          onClick={(ev) => {
+                            ev.preventDefault();
+                            onFormCancel();
+                          }}
+                          className="link link-light"
+                        >
                           Cancel
                         </Button>
                       </li>
@@ -784,7 +790,13 @@ export const ProjectListPage = () => {
                         </Button>
                       </li>
                       <li>
-                        <Button  onClick={(ev) => {ev.preventDefault(); onFormCancel()}} className="link link-light">
+                        <Button
+                          onClick={(ev) => {
+                            ev.preventDefault();
+                            onFormCancel();
+                          }}
+                          className="link link-light"
+                        >
                           Cancel
                         </Button>
                       </li>

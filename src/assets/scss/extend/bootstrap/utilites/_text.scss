@@ -1,23 +1,24 @@
 @mixin text-color-class($class, $color) {
-    #{$class} {
-      color: $color !important;
-    }
-    @if $emphasized-link-hover-darken-percentage != 0 {
-      a#{$class} {
-        &:hover,&:focus {
-          color: darken($color, $emphasized-link-hover-darken-percentage) !important;
-        }
+  #{$class} {
+    color: $color !important;
+  }
+  @if $emphasized-link-hover-darken-percentage != 0 {
+    a#{$class} {
+      &:hover,
+      &:focus {
+        color: darken($color, $emphasized-link-hover-darken-percentage) !important;
       }
     }
+  }
 }
-.text{
-  &-soft{
+.text {
+  &-soft {
     color: $base-light !important;
   }
-  &-base{
+  &-base {
     color: $base-text !important;
   }
-  &-head{
+  &-head {
     color: $base-color !important;
   }
 }

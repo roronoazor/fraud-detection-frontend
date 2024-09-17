@@ -1,76 +1,76 @@
-.attach{
-    &-files{
-        margin-top: 1.75rem;
-        border:1px solid $border-light;
-        border-radius: $border-radius;
+.attach {
+  &-files {
+    margin-top: 1.75rem;
+    border: 1px solid $border-light;
+    border-radius: $border-radius;
+  }
+  &-list {
+    padding: 1rem 1.25rem;
+    margin-bottom: -0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &-item {
+    width: 180px;
+    @if ($rtl==false) {
+      padding-right: 2rem;
     }
-    &-list{
-        padding: 1rem 1.25rem;
-        margin-bottom: -.5rem;
-        display: flex;
-        flex-wrap: wrap;
+    @if ($rtl==true) {
+      padding-left: 2rem;
     }
-    &-item{
-        width: 180px;
-        @if($rtl==false){
-            padding-right: 2rem;
-        }
-        @if($rtl==true){
-            padding-left: 2rem;
-        }
-        padding-bottom: 0.5rem;
-        a{
-            display: flex;
-            align-items: center;
-            width: 100%;
-            color: $base-text;
-        }
-        .icon{
-            font-size: 1.5rem;
-            color: $accent-color;
-            @if($rtl==false){
-                margin-right: 0.75rem;
-            }
-            @if($rtl==true){
-                margin-left: 0.75rem;
-            }
-        }
-        span{
-            @extend .ellipsis;
-        }
+    padding-bottom: 0.5rem;
+    a {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      color: $base-text;
     }
-    &-foot{
-        border-top:1px solid $border-light;
-        background: $lighter;
-        padding: .75rem 1.25rem;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
+    .icon {
+      font-size: 1.5rem;
+      color: $accent-color;
+      @if ($rtl==false) {
+        margin-right: 0.75rem;
+      }
+      @if ($rtl==true) {
+        margin-left: 0.75rem;
+      }
     }
-    &-info{
-        font-weight: $fw-medium;
-        color: $base-color;
+    span {
+      @extend .ellipsis;
     }
-    &-download{
-        span{
-            color: $base-light;
-            transition: all .3s;
-        }
-        &:hover{
-            span{
-                color: $accent-color;
-            }
-        }
+  }
+  &-foot {
+    border-top: 1px solid $border-light;
+    background: $lighter;
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  &-info {
+    font-weight: $fw-medium;
+    color: $base-color;
+  }
+  &-download {
+    span {
+      color: $base-light;
+      transition: all 0.3s;
     }
+    &:hover {
+      span {
+        color: $accent-color;
+      }
+    }
+  }
 }
 
-@media (max-width:359px){
-    .attach{
-        &-info{
-            font-size: $fx-sz-12;
-        }
-        &-download{
-            font-size:  $fx-sz-12;
-        }
+@media (max-width: 359px) {
+  .attach {
+    &-info {
+      font-size: $fx-sz-12;
     }
+    &-download {
+      font-size: $fx-sz-12;
+    }
+  }
 }

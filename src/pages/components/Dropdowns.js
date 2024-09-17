@@ -29,7 +29,11 @@ const DropdownsPage = () => {
                 Toggle contextual overlays for displaying lists of links and more with the Bootstrap dropdown plugin. To
                 use the components, import it such as{" "}
                 <code>import {`{Dropdown, DropdownToggle, DropdownMenu}`} from "reactstrap"</code>. Visit the{" "}
-                <a href={"https://deploy-preview-2356--reactstrap.netlify.app/components/dropdowns"} target="_blank" rel="noreferrer">
+                <a
+                  href={"https://deploy-preview-2356--reactstrap.netlify.app/components/dropdowns"}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Reactstrap
                 </a>{" "}
                 library for detailed instructions.

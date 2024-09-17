@@ -25,7 +25,7 @@ const Inbox = () => {
         (item) =>
           item.message.meta[currentTab.toLowerCase()] === true &&
           item.message.meta.trash !== true &&
-          item.message.meta.archive !== true
+          item.message.meta.archive !== true,
       );
       setTimeout(() => setTabData([...defaultData]), 1);
     } else if (currentTab === "Archive") {
@@ -40,7 +40,7 @@ const Inbox = () => {
           item.message.meta.trash !== true &&
           item.message.meta.archive !== true &&
           item.message.meta.sent !== true &&
-          item.message.meta.draft !== true
+          item.message.meta.draft !== true,
       );
       setTabData([...defaultData]);
     } else {
@@ -58,7 +58,7 @@ const Inbox = () => {
         (item) =>
           item.message.meta.tags !== undefined &&
           item.message.meta.tags.length > 0 &&
-          item.message.meta.tags[0].text === filterLabel
+          item.message.meta.tags[0].text === filterLabel,
       );
     } else {
       defaultData = data.filter(
@@ -66,7 +66,7 @@ const Inbox = () => {
           item.message.meta.tags !== undefined &&
           item.message.meta.tags.length > 0 &&
           item.message.meta[currentTab.toLowerCase()] === true &&
-          item.message.meta.tags[0].text === filterLabel
+          item.message.meta.tags[0].text === filterLabel,
       );
     }
     setTabData([...defaultData]);

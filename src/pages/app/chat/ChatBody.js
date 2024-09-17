@@ -150,7 +150,7 @@ const ChatBody = ({ id, mobileView, setMobileView, setSelectedId }) => {
                 <div className="user-card">
                   {Uchat.group ? (
                     <div className="chat-media user-avatar user-avatar-multiple">
-                      {Uchat.user.map((user,index) => {
+                      {Uchat.user.map((user, index) => {
                         return (
                           <UserAvatar
                             theme={user.theme}

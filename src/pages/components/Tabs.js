@@ -53,7 +53,11 @@ const TabsPage = ({ ...props }) => {
               <p>
                 You can simply activate a tab or pill navigation, add <code>tabs</code> or <code>pills</code> props to{" "}
                 <code>Nav</code> component. Here is some basic tab component that you can use. Visit the{" "}
-                <a href={"https://deploy-preview-2356--reactstrap.netlify.app/components/tabs"} target="_blank" rel="noreferrer">
+                <a
+                  href={"https://deploy-preview-2356--reactstrap.netlify.app/components/tabs"}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Reactstrap
                 </a>{" "}
                 library for detailed instructions.

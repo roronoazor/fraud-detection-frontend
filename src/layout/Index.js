@@ -25,9 +25,16 @@ const Layout = () => {
     document.body.className = `nk-body has-apps-sidebar has-sidebar no-touch nk-nio-theme ${
       themeState.skin === "dark" ? "dark-mode" : ""
     }`;
-    let apps = menu.find((item) => item.text === "Applications");
-    let matched = apps.subMenu.find((sub) => process.env.PUBLIC_URL + sub.link === window.location.pathname);
-    if (matched) {
+    let apps = menu.find((item) => item.text === "Applications") ?? [];
+    let matched;
+    if (apps) {
+      matched =
+        (apps.subMenu ?? []).find((sub) => process.env.PUBLIC_URL + sub.link === window.location.pathname) ?? [];
+    } else {
+      matched = [];
+    }
+
+    if (matched && matched.length > 0) {
       setappComponent(matched);
       document.body.classList.remove("npc-default", "npc-apps-chat", "npc-apps-calendar", "npc-apps-messages");
       document.body.classList.add("npc-apps", "apps-only", "bg-white", `npc-apps-${matched.link.split("-")[1]}`);
@@ -38,7 +45,7 @@ const Layout = () => {
         "apps-only",
         "npc-apps-chat",
         "npc-apps-calendar",
-        "npc-apps-messages"
+        "npc-apps-messages",
       );
       document.body.classList.add("npc-default");
     }
@@ -84,14 +91,25 @@ const Layout = () => {
           <div className="nk-wrap">
             {appComponent ? (
               <React.Fragment>
-                <AppHeader fixed theme={themeState.header} app={appComponent} sidebarToggle={toggleSidebar} setVisibility={setVisibility}/>
+                <AppHeader
+                  fixed
+                  theme={themeState.header}
+                  app={appComponent}
+                  sidebarToggle={toggleSidebar}
+                  setVisibility={setVisibility}
+                />
                 {visibility && (
-                  <Sidebar sidebarToggle={toggleSidebar} theme={themeState.sidebar} mobileView={mobileView} className={sidebarClass} />
+                  <Sidebar
+                    sidebarToggle={toggleSidebar}
+                    theme={themeState.sidebar}
+                    mobileView={mobileView}
+                    className={sidebarClass}
+                  />
                 )}
               </React.Fragment>
             ) : (
               <React.Fragment>
-                 <Header fixed theme={themeState.header} sidebarToggle={toggleSidebar} setVisibility={setVisibility}/>
+                <Header fixed theme={themeState.header} sidebarToggle={toggleSidebar} setVisibility={setVisibility} />
                 <Sidebar
                   sidebarToggle={toggleSidebar}
                   theme={themeState.sidebar}

@@ -92,7 +92,7 @@ export const KanbanTaskForm = ({ toggle, data, setData, taskToBoard, editTask })
     delete defaultData.task[editTask.id];
 
     defaultData.columns[taskToBoard.id].tasks = defaultData.columns[taskToBoard.id].tasks.filter(
-      (item) => item !== editTask.id
+      (item) => item !== editTask.id,
     );
 
     setData({ ...defaultData });

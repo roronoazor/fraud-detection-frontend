@@ -1,8 +1,10 @@
-@include media-breakpoint-up(lg){
-    .npc-apps {
-        .nk-header,.nk-footer,.nk-content{
-            padding-left: 14px;
-            padding-right: 14px;
-        }
+@include media-breakpoint-up(lg) {
+  .npc-apps {
+    .nk-header,
+    .nk-footer,
+    .nk-content {
+      padding-left: 14px;
+      padding-right: 14px;
     }
+  }
 }

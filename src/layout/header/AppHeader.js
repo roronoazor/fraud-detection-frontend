@@ -33,12 +33,12 @@ const AppHeader = ({ fixed, theme, className, app, sidebarToggle, setVisibility 
           </div>
           <div className="nk-header-tools">
             <ul className="nk-quick-nav">
-              <li className="chats-dropdown hide-mb-xs" onClick={() => setVisibility(false)}>
+              {/* <li className="chats-dropdown hide-mb-xs" onClick={() => setVisibility(false)}>
                 <ChatDropdown />
-              </li>
-              <li className="notification-dropdown mr-n1" onClick={() => setVisibility(false)}>
+              </li> */}
+              {/* <li className="notification-dropdown mr-n1" onClick={() => setVisibility(false)}>
                 <Notification />
-              </li>
+              </li> */}
               <li className="list-apps-dropdown d-lg-none" onClick={() => setVisibility(false)}>
                 <AppDropdown />
               </li>

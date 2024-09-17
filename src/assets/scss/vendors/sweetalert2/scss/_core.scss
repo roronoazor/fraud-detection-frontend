@@ -125,21 +125,23 @@
     }
   }
 
-  @include not('.swal2-top',
-  '.swal2-top-start',
-  '.swal2-top-end',
-  '.swal2-top-left',
-  '.swal2-top-right',
-  '.swal2-center-start',
-  '.swal2-center-end',
-  '.swal2-center-left',
-  '.swal2-center-right',
-  '.swal2-bottom',
-  '.swal2-bottom-start',
-  '.swal2-bottom-end',
-  '.swal2-bottom-left',
-  '.swal2-bottom-right',
-  '.swal2-grow-fullscreen') {
+  @include not(
+    ".swal2-top",
+    ".swal2-top-start",
+    ".swal2-top-end",
+    ".swal2-top-left",
+    ".swal2-top-right",
+    ".swal2-center-start",
+    ".swal2-center-end",
+    ".swal2-center-left",
+    ".swal2-center-right",
+    ".swal2-bottom",
+    ".swal2-bottom-start",
+    ".swal2-bottom-end",
+    ".swal2-bottom-left",
+    ".swal2-bottom-right",
+    ".swal2-grow-fullscreen"
+  ) {
     & > .swal2-modal {
       margin: auto;
     }
@@ -153,7 +155,7 @@
 }
 
 .swal2-popup {
-  display: flex !important; 
+  display: flex !important;
   box-sizing: border-box;
   flex-direction: column;
   justify-content: center;
@@ -183,18 +185,18 @@
   font-size: $swal2-title-font-size;
   font-weight: 700 !important;
 }
-.swal2-html-container{
-  margin-bottom: 1rem !important
+.swal2-html-container {
+  margin-bottom: 1rem !important;
 }
 .swal2-actions {
   width: $swal2-actions-width !important;
-  .btn{
-    margin: 0 .75rem !important;
+  .btn {
+    margin: 0 0.75rem !important;
   }
   &:not(.swal2-loading) {
     .swal2-styled {
       &[disabled] {
-        opacity: .4;
+        opacity: 0.4;
       }
 
       &:hover {
@@ -210,13 +212,13 @@
   &.swal2-loading {
     .swal2-styled {
       &.swal2-confirm {
-        box-sizing: border-box !important; 
+        box-sizing: border-box !important;
         width: 2.5em !important;
         height: 2.5em !important;
-        margin: .46875em !important;
+        margin: 0.46875em !important;
         padding: 0 !important;
         animation: swal2-rotate-loading 1.5s linear 0s infinite normal !important;
-        border: .25em solid transparent !important;
+        border: 0.25em solid transparent !important;
         border-radius: 100% !important;
         border-color: transparent !important;
         background-color: transparent !important;
@@ -224,7 +226,7 @@
         cursor: default;
         user-select: none !important;
       }
-      &:focus{
+      &:focus {
         border: none;
       }
 
@@ -237,18 +239,18 @@
     :not(.swal2-styled) {
       &.swal2-confirm {
         &::after {
-          content: '';
+          content: "";
           display: inline-block;
           width: 15px;
           height: 15px;
           animation: swal2-rotate-loading 1.5s linear 0s infinite normal;
           border: 3px solid lighten($swal2-black, 60);
           border-radius: 50%;
-          @if($rtl==false){
+          @if ($rtl==false) {
             margin-left: 5px;
             border-right-color: transparent;
           }
-          @if($rtl==true){
+          @if ($rtl==true) {
             margin-right: 5px;
             border-left-color: transparent;
           }
@@ -260,7 +262,7 @@
 }
 
 .swal2-styled {
-  margin: 0 .75rem !important;
+  margin: 0 0.75rem !important;
   box-shadow: none !important;
   padding: 0.6875rem 1.25rem !important;
   font-size: 0.9375rem !important;
@@ -301,7 +303,6 @@
     }
   }
 
-
   &::-moz-focus-inner {
     border: 0;
   }
@@ -336,10 +337,10 @@
 
   /* 1617 */
   top: $swal2-close-button-gap;
-  @if($rtl==false){
+  @if ($rtl==false) {
     right: $swal2-close-button-gap;
   }
-  @if($rtl==true){
+  @if ($rtl==true) {
     left: $swal2-close-button-gap;
   }
   justify-content: center;
@@ -388,12 +389,12 @@
   font-weight: $swal2-validation-message-font-weight;
 
   &::before {
-    content: '!';
+    content: "!";
     display: inline-block;
     width: 1.5em;
     min-width: 1.5em;
     height: 1.5em;
-    margin: 0 .625em;
+    margin: 0 0.625em;
     zoom: $swal2-validation-message-icon-zoom;
     border-radius: 50%;
     background-color: $swal2-validation-message-icon-background;
@@ -409,12 +410,12 @@
   height: $swal2-icon-size !important;
   margin: $swal2-icon-margin !important;
   zoom: $swal2-icon-zoom !important;
-  border: .25em solid transparent !important;
+  border: 0.25em solid transparent !important;
   font-family: $swal2-icon-font-family !important;
   line-height: $swal2-icon-size !important;
   cursor: default !important;
   user-select: none !important;
-  transform: scale(.8) !important;
+  transform: scale(0.8) !important;
   .swal2-icon-content {
     display: flex;
     align-items: center;
@@ -430,21 +431,21 @@
       flex-grow: 1;
     }
 
-    [class^='swal2-x-mark-line'] {
+    [class^="swal2-x-mark-line"] {
       display: block;
       position: absolute;
       top: 2.3125em;
       width: 2.9375em;
-      height: .3125em;
-      border-radius: .125em;
+      height: 0.3125em;
+      border-radius: 0.125em;
       background-color: $swal2-error !important;
 
-      &[class$='left'] {
+      &[class$="left"] {
         left: 1.0625em;
         transform: rotate(45deg);
       }
 
-      &[class$='right'] {
+      &[class$="right"] {
         right: 1em;
         transform: rotate(-45deg);
       }
@@ -453,10 +454,10 @@
     // Error icon animation
     &.swal2-icon-show {
       @if $swal2-icon-animations {
-        animation: swal2-animate-error-icon .5s !important; 
+        animation: swal2-animate-error-icon 0.5s !important;
 
         .swal2-x-mark {
-          animation: swal2-animate-error-x-mark .5s !important;
+          animation: swal2-animate-error-x-mark 0.5s !important;
         }
       }
     }
@@ -481,7 +482,7 @@
     border-color: $swal2-success !important;
     color: $swal2-success !important;
 
-    [class^='swal2-success-circular-line'] {
+    [class^="swal2-success-circular-line"] {
       // Emulate moving circular line
       position: absolute;
       width: 3.75em;
@@ -489,16 +490,16 @@
       transform: rotate(45deg);
       border-radius: 50%;
 
-      &[class$='left'] {
-        top: -.4375em;
+      &[class$="left"] {
+        top: -0.4375em;
         left: -2.0635em;
         transform: rotate(-45deg);
         transform-origin: 3.75em 3.75em;
         border-radius: 7.5em 0 0 7.5em;
       }
 
-      &[class$='right'] {
-        top: -.6875em;
+      &[class$="right"] {
+        top: -0.6875em;
         left: 1.875em;
         transform: rotate(-45deg);
         transform-origin: 0 3.75em;
@@ -510,12 +511,12 @@
       // Ring
       position: absolute;
       z-index: 2;
-      top: -.25em;
-        left: -.25em;
+      top: -0.25em;
+      left: -0.25em;
       box-sizing: content-box;
       width: 100%;
       height: 100%;
-      border: .25em solid $swal2-success-border !important;
+      border: 0.25em solid $swal2-success-border !important;
       border-radius: 50%;
     }
 
@@ -523,31 +524,31 @@
       // Hide corners left from animation
       position: absolute;
       z-index: 1;
-      top: .5em;
-        left: 1.625em;
-      width: .4375em;
+      top: 0.5em;
+      left: 1.625em;
+      width: 0.4375em;
       height: 5.625em;
       transform: rotate(-45deg);
     }
 
-    [class^='swal2-success-line'] {
+    [class^="swal2-success-line"] {
       display: block;
       position: absolute;
       z-index: 2;
-      height: .3125em;
-      border-radius: .125em;
+      height: 0.3125em;
+      border-radius: 0.125em;
       background-color: $swal2-success !important;
 
-      &[class$='tip'] {
+      &[class$="tip"] {
         top: 2.875em;
-          left: .875em;
+        left: 0.875em;
         width: 1.5625em;
         transform: rotate(45deg);
       }
 
-      &[class$='long'] {
+      &[class$="long"] {
         top: 2.375em;
-          right: .5em;
+        right: 0.5em;
         width: 2.9375em;
         transform: rotate(-45deg);
       }
@@ -557,11 +558,11 @@
     &.swal2-icon-show {
       @if $swal2-icon-animations {
         .swal2-success-line-tip {
-          animation: swal2-animate-success-line-tip .75s;
+          animation: swal2-animate-success-line-tip 0.75s;
         }
 
         .swal2-success-line-long {
-          animation: swal2-animate-success-line-long .75s;
+          animation: swal2-animate-success-line-long 0.75s;
         }
 
         .swal2-success-circular-line-right {
@@ -571,4 +572,3 @@
     }
   }
 }
-

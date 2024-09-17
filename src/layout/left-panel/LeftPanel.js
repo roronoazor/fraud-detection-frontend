@@ -19,6 +19,7 @@ const LeftPanel = ({ theme }) => {
 
   const handleSignout = () => {
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("userData");
   };
 
   const appSidebarClass = classNames({
@@ -36,7 +37,7 @@ const LeftPanel = ({ theme }) => {
         </Link>
       </div>
       <div className="nk-sidebar-element">
-        <div className="nk-sidebar-body">
+        {/* <div className="nk-sidebar-body">
           <SimpleBar className="nk-sidebar-content">
             <div className="nk-sidebar-menu">
               <ul className="nk-menu apps-menu">
@@ -161,7 +162,7 @@ const LeftPanel = ({ theme }) => {
               </div>
             </DropdownMenu>
           </UncontrolledDropdown>
-        </div>
+        </div> */}
       </div>
     </div>
   );

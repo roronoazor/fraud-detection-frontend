@@ -34,10 +34,6 @@ const Header = ({ fixed, theme, className, sidebarToggle, setVisibility }) => {
             <div className="nk-header-app-logo">
               <Icon name="dashlite" className="bg-purple-dim"></Icon>
             </div>
-            <div className="nk-header-app-info">
-              <span className="sub-text">DashLite</span>
-              <span className="lead-text">Dashboard</span>
-            </div>
           </div>
           <div className="nk-header-menu is-light">
             <div className="nk-header-menu-inner">
@@ -45,11 +41,11 @@ const Header = ({ fixed, theme, className, sidebarToggle, setVisibility }) => {
                 <li
                   className={`nk-menu-item ${currentUrl === process.env.PUBLIC_URL + "/" ? "active current-page" : ""}`}
                 >
-                  <Link to={`${process.env.PUBLIC_URL}/`} className="nk-menu-link">
-                    <span className="nk-menu-text">Overview</span>
+                  <Link to={`${process.env.PUBLIC_URL}/dashboard/admin`} className="nk-menu-link">
+                    <span className="nk-menu-text">Dashboard</span>
                   </Link>
                 </li>
-                <li
+                {/* <li
                   className={`nk-menu-item ${
                     currentUrl === process.env.PUBLIC_URL + "/components" ? "active current-page" : ""
                   }`}
@@ -57,22 +53,22 @@ const Header = ({ fixed, theme, className, sidebarToggle, setVisibility }) => {
                   <Link to={`${process.env.PUBLIC_URL}/components`} className="nk-menu-link">
                     <span className="nk-menu-text">Components</span>
                   </Link>
-                </li>
+                </li> */}
               </ul>
             </div>
           </div>
           <div className="nk-header-tools">
             <ul className="nk-quick-nav">
-              <li className="chats-dropdown hide-mb-xs" onClick={() => setVisibility(false)}>
+              {/* <li className="chats-dropdown hide-mb-xs" onClick={() => setVisibility(false)}>
                 <ChatDropdown />
               </li>
               <li className="notification-dropdown mr-n1" onClick={() => setVisibility(false)}>
                 <Notification />
-              </li>
+              </li> */}
               <li className="list-apps-dropdown d-lg-none" onClick={() => setVisibility(false)}>
                 <AppDropdown />
               </li>
-              <li className="user-dropdown" onClick={() => setVisibility(false)}> 
+              <li className="user-dropdown" onClick={() => setVisibility(false)}>
                 <User />
               </li>
             </ul>

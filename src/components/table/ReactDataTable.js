@@ -93,23 +93,46 @@ const CustomCheckbox = React.forwardRef(({ onClick, ...rest }, ref) => (
   </div>
 ));
 
-const ReactDataTable = ({ data, columns, pagination, actions, className, selectableRows, expandableRows }) => {
+const ReactDataTable = ({
+  data,
+  columns,
+  pagination,
+  actions,
+  className,
+  selectableRows,
+  expandableRows,
+  showSearch = true,
+}) => {
   const [tableData, setTableData] = useState(data);
   const [searchText, setSearchText] = useState("");
   const [rowsPerPageS, setRowsPerPage] = useState(10);
   const [mobileView, setMobileView] = useState();
 
+  // useEffect(() => {
+  //   let defaultData = tableData;
+  //   if (searchText !== "") {
+  //     defaultData = data.filter((item) => {
+  //       return item.name.toLowerCase().includes(searchText.toLowerCase());
+  //     });
+  //     setTableData(defaultData);
+  //   } else {
+  //     setTableData(data);
+  //   }
+  // }, [searchText, data]);
+
   useEffect(() => {
-    let defaultData = tableData;
     if (searchText !== "") {
-      defaultData = data.filter((item) => {
-        return item.name.toLowerCase().includes(searchText.toLowerCase());
+      const searchQuery = searchText.toLowerCase();
+      const filteredData = data.filter((item) => {
+        return Object.values(item).some((value) => String(value).toLowerCase().includes(searchQuery));
       });
-      setTableData(defaultData);
+      setTableData(filteredData);
     } else {
       setTableData(data);
     }
-  }, [searchText]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [searchText, data]);
+
+  // i added the data variable to this useEffect hook
 
   // function to change the design view under 1200 px
   const viewChange = () => {
@@ -132,16 +155,18 @@ const ReactDataTable = ({ data, columns, pagination, actions, className, selecta
     <div className={`dataTables_wrapper dt-bootstrap4 no-footer ${className ? className : ""}`}>
       <Row className={`justify-between g-2 ${actions ? "with-export" : ""}`}>
         <Col className="col-7 text-left" sm="4">
-          <div id="DataTables_Table_0_filter" className="dataTables_filter">
-            <label>
-              <input
-                type="search"
-                className="form-control form-control-sm"
-                placeholder="Search by name"
-                onChange={(ev) => setSearchText(ev.target.value)}
-              />
-            </label>
-          </div>
+          {showSearch && (
+            <div id="DataTables_Table_0_filter" className="dataTables_filter">
+              <label>
+                <input
+                  type="search"
+                  className="form-control form-control-sm"
+                  placeholder="Search by name"
+                  onChange={(ev) => setSearchText(ev.target.value)}
+                />
+              </label>
+            </div>
+          )}
         </Col>
         <Col className="col-5 text-right" sm="8">
           <div className="datatable-filter">

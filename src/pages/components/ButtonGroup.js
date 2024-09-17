@@ -25,7 +25,11 @@ const ButtonGroupPage = () => {
                 Group a series of buttons together on a single line with the button group, and super-power them with
                 JavaScript. To use it, import it such as <code>import {`{ButtonGroup}`} from "reactstrap"</code>. Visit
                 the{" "}
-                <a href={"https://deploy-preview-2356--reactstrap.netlify.app/components/button-group"} target="_blank" rel="noreferrer">
+                <a
+                  href={"https://deploy-preview-2356--reactstrap.netlify.app/components/button-group"}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Reactstrap
                 </a>{" "}
                 library for detailed instructions.

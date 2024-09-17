@@ -69,7 +69,8 @@ input[type="month"] {
 }
 
 // Removing default icons for dates and time
-input[type="date"]::-webkit-calendar-picker-indicator, input[type="time"]::-webkit-calendar-picker-indicator {
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
   background: transparent;
   bottom: 0;
   color: transparent;
@@ -81,7 +82,6 @@ input[type="date"]::-webkit-calendar-picker-indicator, input[type="time"]::-webk
   top: 0;
   width: auto;
 }
-
 
 select.form-control {
   &:focus::-ms-value {
@@ -101,7 +101,6 @@ select.form-control {
   display: block;
   width: 100%;
 }
-
 
 //
 // Labels
@@ -131,7 +130,6 @@ select.form-control {
   line-height: $input-line-height-sm;
 }
 
-
 // Readonly controls as plain text
 //
 // Apply class to a readonly input to make it appear like regular plain
@@ -155,7 +153,6 @@ select.form-control {
     padding-left: 0;
   }
 }
-
 
 // Form control sizing
 //
@@ -206,7 +203,6 @@ textarea.form-control {
   margin-top: $form-text-margin-top;
 }
 
-
 // Form grid
 //
 // Special replacement for our grid system's `.row` for tighter form layouts.
@@ -224,7 +220,6 @@ textarea.form-control {
   }
 }
 
-
 // Checkboxes and radios
 //
 // Indent the labels to position radios/checkboxes as hanging controls.
@@ -232,10 +227,10 @@ textarea.form-control {
 .form-check {
   position: relative;
   display: block;
-  @if($rtl==false){
+  @if ($rtl==false) {
     padding-left: $form-check-input-gutter;
   }
-  @if($rtl==true){
+  @if ($rtl==true) {
     padding-right: $form-check-input-gutter;
   }
 }
@@ -243,10 +238,10 @@ textarea.form-control {
 .form-check-input {
   position: absolute;
   margin-top: $form-check-input-margin-y;
-  @if($rtl==false){
+  @if ($rtl==false) {
     margin-left: -$form-check-input-gutter;
   }
-  @if($rtl==true){
+  @if ($rtl==true) {
     margin-right: -$form-check-input-gutter;
   }
   // Use [disabled] and :disabled for workaround https://github.com/twbs/bootstrap/issues   /28247
@@ -263,11 +258,11 @@ textarea.form-control {
 .form-check-inline {
   display: inline-flex;
   align-items: center;
-  @if($rtl==false){
+  @if ($rtl==false) {
     padding-left: 0; // Override base .form-check
     margin-right: $form-check-inline-margin-x;
   }
-  @if($rtl==true){
+  @if ($rtl==true) {
     padding-right: 0; // Override base .form-check
     margin-left: $form-check-inline-margin-x;
   }
@@ -275,17 +270,16 @@ textarea.form-control {
   .form-check-input {
     position: static;
     margin-top: 0;
-    @if($rtl==false){
+    @if ($rtl==false) {
       margin-right: $form-check-inline-input-margin-x;
       margin-left: 0;
     }
-    @if($rtl==true){
+    @if ($rtl==true) {
       margin-left: $form-check-inline-input-margin-x;
       margin-right: 0;
     }
   }
 }
-
 
 // Form validation
 //
@@ -361,10 +355,10 @@ textarea.form-control {
       align-items: center;
       justify-content: center;
       width: auto;
-      @if($rtl==false){
+      @if ($rtl==false) {
         padding-left: 0;
       }
-      @if($rtl==true){
+      @if ($rtl==true) {
         padding-right: 0;
       }
     }
@@ -372,11 +366,11 @@ textarea.form-control {
       position: relative;
       flex-shrink: 0;
       margin-top: 0;
-      @if($rtl==false){
+      @if ($rtl==false) {
         margin-right: $form-check-input-margin-x;
         margin-left: 0;
       }
-      @if($rtl==true){
+      @if ($rtl==true) {
         margin-left: $form-check-input-margin-x;
         margin-right: 0;
       }

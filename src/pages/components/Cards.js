@@ -43,7 +43,11 @@ const CardsPage = ({ ...props }) => {
                   from "reactstrap"
                 </code>
                 . Visit the{" "}
-                <a href={"https://deploy-preview-2356--reactstrap.netlify.app/components/card"} target="_blank" rel="noreferrer">
+                <a
+                  href={"https://deploy-preview-2356--reactstrap.netlify.app/components/card"}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Reactstrap
                 </a>{" "}
                 library for detailed instructions.
@@ -238,7 +242,7 @@ const CardsPage = ({ ...props }) => {
                 </Card>
               </Col>
               <Col sm="6">
-               <Card className="card-bordered" inverse color="gray">
+                <Card className="card-bordered" inverse color="gray">
                   <CardHeader>Header</CardHeader>
                   <CardBody className="card-inner">
                     <CardTitle tag="h5">Dark card title</CardTitle>

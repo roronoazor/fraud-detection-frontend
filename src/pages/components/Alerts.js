@@ -25,7 +25,11 @@ const AlertsPage = ({ ...props }) => {
                 Provide contextual feedback messages for typical user actions with the handful of available and flexible
                 alert messages. To use it, import it such as <code>import {`{Alert}`} from "reactstrap"</code>. Visit
                 the{" "}
-                <a href={"https://deploy-preview-2356--reactstrap.netlify.app/components/alerts"} target="_blank" rel="noreferrer">
+                <a
+                  href={"https://deploy-preview-2356--reactstrap.netlify.app/components/alerts"}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Reactstrap
                 </a>{" "}
                 library for detailed instructions.

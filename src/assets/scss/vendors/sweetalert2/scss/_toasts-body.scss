@@ -15,11 +15,11 @@
       &.swal2-top-right {
         top: 0;
         bottom: auto;
-        @if($rtl==false){
+        @if ($rtl==false) {
           right: 0;
           left: auto;
         }
-        @if($rtl==true){
+        @if ($rtl==true) {
           left: 0;
           right: auto;
         }
@@ -29,11 +29,11 @@
       &.swal2-top-left {
         top: 0;
         bottom: auto;
-        @if($rtl==false){
+        @if ($rtl==false) {
           left: 0;
           right: auto;
         }
-        @if($rtl==true){
+        @if ($rtl==true) {
           right: 0;
           left: auto;
         }
@@ -43,11 +43,11 @@
       &.swal2-center-left {
         top: 50%;
         bottom: auto;
-        @if($rtl==false){
+        @if ($rtl==false) {
           right: auto;
           left: 0;
         }
-        @if($rtl==true){
+        @if ($rtl==true) {
           left: auto;
           right: 0;
         }
@@ -66,11 +66,11 @@
       &.swal2-center-right {
         top: 50%;
         bottom: auto;
-        @if($rtl==false){
+        @if ($rtl==false) {
           right: 0;
           left: auto;
         }
-        @if($rtl==true){
+        @if ($rtl==true) {
           left: 0;
           right: auto;
         }
@@ -81,11 +81,11 @@
       &.swal2-bottom-left {
         top: auto;
         bottom: 0;
-        @if($rtl==false){
+        @if ($rtl==false) {
           right: auto;
           left: 0;
         }
-        @if($rtl==true){
+        @if ($rtl==true) {
           left: auto;
           right: 0;
         }
@@ -103,11 +103,11 @@
       &.swal2-bottom-right {
         top: auto;
         bottom: 0;
-        @if($rtl==false){
+        @if ($rtl==false) {
           right: 0;
           left: auto;
         }
-        @if($rtl==true){
+        @if ($rtl==true) {
           left: 0;
           right: auto;
         }
@@ -124,7 +124,7 @@
         flex: 1;
         align-self: stretch;
         height: 2.2em;
-        margin-top: .3125em;
+        margin-top: 0.3125em;
       }
 
       .swal2-loading {
@@ -133,7 +133,7 @@
 
       .swal2-input {
         height: 2em;
-        margin: .3125em auto;
+        margin: 0.3125em auto;
         font-size: $swal2-toast-input-font-size;
       }
 
