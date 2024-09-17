@@ -1,5 +1,5 @@
 const isDevelopment = process.env.NODE_ENV === "development";
-const BASE_URL = isDevelopment ? "http://127.0.0.1:8000/" : process.env.REACT_APP_BASE_URL;
+const BASE_URL = isDevelopment ? "http://127.0.0.1:8000/" : "http://139.162.214.131:8000/";
 
 export const LOGIN_URL = `${BASE_URL}api/auth/login/`;
 

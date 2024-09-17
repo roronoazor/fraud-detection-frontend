@@ -140,10 +140,10 @@ const Login = () => {
                 </Button>
               </FormGroup>
             </Form>
-            <div className="form-note-s2 text-center pt-4">
+            {/* <div className="form-note-s2 text-center pt-4">
               {" "}
               New on our platform? <Link to={`${process.env.PUBLIC_URL}/auth-register`}>Create an account</Link>
-            </div>
+            </div> */}
           </PreviewCard>
         </Block>
       </PageContainer>
