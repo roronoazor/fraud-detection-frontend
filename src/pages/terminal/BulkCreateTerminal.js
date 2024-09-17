@@ -129,7 +129,7 @@ const BulkCreateHandler = () => {
           </Card>
         </Block>
 
-        <Block>
+        {/* <Block>
           <Card className="card-bordered card-stretch">
             <div className="card-inner-group">
               <div className="card-inner">
@@ -236,7 +236,7 @@ const BulkCreateHandler = () => {
               </div>
             </div>
           </Card>
-        </Block>
+        </Block> */}
       </Content>
     </React.Fragment>
   );

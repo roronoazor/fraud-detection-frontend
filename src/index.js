@@ -17,11 +17,11 @@ ReactDOM.render(
   <React.Fragment>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <Suspense fallback={<div />}>
-          <Router basename={`/`}>
-            <Route render={({ location }) => (location.state && location.state.is404 ? <Error404Modern /> : <App />)} />
-          </Router>
-        </Suspense>
+        {/* <Suspense fallback={<div />}> */}
+        <Router basename={`/`}>
+          <Route render={({ location }) => (location.state && location.state.is404 ? <Error404Modern /> : <App />)} />
+        </Router>
+        {/* </Suspense> */}
       </PersistGate>
     </Provider>
   </React.Fragment>,
