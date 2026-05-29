@@ -9,7 +9,8 @@ const StatCardUI = ({
   subValue,
   subValueLabel,
   subValueLabel2, 
-  subValue2
+  subValue2,
+  errorMessage
 }) => {
   return (
     <PreviewAltCard className="card-full card-bordered">
@@ -29,6 +30,7 @@ const StatCardUI = ({
       </div>
       <div className="card-amount">
         <span className="amount">{titleValue}</span>
+        {errorMessage && <span className="sub-text text-danger d-block mt-1">{errorMessage}</span>}
       </div>
       <div className="invest-data">
         <div className="invest-data-amount g-2">
@@ -53,6 +55,7 @@ StatCardUI.propTypes = {
   subValueLabel: PropTypes.string,
   subValueLabel2: PropTypes.string, 
   subValue2: PropTypes.string,
+  errorMessage: PropTypes.string,
 };
 
 export default StatCardUI;

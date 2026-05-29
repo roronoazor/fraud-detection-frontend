@@ -11,6 +11,10 @@ import toast from "react-hot-toast";
  *
  */
 export function handleApiError(error, customJSX) {
+  if (error?.wasHandledAsUnauthorized || error?.response?.status === 401) {
+    return;
+  }
+
   let message = error?.response?.data?.detail ? error?.response?.data?.detail : error.toString();
   if (customJSX) {
     toast.custom(customJSX);

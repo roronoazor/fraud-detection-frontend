@@ -53,9 +53,10 @@ export const BlockDes = ({ className, page, ...props }) => {
 
 export const BackTo = ({ className, link, icon, ...props }) => {
   const classes = [`back-to${className ? " " + className : ""}`];
+  const resolvedLink = link === "/" ? "/dashboard/admin" : link;
   return (
     <div className="nk-block-head-sub">
-      <Link className={classes} to={process.env.PUBLIC_URL + link}>
+      <Link className={classes} to={process.env.PUBLIC_URL + resolvedLink}>
         <Icon name={icon} />
         <span>{props.children}</span>
       </Link>

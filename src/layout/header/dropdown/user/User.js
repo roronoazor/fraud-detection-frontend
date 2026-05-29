@@ -12,6 +12,24 @@ const User = () => {
   const toggle = () => setOpen((prevState) => !prevState);
   const dispatch = useDispatch();
   const userData = useSelector(getAuthUser);
+  const userInfo = userData?.info || {};
+  const normalizeValue = (value) => {
+    if (!value || value === "null" || value === "undefined") {
+      return "";
+    }
+    return value;
+  };
+  const firstName = normalizeValue(userInfo.firstName);
+  const lastName = normalizeValue(userInfo.lastName);
+  const email = normalizeValue(userInfo.email || userData?.email);
+  const displayName = [firstName, lastName].filter(Boolean).join(" ") || email || "User";
+  const initialsSource = firstName || lastName ? `${firstName} ${lastName}` : displayName;
+  const initials = initialsSource
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((namePart) => namePart.charAt(0).toUpperCase())
+    .join("");
 
   const handleSignout = () => {
     dispatch(logout());
@@ -33,14 +51,11 @@ const User = () => {
         <div className="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
           <div className="user-card sm">
             <div className="user-avatar">
-              <span>
-                {userData?.info?.firstName?.charAt(0)}
-                {userData?.info?.lastName?.charAt(0)}
-              </span>
+              <span>{initials || "U"}</span>
             </div>
             <div className="user-info">
-              <span className="lead-text">{`${userData?.info?.firstName} ${userData?.info?.lastName}`}</span>
-              <span className="sub-text">{`${userData?.info?.email}`}</span>
+              <span className="lead-text">{displayName}</span>
+              {email && <span className="sub-text">{email}</span>}
             </div>
           </div>
         </div>

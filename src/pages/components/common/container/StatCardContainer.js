@@ -14,6 +14,7 @@ const StatCardContainer = ({ titleLabel, url, subValueLabel, subValueLabel2 }) =
   let payload_data = {};
   const token = useSelector(getAuthToken);
   const [data, setData] = React.useState({});
+  const [requestFailed, setRequestFailed] = React.useState(false);
   const result = useQuery(
     [
       `${url}`,
@@ -29,9 +30,12 @@ const StatCardContainer = ({ titleLabel, url, subValueLabel, subValueLabel2 }) =
       retry: false,
       onSuccess: (response) => {
         let data = response?.data?.data;
+        setRequestFailed(false);
         setData(data);
       },
       onError: (error) => {
+        setRequestFailed(true);
+        setData({});
         handleApiError(error, <ToastUI error />);
       },
     },
@@ -49,6 +53,7 @@ const StatCardContainer = ({ titleLabel, url, subValueLabel, subValueLabel2 }) =
       subValue={formatCurrencyNumber(data?.active ? data?.active : data?.month ? data?.month : "0")}
       subValueLabel2={subValueLabel2}
       subValue2={formatCurrencyNumber(data?.inactive ? data?.inactive : data?.week ? data?.week : "0")}
+      errorMessage={requestFailed ? "Backend unavailable" : ""}
     />
   );
 };

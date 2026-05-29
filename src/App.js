@@ -23,9 +23,12 @@ import { persistStore } from "redux-persist";
 import { Toaster } from "react-hot-toast";
 import { ToastContainer } from "react-toastify";
 import { getAuthToken } from "./modules/auth/redux/authSelector";
+import { setupUnauthorizedRedirect } from "./modules/utilities/http";
 
 const accessToken = localStorage.getItem("accessToken");
 const queryClient = new QueryClient();
+
+setupUnauthorizedRedirect();
 
 const App = (props) => {
   return (

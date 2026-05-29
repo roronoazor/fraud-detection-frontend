@@ -25,6 +25,7 @@ const Login = () => {
   const [passState, setPassState] = useState(false);
   const [errorVal, setError] = useState("");
   const dispatch = useDispatch();
+  const dashboardPath = `${process.env.PUBLIC_URL || ""}/dashboard/admin`;
 
   const onFormSubmit = (formData) => {
     setLoading(true);
@@ -40,11 +41,7 @@ const Login = () => {
           dispatch(login({ token: response.data.token, authUser: response.data.user }));
           setLoading(false);
           setTimeout(() => {
-            window.history.pushState(
-              `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/dashboard/admin"}`,
-              "auth-login",
-              `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/dashboard/admin"}`,
-            );
+            window.history.pushState(dashboardPath, "auth-login", dashboardPath);
             window.location.reload();
           }, 500);
         } else {

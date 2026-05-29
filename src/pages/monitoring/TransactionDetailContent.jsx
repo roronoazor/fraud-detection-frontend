@@ -214,8 +214,8 @@ export const TransactionDetailContent = (props) => {
 
             {
                 (!checkObject(transaction?.debit_response || {})) && (
-                    <div className="row">
-                        <div className="col-md-4 text-center">
+                    <div className="row mt-4">
+                        <div className="col-md-12 text-center">
                             <JsonCard title='DEBIT RESPONSE' response={transaction?.debit_response} />
                         </div>    
                     </div>  

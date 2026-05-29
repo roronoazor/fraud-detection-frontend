@@ -4,8 +4,9 @@ import { PreviewAltCard } from "../../../../components/preview/Preview";
 import Icon from "../../../../components/icon/Icon";
 import { LineChartExample } from "../../../../components/charts/Chart";
 
-const StackedLineChartUI = ({ title, planSet, chartData, changePlanSet, totalTxn, suspectedTxn }) => {
-  
+const StackedLineChartUI = ({ title, planSet, chartData, changePlanSet, totalTxn, suspectedTxn, emptyMessage }) => {
+  const hasChartData = chartData?.labels?.length > 0;
+
   return (
     <PreviewAltCard className="card-full card-bordered" bodyClass="d-flex flex-column h-100">
       <div className="card-title-group mb-3">
@@ -72,7 +73,11 @@ const StackedLineChartUI = ({ title, planSet, chartData, changePlanSet, totalTxn
         </div>
       </div>
       <div className="nk-ck">
-        <LineChartExample legend={true} data={chartData} />
+        {hasChartData ? (
+          <LineChartExample legend={true} data={chartData} />
+        ) : (
+          <div className="text-center text-muted py-5">{emptyMessage || "No transaction data"}</div>
+        )}
       </div>
     </PreviewAltCard>
   );

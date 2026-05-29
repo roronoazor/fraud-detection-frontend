@@ -11,19 +11,20 @@ import ToastUI from "../ui-view/ToastUI";
 
 export const solidLineChart = (data, planSet) => {
   let labels, totalTxnData, suspectedTxnData;
+  const last30Days = data?.last_30_days || {};
 
   if (planSet === "7") {
-    labels = Object.keys(data.last_30_days).slice(-7);
-    totalTxnData = labels.map((date) => data.last_30_days[date].total_txn);
-    suspectedTxnData = labels.map((date) => data.last_30_days[date].suspected_txn);
+    labels = Object.keys(last30Days).slice(-7);
+    totalTxnData = labels.map((date) => last30Days[date]?.total_txn || 0);
+    suspectedTxnData = labels.map((date) => last30Days[date]?.suspected_txn || 0);
   } else if (planSet === "15") {
-    labels = Object.keys(data.last_30_days).slice(-15);
-    totalTxnData = labels.map((date) => data.last_30_days[date].total_txn);
-    suspectedTxnData = labels.map((date) => data.last_30_days[date].suspected_txn);
+    labels = Object.keys(last30Days).slice(-15);
+    totalTxnData = labels.map((date) => last30Days[date]?.total_txn || 0);
+    suspectedTxnData = labels.map((date) => last30Days[date]?.suspected_txn || 0);
   } else {
-    labels = Object.keys(data.last_30_days);
-    totalTxnData = labels.map((date) => data.last_30_days[date].total_txn);
-    suspectedTxnData = labels.map((date) => data.last_30_days[date].suspected_txn);
+    labels = Object.keys(last30Days);
+    totalTxnData = labels.map((date) => last30Days[date]?.total_txn || 0);
+    suspectedTxnData = labels.map((date) => last30Days[date]?.suspected_txn || 0);
   }
 
   return {
@@ -64,6 +65,7 @@ const StackedLineChartContainer = ({ title = "", url, type }) => {
   const [planSet, setPlanSet] = useState("30");
   const [totalTxn, setTotalTxn] = useState(0);
   const [suspectedTxn, setSuspectedTxn] = useState(0);
+  const [requestFailed, setRequestFailed] = useState(false);
 
   let payload_data = {};
   const token = useSelector(getAuthToken);
@@ -82,11 +84,15 @@ const StackedLineChartContainer = ({ title = "", url, type }) => {
     {
       retry: false,
       onSuccess: (response) => {
-        let data = response?.data?.data;
+        const data = response?.data?.data || {};
+        setRequestFailed(false);
         setData(data);
         calculateTotalAndSuspectedTxn(data);
       },
       onError: (error) => {
+        setRequestFailed(true);
+        setData({});
+        calculateTotalAndSuspectedTxn({});
         handleApiError(error, <ToastUI error />);
       },
     },
@@ -124,6 +130,7 @@ const StackedLineChartContainer = ({ title = "", url, type }) => {
       chartData={solidLineChart(data, planSet)}
       totalTxn={formatCurrencyNumber(totalTxn)}
       suspectedTxn={formatCurrencyNumber(suspectedTxn)}
+      emptyMessage={requestFailed ? "Backend unavailable" : "No transaction data"}
     />
   );
 };
