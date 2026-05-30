@@ -25,6 +25,8 @@ const center = {
 };
 
 const GoogleMapPage = () => {
+  const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+
   return (
     <React.Fragment>
       <Head title="Google map"></Head>
@@ -101,17 +103,23 @@ const GoogleMapPage = () => {
           </BlockHead>
           <PreviewCard>
             <Card className="card-bordered w-100 h-100">
-              <LoadScript googleMapsApiKey="AIzaSyCtOtiFYyiZeSXwiL9RS7PR8cQQXMvZNXI">
-                <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={10}>
-                  {/* Child components, such as markers, info windows, etc. */}
-                  <></>
-                </GoogleMap>
-              </LoadScript>
+              {googleMapsApiKey ? (
+                <LoadScript googleMapsApiKey={googleMapsApiKey}>
+                  <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={10}>
+                    {/* Child components, such as markers, info windows, etc. */}
+                    <></>
+                  </GoogleMap>
+                </LoadScript>
+              ) : (
+                <div className="text-center text-muted py-5">
+                  Google Maps API key is not configured for this environment.
+                </div>
+              )}
             </Card>
           </PreviewCard>
           <CodeBlock language="jsx">
             {` <Card className="card-bordered w-100 h-100">
-  <LoadScript googleMapsApiKey="YOUR_API_KEY">
+  <LoadScript googleMapsApiKey={googleMapsApiKey}>
     <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={10}>
       {/* Child components, such as markers, info windows, etc. */}
       <></>
